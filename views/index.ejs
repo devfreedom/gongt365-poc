@@ -1,0 +1,118 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Proof-of-concept Webapp</title>
+  <meta name="description" content="A simple OpenAPI service">
+  <meta name="author" content="JK">
+
+  <link rel="icon" href="/images/favicon.ico">
+  <link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="stylesheet" href="../dist/output.css">
+  <script async src="./src/index.js"></script> 
+</head>
+
+<body>
+  <!-- Header starts here -->
+  <header class="flex w-full h-16 bg-slate-300 items-center justify-center">
+    <h1 class="text-bold font-black text-lg">Proof-of-concept Webapp</h1>
+  </header>
+
+  <!-- Container starts here-->
+  <div id="container" class="flex flex-col w-full">
+
+    <!-- Hero starts here -->
+    <div id="hero-container" class="flex w-full bg-blue-300 p-8">
+      <div id="hero-section" class="p-8">
+        <h1 class="text-bold font-black text-lg">Hero section</h1>
+      </div>
+    </div>
+  
+    <div class="w-full h-16"></div>
+
+    <!-- String submission test -->
+    <div class="flex w-full p-8">
+      <input type="text" name="movieTitle" value="Movie title">
+      <button id="movieTitleSubmitBtn" type="button" onClick="movieTitleSubmit()" class="bg-blue-800 text-white">Add to the database</button>
+    </div>
+
+    <div class="container">
+      <fieldset>
+          <form action="/" method="post">
+              <input name="city" type="text" class="ghost-input" placeholder="Enter a City" required>
+              <input type="submit" class="ghost-button" value="Get Weather">
+          </form>
+      </fieldset>
+      <%if( weather !== null){ %>
+          <div class="border-2 m-2 p-4">
+              <p>
+                  <%= place %>
+              </p>
+          </div>
+          <div class="border-4 m-2 p-4">
+              <div class="card card-accent-dark mb-3" style="max-width: 18rem;">
+                  <div class="card-header font-bold">Summary</div>
+                  <div class="card-body text-dark">
+                      <h5 class="card-title">Temperature</h5>
+                      <p class="card-text">
+                          In Degrees:
+                          <%= temp %>°C/
+
+                      </p>
+                      <h5 class="text-bold">Main</h5>
+                      <p class="card-text">
+                          <%= main %>
+                      </p>
+                  </div>
+              </div>
+              <div class="card-deck">
+                  <div class="card card-acTomorrowcent-dark mb-3" style="max-width: 18rem;">
+                      <div class="font-bold">Description</div>
+                      <div class="card-body text-dark">
+                          <h5 class="card-title">Overall Description: </h5>
+                          <p class="card-text">
+                              <%= description %>
+                          </p>
+                          <h5 class="card-title">Cloud coverage: </h5>
+                          <p class="card-text">
+
+                          </p>
+                          <h5 class="card-title">Visibility: </h5>
+                          <p class="card-text">
+
+                          </p>
+                      </div>
+                  </div>
+                  <div class="card-deck">
+                      <div class="card card-accent-dark mb-3" style="max-width: 18rem;">
+                          <div class="font-bold">Other info</div>
+                          <div class="card-body text-dark">
+                              <h5 class="card-title">Humidity: </h5>
+                              <p class="card-text">
+
+                              </p>
+                          </div>
+                          <div class="card-body text-dark">
+                              <h5 class="card-title">Pressure: </h5>
+                              <p class="card-text">
+
+                              </p>
+                          </div>
+                      </div>
+                  </div>
+                  <% } %>
+
+                      <% if(error !== null){ %>
+                          <p>
+                              Error: <%= error %>
+                          </p>
+                          <% } %>
+
+              </div>
+    
+</body>
+</html>
