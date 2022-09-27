@@ -17,13 +17,24 @@
 </head>
 
 <body>
-  <!-- Header starts here -->
-  <header class="flex w-full h-16 bg-slate-300 items-center justify-center">
-    <h1 class="text-bold font-black text-lg">Proof-of-concept Webapp</h1>
-  </header>
 
-  <!-- Container starts here-->
-  <div id="container" class="flex flex-col w-full">
+<div id="container" class="flex w-full h-full justify-center">
+
+  <!-- Viewport starts here-->
+  <div id="viewport" class="flex flex-col h-full w-[47vh] justify-between">
+
+    <!-- Header starts here -->
+    <header class="flex w-full h-16 bg-slate-300 items-center justify-between">
+        <div id="header-logo" class="mx-3""> 
+            <h1 class="text-bold font-black text-lg">Proof-of-concept Webapp</h1>
+        </div>
+        <div id="weather-info" class="mx-3">
+            <h1>weather</h1>
+        </div>
+    </header>
+
+    <!-- Pages start here-->
+    <div class="">
 
     <!-- Hero starts here -->
     <div id="hero-container" class="flex w-full bg-blue-300 p-8">
@@ -40,7 +51,7 @@
       <button id="movieTitleSubmitBtn" type="button" onClick="movieTitleSubmit()" class="bg-blue-800 text-white">Add to the database</button>
     </div>
 
-    <div class="container">
+    <div class="">
       <fieldset>
           <form action="/" method="post">
               <input name="city" type="text" class="ghost-input" placeholder="Enter a City" required>
@@ -113,6 +124,16 @@
                           <% } %>
 
               </div>
-    
+    </div>    
+
+    <!-- Navbar starts here -->
+    <div id="navbar" class="flex w-full h-16 bg-slate-300 items-center justify-between">
+        <div id="header-logo" class="mx-3""> 
+            <h1 class="text-bold font-black text-lg">Navbar area</h1>
+        </div>
+        <div id="weather-info" class="mx-3">
+            <h1>item1</h1>
+        </div>
+    </div>
 </body>
 </html>
