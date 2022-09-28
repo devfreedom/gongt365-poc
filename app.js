@@ -18,6 +18,59 @@ app.use(express.static(__dirname + '/'));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
+/* Activate node-pedometer, the following codes are a sample from the repo */
+
+// Configure node-pedometer
+var pedometer = require('pedometer').pedometer,
+    fs = require('fs'),
+    parse = require('csv-parse/lib/sync');
+
+// Function to load Data from csv file
+function loadData(filename){
+    
+    //Load file
+    var data=fs.readFileSync(filename,'utf8');
+    
+    //parse CSV
+    data=parse(data, {trim: true, auto_parse: true});
+    
+    //Store data in arrays
+    var acc=[],att=[];
+    for (var i=0;i<data.length;i++){
+        acc[i]=data[i].slice(0,3);
+        att[i]=[data[i][4], -data[i][5],data[i][3]];   //Attitude is adjusted to correctly match [ pitch, roll, yaw ]
+    }
+    
+    //Return arrays
+    return {acc:acc,att:att};
+}
+   
+// Load first test case
+var data=loadData('node_modules/pedometer/test/DataWalking1.csv');      //You might need to adjust the path here
+
+// Define algorithm options (optional). All recommended default values here.
+var options={
+                windowSize:1, //Length of window in seconds
+                minPeak:2, //minimum magnitude of a steps largest positive peak
+                maxPeak:8, //maximum magnitude of a steps largest positive peak
+                minStepTime: 0.3, //minimum time in seconds between two steps
+                peakThreshold: 0.5, //minimum ratio of the current window's maximum to be considered a step
+                minConsecutiveSteps: 3, //minimum number of consecutive steps to be counted
+                maxStepTime: 0.8, //maximum time between two steps to be considered consecutive
+                meanFilterSize: 1, //Amount of smoothing (Values <=1 disable the smoothing)
+                debug:false //Enable output of debugging data in matlab/octave format
+};
+        
+// Perform step detection. Leaving away ,options here (recommended), will use the default settings as specified above.
+var steps = pedometer(data.acc,data.att,100,options);
+
+// Print number of detected steps
+console.log("The algorithm detected "+steps.length+" steps.");
+
+/* node-pedometer code ends */
+
+
+
 // Configure javascript template engine
 app.set("view engine", "ejs");
 
