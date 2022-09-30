@@ -18,7 +18,11 @@ app.use(express.static(__dirname + '/'));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
-/* Activate node-pedometer, the following codes are a sample from the repo */
+/* DO NOT IMPLEMENT PEDOMETER FEATURE UNTIL ACCELEROMETER/GYROSCOPE SENSOR DATA CAN BE RETRIEVED
+
+/* Activate node-pedometer, the following codes are a sample from the repo
+
+// The latest version of Node package 'csv-parse' spits an error, use lower 4.4.6 version instead
 
 // Configure node-pedometer
 var pedometer = require('pedometer').pedometer,
@@ -46,7 +50,7 @@ function loadData(filename){
 }
    
 // Load first test case
-var data=loadData('node_modules/pedometer/test/DataWalking1.csv');      //You might need to adjust the path here
+var data=loadData('./node_modules/pedometer/test/DataWalking1.csv');      //You might need to adjust the path here
 
 // Define algorithm options (optional). All recommended default values here.
 var options={
@@ -67,7 +71,9 @@ var steps = pedometer(data.acc,data.att,100,options);
 // Print number of detected steps
 console.log("The algorithm detected "+steps.length+" steps.");
 
-/* node-pedometer code ends */
+// node-pedometer code ends
+
+*/
 
 
 
@@ -80,6 +86,7 @@ const apiKey = process.env.API_KEY;
 
 
 // Abandon MySQL, use MongoDB instead
+
 /*
 const mysql = require('mysql');
 
@@ -99,6 +106,7 @@ con.query('CREATE DATABASE test_db', function (err, result) {
     console.log('Database has been created.');
   });
 */  
+
 
 // Declare MongoDB Model
 var mdbModel = mongoose.model("mdbModel", {
