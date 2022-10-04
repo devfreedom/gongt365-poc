@@ -3,7 +3,6 @@ const bodyParser = require("body-parser");
 const request = require("request");
 const express = require("express");
 const ejs = require("ejs");
-const mongoose = require("mongoose");
 require('dotenv').config();
 
 
@@ -107,6 +106,23 @@ con.query('CREATE DATABASE test_db', function (err, result) {
   });
 */  
 
+
+/* Initiate MongoDB via Mongoose */
+
+const mongoose = require("mongoose");
+const { MongoClient } = require('mongodb');
+const uri = "mongodb+srv://admin:DBadmin@playground.orujo.mongodb.net/places?retryWrites=true&w=majority";
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
+async function main() {
+  client.connect(err => {
+  const collection = client.db("test").collection("devices");
+  // Perform actions on the collection object
+  client.close();
+  });
+}
+
+await client.connect();
 
 // Declare MongoDB Model
 var mdbModel = mongoose.model("mdbModel", {

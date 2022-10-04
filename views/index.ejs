@@ -13,7 +13,12 @@
   <link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="stylesheet" href="../dist/output.css">
+
   <script async src="./src/index.js"></script> 
+   
+  <!-- Initiate Leaflet.js -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/> 
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
 </head>
 
 <body>
@@ -46,6 +51,11 @@
                 <div id="hero-content" class="p-8">
                     <h1 class="text-bold font-black text-lg">Map</h1>
                 </div>
+
+                <div id="map"></div>
+
+                <input type="checkbox" id="trackLocationCheckbox">Track Location
+                <button id="currentPosBtn">My Location</button>
             </div>
         </div>
 
