@@ -107,17 +107,16 @@ con.query('CREATE DATABASE test_db', function (err, result) {
 */  
 
 
-/* Initiate MongoDB via Mongoose */
-
+// Initiate MongoDB via Mongoose
 const mongoose = require("mongoose");
 const { MongoClient } = require('mongodb');
-// Set as dotenv variable
+
+// Set URI as dotenv variable
 const uri = process.env.MONGO_URI
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 
-/* Check connection to MongoDB Atlas */
-
+// Check connection to MongoDB Atlas
 mongoose.connect(uri).then(
   () => { console.log("Successfully connected to MongoDB") },
   err => { console.log("An error has occured while connectingn to MongoDB") }

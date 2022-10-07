@@ -1,16 +1,13 @@
-/* Define global variables */
-
+// Define global variables
 let currentPosLat = 0;    // The latitude of current position
 let currentPosLng = 0;    // The longitude of current position
 
 
-/*  global timers */
-
+// Global timers
 window.onload = setTimeout(showWeatherInfo, 3000);
 
 
-/* Initialize Leaflet.js */
-
+// Initialize Leaflet.js
 var map = L.map('map', {
   center: [37.3306890, 126.5930664],
   zoom: 13,
@@ -21,8 +18,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 
-/* Define fetchCurrentPos() */
-
+// Define fetchCurrentPos()
 var options = {                               // Options for getCurrentPosition()
   enableHighAccuracy: true,
   timeout: 5000,
@@ -47,8 +43,7 @@ function fetchCurrentPos() {
 }
 
 
-/* Define showCurrentPosMarker() */
-
+// Define showCurrentPosMarker()
 function showCurrentPosMarker() {
   var currentPositionMarker = L.icon({
     iconUrl: 'img/current-location-marker.png',
@@ -62,8 +57,7 @@ function showCurrentPosMarker() {
 }
 
 
-/* Trigger showCurrentPosMarker() when 'currentPosBtn' is clicked */
-
+// Trigger showCurrentPosMarker() when 'currentPosBtn' is clicked
 document.getElementById('currentPosBtn').addEventListener("click", function() {
   fetchCurrentPos();
   showCurrentPosMarker();
@@ -71,12 +65,12 @@ document.getElementById('currentPosBtn').addEventListener("click", function() {
 });
 
 
-/* Trigger showCurrentPosMarker() every second when 'trackCurrentPos' is checked */
-
+// Trigger showCurrentPosMarker() every second when 'trackCurrentPos' is checked 
 function showWeatherInfo(){
   if(currentPosLat !== 0 && currentPosLng !== 0){
-    document.getElementById('weatherInfo').innerHTML = weatherDescription + "celsius";      // Security audit: use Node.textContents to prevent XSS attack
-    document.getElementById('weatherIcon').innerHTML = "<img src=" + imageURL + ">";        // Security audit: use Node.textContents to prevent XSS attack  
+    // Security audit: use Node.textContents to prevent XSS attack
+    document.getElementById('weatherInfo').innerHTML = weatherDescription + "celsius";      
+    document.getElementById('weatherIcon').innerHTML = "<img src=" + imageURL + ">";       
   }
   else {}
 }
