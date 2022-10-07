@@ -111,18 +111,27 @@ con.query('CREATE DATABASE test_db', function (err, result) {
 
 const mongoose = require("mongoose");
 const { MongoClient } = require('mongodb');
-const uri = "mongodb+srv://admin:DBadmin@playground.orujo.mongodb.net/places?retryWrites=true&w=majority";
+// Set as dotenv variable
+const uri = process.env.MONGO_URI
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
-async function main() {
+
+/* Check connection to MongoDB Atlas */
+
+mongoose.connect(uri).then(
+  () => { console.log("Successfully connected to MongoDB") },
+  err => { console.log("An error has occured while connectingn to MongoDB") }
+);
+
+/*
+function mongo_main() {
   client.connect(err => {
   const collection = client.db("test").collection("devices");
   // Perform actions on the collection object
   client.close();
   });
 }
-
-await client.connect();
+*/
 
 // Declare MongoDB Model
 var mdbModel = mongoose.model("mdbModel", {
