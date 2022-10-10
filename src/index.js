@@ -1,3 +1,6 @@
+// Load UI Handler
+import "./uiux.js";
+
 // Define global variables
 let currentPosLat = 0;    // The latitude of current position
 let currentPosLng = 0;    // The longitude of current position
@@ -46,7 +49,7 @@ function fetchCurrentPos() {
 // Define showCurrentPosMarker()
 function showCurrentPosMarker() {
   var currentPositionMarker = L.icon({
-    iconUrl: 'img/current-location-marker.png',
+    iconUrl: '../img/current-location-marker.png',
     iconSize:     [50, 50],     // size of the icon
     // shadowSize:   [50, 64],  // size of the shadow
     iconAnchor:   [25, 25],     // point of the icon which will correspond to marker's location
@@ -74,3 +77,6 @@ function showWeatherInfo(){
   }
   else {}
 }
+
+
+map.invalidateSize();
