@@ -8,7 +8,13 @@ require('dotenv').config();
 
 // Configure Express
 const app = express();
-const port = 3000;
+
+// For development
+// const port = 3000;
+
+// For production
+const port = process.env.PORT 
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/')); 
 
@@ -119,7 +125,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 // Check connection to MongoDB Atlas
 mongoose.connect(uri).then(
   () => { console.log("Successfully connected to MongoDB") },
-  err => { console.log("An error has occured while connectingn to MongoDB") }
+  err => { console.log("An error has occured while connecting to MongoDB") }
 );
 
 /*
