@@ -13,7 +13,7 @@ const app = express();
 // const port = 3000;
 
 // For production
-const port = process.env.PORT;
+var port = process.env.PORT;
 if (port == null || port == "") {
   port = 3000;
 }
@@ -120,7 +120,8 @@ con.query('CREATE DATABASE test_db', function (err, result) {
 const mongoose = require("mongoose");
 const { MongoClient } = require('mongodb');
 
-// Set URI as dotenv variable
+
+// Set MongoDB Atlas URI as dotenv variable
 const uri = process.env.MONGO_URI
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -141,12 +142,34 @@ function mongo_main() {
 }
 */
 
+// const poi = mongoose.model('')
+
+
 // Declare MongoDB Model
-var mdbModel = mongoose.model("mdbModel", {
-  item: String,
-  numValue: Number,
-  address: String,
-  description: String
+var poiList = mongoose.model("poiList", {
+  index: Number,
+  province: String,
+  city: String,
+  district: String,
+  place: String,
+  latitude: Number,
+  longtitude: Number,
+  equipment: String,
+  whole_body: Boolean,
+  neck: Boolean,
+  shoulder: Boolean,
+  arm: Boolean,
+  back: Boolean,
+  chest: Boolean,
+  abs: Boolean,
+  waist: Boolean,
+  thigh: Boolean,
+  calf: Boolean,
+  feet: Boolean,
+  cardio: Boolean,
+  muscle: Boolean,
+  authority: String,
+  phone_no: String
 });
   
 
@@ -157,6 +180,9 @@ app.get('/', function(req, res) {
     error: false,
   });
 });
+
+
+// MongoDB data retrieval reference: https://www.youtube.com/watch?v=yH593K9fYvE
 
 
 // fetch OpenWeatherMap data
