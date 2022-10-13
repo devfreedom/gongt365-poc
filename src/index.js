@@ -78,5 +78,4 @@ function showWeatherInfo(){
   else {}
 }
 
-
 map.invalidateSize();
