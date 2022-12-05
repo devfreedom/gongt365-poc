@@ -1,47 +1,70 @@
-
-var profileCard = document.getElementById("profile-card");
 var mapCard = document.getElementById("map-card");
 var workoutCard = document.getElementById("workout-card");
 var meetupCard = document.getElementById("meetup-card");
+var profileCard = document.getElementById("profile-card");
+
+var mapBtn = document.getElementById("map-nav-btn");
+var workoutBtn = document.getElementById("workout-nav-btn");
+var meetupBtn = document.getElementById("meetup-nav-btn");
+var profileBtn = document.getElementById("profile-nav-btn");
 
 // Nabivation bar handler
 // Use unobstructive Javascript, don't use OnClick();
-document.getElementById("profile-nav-btn").addEventListener("click", profileMenu);
+// To-do: [Refactor] replace manual attribute assignment with 'for loop' iteration
+
 document.getElementById("map-nav-btn").addEventListener("click", mapMenu);
 document.getElementById("workout-nav-btn").addEventListener("click", workoutMenu);
 document.getElementById("meetup-nav-btn").addEventListener("click", meetupMenu);
-
-function profileMenu() {
-    profileCard.setAttribute('class', 'w-full h-full');
-    mapCard.setAttribute('class', 'w-full h-full hidden');
-    workoutCard.setAttribute('class', 'w-full h-full hidden');
-    meetupCard.setAttribute('class', 'w-full h-full hidden');
-}
+document.getElementById("profile-nav-btn").addEventListener("click", profileMenu);
 
 function mapMenu() {
-    profileCard.setAttribute('class', 'w-full h-full hidden');
-    mapCard.setAttribute('class', 'w-full h-full');
-    workoutCard.setAttribute('class', 'w-full h-full hidden');
-    meetupCard.setAttribute('class', 'w-full h-full hidden');
+    mapCard.classList.remove('hidden');
+    workoutCard.classList.add('hidden');
+    meetupCard.classList.add('hidden');
+    profileCard.classList.add('hidden');
+    mapBtn.classList.add('bg-slate-300');
+    workoutBtn.classList.remove('bg-slate-300');
+    meetupBtn.classList.remove('bg-slate-300');
+    profileBtn.classList.remove('bg-slate-300');
 }
 
 function workoutMenu() {
-    profileCard.setAttribute('class', 'w-full h-full hidden');
-    mapCard.setAttribute('class', 'w-full h-full hidden');
-    workoutCard.setAttribute('class', 'w-full h-full');
-    meetupCard.setAttribute('class', 'w-full h-full hidden');
+    mapCard.classList.add('hidden');
+    workoutCard.classList.remove('hidden');
+    meetupCard.classList.add('hidden');
+    profileCard.classList.add('hidden');
+    mapBtn.classList.remove('bg-slate-300');
+    workoutBtn.classList.add('bg-slate-300');
+    meetupBtn.classList.remove('bg-slate-300');
+    profileBtn.classList.remove('bg-slate-300');
 }
 
 function meetupMenu() {
-    profileCard.setAttribute('class', 'w-full h-full hidden');
-    mapCard.setAttribute('class', 'w-full h-full hidden');
-    workoutCard.setAttribute('class', 'w-full h-full hidden');
-    meetupCard.setAttribute('class', 'w-full h-full');
+    mapCard.classList.add('hidden');
+    workoutCard.classList.add('hidden');
+    meetupCard.classList.remove('hidden');
+    profileCard.classList.add('hidden');
+    mapBtn.classList.remove('bg-slate-300');
+    workoutBtn.classList.remove('bg-slate-300');
+    meetupBtn.classList.add('bg-slate-300');
+    profileBtn.classList.remove('bg-slate-300');
 }
 
+function profileMenu() {
+    mapCard.classList.add('hidden');
+    workoutCard.classList.add('hidden');
+    meetupCard.classList.add('hidden');
+    profileCard.classList.remove('hidden');
+    mapBtn.classList.remove('bg-slate-300');
+    workoutBtn.classList.remove('bg-slate-300');
+    meetupBtn.classList.remove('bg-slate-300');
+    profileBtn.classList.add('bg-slate-300');
+}
 
-// Select boxes for current region
+// Dropdown selector for current region
+// ERROR: This feature clashes with Leaflet.js for unknown reason, renders the page unusable. This feature is disabled for now.
 
+/*
 const provinceList = ['시/도', '서울특별시', '경기도', '인천광역시', '강원도', '충청북도', '충청남도', '세종특별시', '대전광역시', '전라북도', '전라남도', '광주광역시', '경상북도', '경상남도', '대구광역시', '부산광역시', '울산광역시', '제주특별자치도'];
 const cityList = [['시/군/구'],
                 ['시/군/구', '강남구', '관악구', '강동구', '강북구', '강서구', '광진구', '구로구', '금천구', '노원구', '도봉구', '동대문구', '동작구', '마포구', '서대문구', '서초구', '성동구', '성북구', '송파구', '양천구', '영등포구', '용산구', '은평구', '종로구', '중구', '중랑구'],
@@ -65,8 +88,6 @@ const cityList = [['시/군/구'],
 
 let provinceListSelect = document.getElementById('select-province')
 let cityListSelect = document.getElementById('select-city')
-
-/* FIX THIS ISSUE
 
 provinceList.addEventListener('change', cityTrigger)
 
@@ -102,3 +123,5 @@ let currentRegion = document.getElementById('currentRegion');
 function showCurrentRegion(){
     currentRegion.innerHTML = provinceListSelect.value + cityListSelect.value;
 }
+
+*/
