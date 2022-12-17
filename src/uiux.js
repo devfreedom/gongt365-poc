@@ -10,7 +10,7 @@ var profileBtn = document.getElementById("profile-nav-btn");
 
 // Nabivation bar handler
 // Use unobstructive Javascript, don't use OnClick();
-// To-do: [Refactor] replace manual attribute assignment with 'for loop' iteration
+// TODO: [Improvement/Refactor] replace manual attribute assignment with iteration-based toggle switch
 
 document.getElementById("map-nav-btn").addEventListener("click", mapMenu);
 document.getElementById("workout-nav-btn").addEventListener("click", workoutMenu);
@@ -60,6 +60,42 @@ function profileMenu() {
     meetupBtn.classList.remove('bg-slate-300');
     profileBtn.classList.add('bg-slate-300');
 }
+
+// Toggle button handler
+
+const toggleBtnOn = "bg-gray-300";
+const toggleBtnOff = "bg-gray-200";
+
+const bodyParts = ["neck", "shoulder", "arm", "back", "chest", "abs", "waist", "thigh", "calf", "feet"]
+const selectedBodyParts = []
+
+// FIND OUT HOW TO TOGGLE THESE FOR MONGODB
+/*
+function bodyPartsSelector(){
+    for (var i = 0; i < bodyParts.length; i++) {
+        if(document.getElementById(bodyParts[i]).classList.contains(toggleBtnOn) == true){
+            if (!selectedBodyParts.includes(sfdasadf)) {
+                // ✅ only runs if value not in array
+                selectedBodyParts.push(str);
+              }
+            }
+            else(){
+                
+            }
+    }
+}
+*/
+
+function trackCurrentPos(){
+
+}
+
+document.querySelectorAll('.toggleBtn').forEach(item => {
+    item.addEventListener('click', event => {
+        item.classList.toggle("toggleBtnOn");
+    })
+})
+
 
 // Dropdown selector for current region
 // ERROR: This feature clashes with Leaflet.js for unknown reason, renders the page unusable. This feature is disabled for now.

@@ -1,6 +1,7 @@
 // Load UI Handler
 import "./uiux.js";
 
+
 // Define global variables
 let currentPosLat = 0;    // The latitude of current position
 let currentPosLng = 0;    // The longitude of current position
@@ -69,6 +70,8 @@ document.getElementById('currentPosBtn').addEventListener("click", function() {
 
 
 // Trigger showCurrentPosMarker() every second when 'trackCurrentPos' is checked 
+
+
 function showWeatherInfo(){
   if(currentPosLat !== 0 && currentPosLng !== 0){
     // Security audit: use Node.textContents to prevent XSS attack
@@ -77,5 +80,18 @@ function showWeatherInfo(){
   }
   else {}
 }
+
+// Weather info handler
+let city = "seoul";
+
+const sent = await fetch('/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(city)
+})
+
+
 
 map.invalidateSize();

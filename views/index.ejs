@@ -28,9 +28,9 @@
   <div id="viewport" class="flex flex-col h-[100vh] w-[47vh] justify-between">
 
     <!-- Header starts here -->
-    <header class="flex w-full h-16 bg-slate-300 items-center justify-between">
-        <div id="header-logo" class="mx-3""> 
-            <h1 class="text-bold font-black text-lg">공공장소에서 트레이닝! 공트365</h1>
+    <header class="flex w-full h-16 bg-white items-center justify-between">
+        <div id="header-logo" class="flex flex-row w-full h-full mx-3"> 
+            <img src="../img/gongt365-icon.svg" class="object-scale-down p-2"><img src="../img/gongt365-typo.svg" class="object-scale-down p-2">
         </div>
     </header>
 
@@ -44,38 +44,18 @@
             <div class="flex flex-col w-full h-full bg-blue-300">
                 <div class="flex flex-row p-2 items-center justify-between">
                     <h1 class="text-bold font-black text-lg px-3">지도</h1>
-                    <button id="currentPosBtn" class="flex flex-row p-2 bg-gray-200 rounded-lg items-center"><img src="./img/current-location-btn.svg" class="w-5 mr-2">현재 위치</button>
+                    <button id="currentPosBtn" class="toggleBtn flex flex-row p-2 toggleBtnOff rounded-lg items-center"><img src="./img/current-location-btn.svg" class="w-5 mr-2">현재 위치</button>
                 </div>
                 <div id="map-wrapper" class="w-full h-full">
                     <div id="map" style="width: 100%; height: 100%;"></div> 
                 </div>
-                <div id="poi-list" class="w-full max-h-[50%] bg-yellow-300 overflow-y-auto">
-                    <ul>
-                        <li>POI item 1</li>
-                        <li>POI item 2</li>
-                        <li>POI item 3</li>
-                        <li>POI item 4</li>
-                        <li>POI item 5</li>
-                        <li>POI item 1</li>
-                        <li>POI item 2</li>
-                        <li>POI item 3</li>
-                        <li>POI item 4</li>
-                        <li>POI item 5</li>
-                        <li>POI item 1</li>
-                        <li>POI item 2</li>
-                        <li>POI item 3</li>
-                        <li>POI item 4</li>
-                        <li>POI item 5</li>
-                        <li>POI item 1</li>
-                        <li>POI item 2</li>
-                        <li>POI item 3</li>
-                        <li>POI item 4</li>
-                        <li>POI item 5</li>
-                    </ul>
+                <div id="poi-list" class="w-full min-h-[30%] max-h-[50%] bg-yellow-300 overflow-y-auto">
+                
+                        <h3 class="text-md"><%= poiList %></h3>
+
                 </div>
             </div>
         </div>
-
 
         <!-- Workout card -->
         <div id="workout-card" class="h-full w-full hidden">
@@ -108,6 +88,15 @@
                 </div>
             </div>
             <div id="profile-content" class="p-5 overflow-y-auto">
+                <%/* if( weather !== null){ %> 
+                    <div id="weatherInfo" class="flex flex-col">
+                        <p class="mr-2">현재 날씨:</p> <%= main %> / <%= temp %>°C
+                    </div>
+                    <% if(error !== null){ %>
+                        <p>날씨 정보 오류: <%= error %> </p>
+                    <% } %>
+                <% } */%>
+
                 <div class="flex flex-row">
                     <p class="mr-2">현재 지역: </p><p id="currentRegion">서울특별시 서대문구</p>
                 </div>
@@ -140,116 +129,38 @@
                     <option>시/군/구</option>
                     -->
                 </select>
-                <button id="currentPosBtn" class="p-1 px-2 ml-3 rounded-lg bg-gray-200 text-gray-400">현재 위치 사용</button> 
+                <button id="currentPosBtn" class="p-1 px-2 ml-3 rounded-lg toggleBtnOff text-gray-400">현재 위치 사용</button> 
 
                 <h3 class="font-bold mt-7 mb-3">집중적으로 운동할 부위</h3>
                 <div id="workoutBodyParts" class="grid grid-cols-3 gap-2">
-                    <button id="neck" class="p-1 rounded-lg bg-gray-200">목</button>
-                    <button id="shoulder" class="p-1 rounded-lg bg-gray-200">어깨</button>
-                    <button id="arm" class="p-1 rounded-lg bg-gray-200">팔</button>
-                    <button id="back" class="p-1 rounded-lg bg-gray-200">등</button>
-                    <button id="chest" class="p-1 rounded-lg bg-gray-200">가슴</button>
-                    <button id="abs" class="p-1 rounded-lg bg-gray-200">복부</button>
-                    <button id="waist" class="p-1 rounded-lg bg-gray-200">허리</button>
-                    <button id="thigh" class="p-1 rounded-lg bg-gray-200">허벅지</button>
-                    <button id="calf" class="p-1 rounded-lg bg-gray-200">종아리</button>
-                    <button id="feet" class="p-1 rounded-lg bg-gray-200">발</button>
+                    <button id="neck" class="toggleBtn p-1 rounded-lg toggleBtnOff">목</button>
+                    <button id="shoulder" class="toggleBtn p-1 rounded-lg toggleBtnOff">어깨</button>
+                    <button id="arm" class="toggleBtn p-1 rounded-lg toggleBtnOff">팔</button>
+                    <button id="back" class="toggleBtn p-1 rounded-lg toggleBtnOff">등</button>
+                    <button id="chest" class="toggleBtn p-1 rounded-lg toggleBtnOff">가슴</button>
+                    <button id="abs" class="toggleBtn p-1 rounded-lg toggleBtnOff">복부</button>
+                    <button id="waist" class="toggleBtn p-1 rounded-lg toggleBtnOff">허리</button>
+                    <button id="thigh" class="toggleBtn p-1 rounded-lg toggleBtnOff">허벅지</button>
+                    <button id="calf" class="toggleBtn p-1 rounded-lg toggleBtnOff">종아리</button>
+                    <button id="feet" class="toggleBtn p-1 rounded-lg toggleBtnOff">발</button>
                 </div>
 
                 <h3 class="font-bold mt-7 mb-3">운동 유형</h3>
                 <div id="workoutBodyParts" class="grid grid-cols-3 gap-2">
-                    <button id="whole-body" class="p-1 rounded-lg bg-gray-200">전신 운동</button>
-                    <button id="muscle" class="p-1 rounded-lg bg-gray-200">근육 운동</button>
-                    <button id="cardio" class="p-1 rounded-lg bg-gray-200">유산소 운동</button>
+                    <button id="whole-body" class="toggleBtn p-1 rounded-lg toggleBtnOff">전신 운동</button>
+                    <button id="muscle" class="toggleBtn p-1 rounded-lg toggleBtnOff">근육 운동</button>
+                    <button id="cardio" class="toggleBtn p-1 rounded-lg toggleBtnOff">유산소 운동</button>
                 </div>
 
             </div>
         </div>
     </div>
 
-    <!-- String submission test
-
-    <div class="">
-      <fieldset>
-          <form action="/" method="post">
-              <input name="city" type="text" class="ghost-input" placeholder="Enter a City" required>
-              <input type="submit" class="ghost-button" value="Get Weather">
-          </form>
-      </fieldset>
-      <%if( weather !== null){ %>
-          <div class="border-2 m-2 p-4">
-              <p>
-                  <%= place %>
-              </p>
-          </div>
-          <div class="border-4 m-2 p-4">
-              <div class="card card-accent-dark mb-3" style="max-width: 18rem;">
-                  <div class="card-header font-bold">Summary</div>
-                  <div class="card-body text-dark">
-                      <h5 class="card-title">Temperature</h5>
-                      <p class="card-text">
-                          In Degrees:
-                          <%= temp %>°C/
-
-                      </p>
-                      <h5 class="text-bold">Main</h5>
-                      <p class="card-text">
-                          <%= main %>
-                      </p>
-                  </div>
-              </div>
-              <div class="card-deck">
-                  <div class="card card-acTomorrowcent-dark mb-3" style="max-width: 18rem;">
-                      <div class="font-bold">Description</div>
-                      <div class="card-body text-dark">
-                          <h5 class="card-title">Overall Description: </h5>
-                          <p class="card-text">
-                              <%= description %>
-                          </p>
-                          <h5 class="card-title">Cloud coverage: </h5>
-                          <p class="card-text">
-
-                          </p>
-                          <h5 class="card-title">Visibility: </h5>
-                          <p class="card-text">
-
-                          </p>
-                      </div>
-                  </div>
-                  <div class="card-deck">
-                      <div class="card card-accent-dark mb-3" style="max-width: 18rem;">
-                          <div class="font-bold">Other info</div>
-                          <div class="card-body text-dark">
-                              <h5 class="card-title">Humidity: </h5>
-                              <p class="card-text">
-
-                              </p>
-                          </div>
-                          <div class="card-body text-dark">
-                              <h5 class="card-title">Pressure: </h5>
-                              <p class="card-text">
-
-                              </p>
-                          </div>
-                      </div>
-                  </div>
-                  <% } %>
-
-                      <% if(error !== null){ %>
-                          <p>
-                              Error: <%= error %>
-                          </p>
-                          <% } %>
-
-              </div>
-    </div>    
-    -->
-
 
     <!-- Navbar starts here -->
     <div id="navbar" class="flex w-full h-24 bg-slate-100 items-center justify-between">
         <div class="w-1"></div>
-        <div id="map-nav-btn" class="flex flex-col items-center px-5 py-1 rounded-lg"> <img src="./img/map-navbar-icon.svg" class="w-7"> <h1 class="mt-1 text-sm">지도</h1> </div>
+        <div id="map-nav-btn" class="flex flex-col items-center px-5 py-1 rounded-lg bg-slate-300"> <img src="./img/map-navbar-icon.svg" class="w-7"> <h1 class="mt-1 text-sm">지도</h1> </div>
         <div id="workout-nav-btn" class="flex flex-col items-center px-5 py-1 rounded-lg"> <img src="./img/workout-navbar-icon.svg" class="w-7"> <h1 class="mt-1 text-sm">운동</h1> </div>
         <div id="meetup-nav-btn" class="flex flex-col items-center px-5 py-1 rounded-lg"> <img src="./img/meetup-navbar-icon.svg" class="w-7"> <h1 class="mt-1 text-sm">모임</h1> </div>
         <div id="profile-nav-btn" class="flex flex-col items-center px-5 py-1 rounded-lg"> <img src="./img/profile-navbar-icon.svg" class="w-7"> <h1 class="mt-1 text-sm">프로필</h1> </div>

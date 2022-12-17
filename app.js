@@ -9,10 +9,10 @@ require('dotenv').config();
 // Configure Express
 const app = express();
 
-// For development
+// Set port for development
 // const port = 3000;
 
-// For production
+// Set port for production
 var port = process.env.PORT;
 if (port == null || port == "") {
   port = 3000;
@@ -26,7 +26,11 @@ app.use(express.static(__dirname + '/'));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 
-/* DO NOT IMPLEMENT PEDOMETER FEATURE UNTIL ACCELEROMETER/GYROSCOPE SENSOR DATA CAN BE RETRIEVED
+// API key
+const apiKey = process.env.API_KEY;
+
+
+// DO NOT IMPLEMENT PEDOMETER FEATURE UNTIL ACCELEROMETER/GYROSCOPE SENSOR DATA CAN BE RETRIEVED
 
 /* Activate node-pedometer, the following codes are a sample from the repo
 
@@ -80,21 +84,23 @@ var steps = pedometer(data.acc,data.att,100,options);
 console.log("The algorithm detected "+steps.length+" steps.");
 
 // node-pedometer code ends
-
 */
-
 
 
 // Configure javascript template engine
 app.set("view engine", "ejs");
 
 
-// API key
-const apiKey = process.env.API_KEY;
-
+// configure default EJS view
+/*
+app.get('/', function(req, res) {
+  res.render('index', { 
+    poiList: "TEST"
+  });
+});
+*/
 
 // Abandon MySQL, use MongoDB instead
-
 /*
 const mysql = require('mysql');
 
@@ -132,64 +138,53 @@ mongoose.connect(uri).then(
   err => { console.log("An error has occured while connecting to MongoDB") }
 );
 
-/*
-function mongo_main() {
-  client.connect(err => {
-  const collection = client.db("test").collection("devices");
-  // Perform actions on the collection object
-  client.close();
-  });
-}
-*/
 
-// const poi = mongoose.model('')
+// Define MongoDB schema
+const poiSchema = {
+    index: Number,
+    province: String,
+    city: String,
+    district: String,
+    place: String,
+    latitude: Number,
+    longtitude: Number,
+    equipment: String,
+    bodyPart: {
+      whole_body: Boolean,
+      neck: Boolean,
+      shoulder: Boolean,
+      arm: Boolean,
+      back: Boolean,
+      chest: Boolean,
+      abs: Boolean,
+      waist: Boolean,
+      thigh: Boolean,
+      calf: Boolean,
+      feet: Boolean,
+      cardio: Boolean,
+      muscle: Boolean
+      },
+    authority: String,
+    phone_no: String
+  }
 
 
-// Declare MongoDB Model
-var poiList = mongoose.model("poiList", {
-  index: Number,
-  province: String,
-  city: String,
-  district: String,
-  place: String,
-  latitude: Number,
-  longtitude: Number,
-  equipment: String,
-  bodyPart: {
-    whole_body: Boolean,
-    neck: Boolean,
-    shoulder: Boolean,
-    arm: Boolean,
-    back: Boolean,
-    chest: Boolean,
-    abs: Boolean,
-    waist: Boolean,
-    thigh: Boolean,
-    calf: Boolean,
-    feet: Boolean,
-    cardio: Boolean,
-    muscle: Boolean
-    },
-  authority: String,
-  phone_no: String
-});
-  
+// Declare MongoDB Model by 'poi_equipments' collection
+var poi_equipments = mongoose.model("poi_equipments", poiSchema);
 
-// configure default EJS view
-app.get('/', function(req, res) {
-  res.render('index', {
-    weather: null,
-    error: false,
+
+// Retrieve fitness equipment POI data from MongoDB
+app.get("/", function (req, res) {
+  poi_equipments.find({}, function (err, result) {
+    res.render("index", { 
+      poiList: result
+    });
   });
 });
-
-
-// MongoDB data retrieval reference: https://www.youtube.com/watch?v=yH593K9fYvE
-
 
 // fetch OpenWeatherMap data
 app.post('/', function(req, res) {
-  let city = req.body.city;
+  let city = "seoul"
   let url = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=metric&appid=" + apiKey;
   request(url, function(err, response, body) {
     if(err) {
