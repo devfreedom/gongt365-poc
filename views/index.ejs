@@ -22,43 +22,55 @@
 </head>
 
 <body>
-<div id="mobile-app-container" class="flex w-full h-full justify-center">
+<div id="mobile-app-container" class="flex w-full h-full justify-center items-center">
 
   <!-- Viewport starts here -->
-  <div id="viewport" class="flex flex-col h-[100vh] w-[47vh] justify-between">
+  <div id="viewport" class="flex flex-col w-full min-w-[45vh] max-w-[48vh] h-[100vh] justify-between">
 
     <!-- Header starts here -->
-    <header class="flex w-full h-16 bg-white items-center justify-between">
+    <header class="flex w-full h-16 bg-white items-center">
         <div id="header-logo" class="flex flex-row w-full h-full mx-3"> 
             <img src="../img/gongt365-icon.svg" class="object-scale-down p-2"><img src="../img/gongt365-typo.svg" class="object-scale-down p-2">
         </div>
     </header>
 
-
-    <!-- Cards start here -->
-    <div id="cards-container" class="h-full w-full bg-white">
-        
-
+    <div id="card-container" class="flex flex-col w-full grow">
         <!-- Map card -->
-        <div id="map-card" class="h-full w-full">
-            <div class="flex flex-col w-full h-full bg-blue-300">
-                <div class="flex flex-row p-2 items-center justify-between">
-                    <h1 class="text-bold font-black text-lg px-3">지도</h1>
-                    <button id="currentPosBtn" class="toggleBtn flex flex-row p-2 toggleBtnOff rounded-lg items-center"><img src="./img/current-location-btn.svg" class="w-5 mr-2">현재 위치</button>
-                </div>
-                <div id="map-wrapper" class="w-full h-full">
-                    <div id="map" style="width: 100%; height: 100%;"></div> 
-                </div>
-                <div id="poi-list" class="w-full min-h-[30%] max-h-[50%] bg-yellow-300 overflow-y-auto">
-                
-                        <h3 class="text-md"><%= poiList %></h3>
-
-                </div>
+        <div id="map-card" class="flex flex-col w-full h-full">
+            <div id="map-hero" class="flex flex-row h-20 bg-blue-300 p-2 items-center justify-between">
+                <h1 class="text-bold font-black text-lg px-3">지도</h1>
+                <button id="currentPosBtn" class="toggleBtn flex flex-row p-2 toggleBtnOff rounded-lg items-center"><img src="./img/current-location-btn.svg" class="w-5 mr-2">현재 위치</button>
+            </div>
+            <!-- Leaflet.js clashes with Tailwind CSS in terms of sizing, fallback to inline script -->
+            <div id="map-wrapper" style="width: 100%; height: 60%;">
+                <div id="map" style="width: 100%; height: 100%;"></div> 
+            </div>
+            <div id="poi-list" class="flex flex-col w-full h-[40vh] overflow-x-hidden overflow-y-auto p-3">
+                <% if (poiList == null) { %>
+                    <div class="flex flex-col bg-orange-500 rounded-xl p-5 m-5 items-center justify-center">
+                        <h1 class="text-lg font-bold">데이터를 가져올 수 없습니다</h1> 
+                        <p>Error: poiList is null</p>
+                    </div>
+                <% } else if (poiList == undefined) { %>
+                    <div class="flex flex-col bg-orange-500 rounded-xl text-lg font-bold p-5 m-5 items-center justify-center"></div>
+                        <h1 class="text-lg font-bold">데이터를 가져올 수 없습니다</h1> 
+                        <p>Error: poiList is not defined</p>
+                    </div>
+                <% } else { %>
+                    <% poiList.forEach(poi => { %>
+                        <div class="w-full p-3 my-3 rounded-lg bg-slate-100">
+                            <h1 class="text-md font-bold"><%= poi.place %></h3>
+                            <h1 class="text-md"><%= poi.equipment %></h1>
+                            <p class="text-sm"><%= poi.city %>&nbsp;<%= poi.district %></p>
+                            <p class="text-sm"><%= poi.authority %>&nbsp;(<%= poi.phone_no %>)</p>
+                        </div>
+                    <% }) %>
+                <% } %>
             </div>
         </div>
 
         <!-- Workout card -->
-        <div id="workout-card" class="h-full w-full hidden">
+        <div id="workout-card" class="flex flex-col h-full w-full hidden">
             <div class="flex w-full bg-blue-300 p-8">
                 <div class="p-5">
                     <h1 class="text-bold font-black text-lg">Workout</h1>
@@ -68,7 +80,7 @@
 
 
         <!-- Meetup card -->
-        <div id="meetup-card" class="h-full w-full hidden">
+        <div id="meetup-card" class="flex flex-col h-full w-full hidden">
             <div class="flex w-full bg-blue-300 p-8">
                 <div class="p-5">
                     <h1 class="text-bold font-black text-lg">Meetup</h1>
@@ -78,30 +90,46 @@
 
 
         <!-- Profile card -->
-        <div id="profile-card" class="h-full w-full hidden">
+        <div id="profile-card" class="flex flex-col h-full w-full hidden">
             <div id="profile-hero" class="flex w-full bg-blue-300 p-5 mb-7">
                 <div id="hero-content" class="flex-row p-3">
                     <h1 class="text-bold font-black text-lg">안녕하세요 user님!</h1>
-                    
-                    <!-- To-do: [Feature] Randomize welcome messages upon page view -->
+                    <!-- TODO: [Feature] Randomize welcome messages upon page view -->
                     <h1>오늘도 건강하고 활기차게 운동해볼까요!</h1>
                 </div>
             </div>
             <div id="profile-content" class="p-5 overflow-y-auto">
-                <%/* if( weather !== null){ %> 
-                    <div id="weatherInfo" class="flex flex-col">
-                        <p class="mr-2">현재 날씨:</p> <%= main %> / <%= temp %>°C
+                
+                <div id="location-info" class="flex flex-row justify-between">
+                    <div id="address-info" class="flex flex-col">
+                        <p class="font-bold text-md text-slate-500 mb-2">현재 지역</p>
+                        <h1 id="currentRegion" class="font-bold text-3xl text-black">서울특별시 서대문구</p>
                     </div>
-                    <% if(error !== null){ %>
-                        <p>날씨 정보 오류: <%= error %> </p>
-                    <% } %>
-                <% } */%>
-
-                <div class="flex flex-row">
-                    <p class="mr-2">현재 지역: </p><p id="currentRegion">서울특별시 서대문구</p>
+                    
+                    <div id="weatherInfo" class="flex flex-row font-bold mt-3 items-center justify-center">
+                        <% if (currentWeather == null) { %>
+                            <h1 class="font-bold text-orange-500">현재 날씨를 가져올 수 없습니다</h1>
+                            <% if (weatherErr !== false ) { %>
+                                <p><%= weatherErr %></p>
+                            <% } else { %>
+                                <p>Error: currentWeather is null</p>
+                            <% } %>
+                        <% } else if (currentWeather == undefined) { %>
+                            <h1 class="font-bold text-orange-500">현재 날씨를 가져올 수 없습니다</h1>
+                            <p>Error: currentWeather is not defined</p>
+                        <% } else { %>
+                            <img src="<%= weatherIcon %>" class="m-3">
+                            <div class="flex flex-col align-center text-center">
+                                <h1><%= currentWeather %></h1>
+                                <p><%= currentTemp %>°C</p>
+                            </div>
+                        <% } %>
+                    </div>
                 </div>
-                <select id="select-province">
-                    <option value="testdrive">서울특별시</option>
+
+
+                <select id="select-city">
+                    <option value="city">서울특별시</option>
                     <!--
                     <option value="empty">시/도</option>
                     <option value="seoul">서울특별시</option>
@@ -123,8 +151,8 @@
                     <option value="jeju">제주특별자치도</option>
                     -->
                 </select>
-                <select id="select-city">
-                    <option value="testdrive">서대문구</option>
+                <select id="select-district">
+                    <option value="district">서대문구</option>
                     <!--
                     <option>시/군/구</option>
                     -->
@@ -154,11 +182,11 @@
 
             </div>
         </div>
+
     </div>
 
-
     <!-- Navbar starts here -->
-    <div id="navbar" class="flex w-full h-24 bg-slate-100 items-center justify-between">
+    <div id="navbar" class="flex flex-row w-full h-20 bg-slate-100 items-center justify-between">
         <div class="w-1"></div>
         <div id="map-nav-btn" class="flex flex-col items-center px-5 py-1 rounded-lg bg-slate-300"> <img src="./img/map-navbar-icon.svg" class="w-7"> <h1 class="mt-1 text-sm">지도</h1> </div>
         <div id="workout-nav-btn" class="flex flex-col items-center px-5 py-1 rounded-lg"> <img src="./img/workout-navbar-icon.svg" class="w-7"> <h1 class="mt-1 text-sm">운동</h1> </div>

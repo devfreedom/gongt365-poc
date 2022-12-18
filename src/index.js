@@ -81,17 +81,5 @@ function showWeatherInfo(){
   else {}
 }
 
-// Weather info handler
-let city = "seoul";
-
-const sent = await fetch('/', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(city)
-})
-
-
 
 map.invalidateSize();

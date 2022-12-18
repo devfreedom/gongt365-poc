@@ -1,5 +1,5 @@
 // Require app dependencies
-const bodyParser = require("body-parser");
+// const bodyParser = require("body-parser");      // body-parser is now built into Express since 4.16
 const request = require("request");
 const express = require("express");
 const ejs = require("ejs");
@@ -22,104 +22,26 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/')); 
 
 
-// Configure bodyParser
-app.use(bodyParser.urlencoded({ extended: true }));
+// Configure built-in body-parser
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 
 // API key
 const apiKey = process.env.API_KEY;
 
 
-// DO NOT IMPLEMENT PEDOMETER FEATURE UNTIL ACCELEROMETER/GYROSCOPE SENSOR DATA CAN BE RETRIEVED
-
-/* Activate node-pedometer, the following codes are a sample from the repo
-
-// The latest version of Node package 'csv-parse' spits an error, use lower 4.4.6 version instead
-
-// Configure node-pedometer
-var pedometer = require('pedometer').pedometer,
-    fs = require('fs'),
-    parse = require('csv-parse/lib/sync');
-
-// Function to load Data from csv file
-function loadData(filename){
-    
-    //Load file
-    var data=fs.readFileSync(filename,'utf8');
-    
-    //parse CSV
-    data=parse(data, {trim: true, auto_parse: true});
-    
-    //Store data in arrays
-    var acc=[],att=[];
-    for (var i=0;i<data.length;i++){
-        acc[i]=data[i].slice(0,3);
-        att[i]=[data[i][4], -data[i][5],data[i][3]];   //Attitude is adjusted to correctly match [ pitch, roll, yaw ]
-    }
-    
-    //Return arrays
-    return {acc:acc,att:att};
-}
-   
-// Load first test case
-var data=loadData('./node_modules/pedometer/test/DataWalking1.csv');      //You might need to adjust the path here
-
-// Define algorithm options (optional). All recommended default values here.
-var options={
-                windowSize:1, //Length of window in seconds
-                minPeak:2, //minimum magnitude of a steps largest positive peak
-                maxPeak:8, //maximum magnitude of a steps largest positive peak
-                minStepTime: 0.3, //minimum time in seconds between two steps
-                peakThreshold: 0.5, //minimum ratio of the current window's maximum to be considered a step
-                minConsecutiveSteps: 3, //minimum number of consecutive steps to be counted
-                maxStepTime: 0.8, //maximum time between two steps to be considered consecutive
-                meanFilterSize: 1, //Amount of smoothing (Values <=1 disable the smoothing)
-                debug:false //Enable output of debugging data in matlab/octave format
-};
-        
-// Perform step detection. Leaving away ,options here (recommended), will use the default settings as specified above.
-var steps = pedometer(data.acc,data.att,100,options);
-
-// Print number of detected steps
-console.log("The algorithm detected "+steps.length+" steps.");
-
-// node-pedometer code ends
-*/
-
-
 // Configure javascript template engine
 app.set("view engine", "ejs");
+app.set('views', 'views');
 
 
-// configure default EJS view
+// EJS view for index.ejs
 /*
 app.get('/', function(req, res) {
-  res.render('index', { 
-    poiList: "TEST"
-  });
+  res.render('index');
 });
 */
-
-// Abandon MySQL, use MongoDB instead
-/*
-const mysql = require('mysql');
-
-var con = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "db_admin"
-});
-
-con.connect(function(err) {
-  if (err) throw err;
-  console.log("Connected!");
-})
-
-con.query('CREATE DATABASE test_db', function (err, result) {
-  if (err) throw err;
-    console.log('Database has been created.');
-  });
-*/  
 
 
 // Initiate MongoDB via Mongoose
@@ -173,45 +95,64 @@ const poiSchema = {
 var poi_equipments = mongoose.model("poi_equipments", poiSchema);
 
 
-// Retrieve fitness equipment POI data from MongoDB
+// TODO: [Refactor] Find a better way than this
+
+// Declare variables as global
+let poiListVar = null;
+let poiErrVar = null;
+let currentWeatherVar = null;
+let currentTempVar = null;
+let weatherErrVar = null;
+let weatherIconVar = null;
+
 app.get("/", function (req, res) {
+  // Retrieve fitness equipment POI data from MongoDB
   poi_equipments.find({}, function (err, result) {
-    res.render("index", { 
-      poiList: result
-    });
+    if(err) {
+      poiListVar = null;
+      poiErrVar = "ERROR : Couldn't retrieve POI information";
+    }
+    else {
+      poiListVar = result;
+      poiErrVar = false;
+    }
+  });
+
+  // Fetch weather data from OpenWeatherMap API
+  let district = req.body.district;
+  // district is currently hardcoded for testing purpose
+  let url = "http://api.openweathermap.org/data/2.5/weather?q=" + "Seoul" + "&units=metric&lang=kr&appid=" + apiKey;
+  request(url, function(err, response, body) { 
+    let weatherData = JSON.parse(body);
+    if(err) {
+      currentWeatherVar = null;
+      weatherErrVar: 'ERROR : Could not retrieve weather information from OpenWeatherMap API';
+    }
+    else {
+      currentWeatherVar = weatherData.weather[0].description;
+      currentTempVar = weatherData.main.temp;
+      weatherIconVar = "http://openweathermap.org/img/wn/" + weatherData.weather[0].icon + ".png";
+      weatherErrVar = false;
+    }
+  });
+
+  res.render('index', { 
+    poiErr: poiErrVar,
+    poiList: poiListVar,
+    weatherErr: weatherErrVar,
+    currentWeather: currentWeatherVar,
+    currentTemp: currentTempVar,
+    weatherIcon: weatherIconVar
   });
 });
 
-// fetch OpenWeatherMap data
-app.post('/', function(req, res) {
-  let city = "seoul"
-  let url = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=metric&appid=" + apiKey;
-  request(url, function(err, response, body) {
-    if(err) {
-      res.render('index', {weather: null, error: 'ERROR : Could not retrieve weather information'});
-    }
-    else {
-      let weather = JSON.parse(body);
-      if (weather.main == undefined) {
-        res.render('index', {weather: null, error: 'ERROR : Weather information not available'});
-      } 
-      else {
-        let placeVar = weather.sys.country;
-        let tempVar = weather.main.temp;
-        let descVar = weather.weather[0].description;
-        let mainVar = weather.weather[0].main;
-        res.render('index', {
-          weather: weather,
-          place: placeVar,
-          temp: tempVar,
-          description: descVar,
-          main: mainVar,
-          error: false,
-        });
-      }
-    }
-  });
+
+
+/*
+app.get('/', function(req, res) {
+  
 });
+*/
 
 
 // run Express server
