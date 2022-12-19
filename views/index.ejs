@@ -29,7 +29,7 @@
 
     <!-- Header starts here -->
     <header class="flex w-full h-16 bg-white items-center">
-        <div id="header-logo" class="flex flex-row w-full h-full mx-3"> 
+        <div id="header-logo" class="flex flex-row w-full h-full"> 
             <img src="../img/gongt365-icon.svg" class="object-scale-down p-2"><img src="../img/gongt365-typo.svg" class="object-scale-down p-2">
         </div>
     </header>
@@ -58,11 +58,14 @@
                     </div>
                 <% } else { %>
                     <% poiList.forEach(poi => { %>
-                        <div class="w-full p-3 my-3 rounded-lg bg-slate-100">
-                            <h1 class="text-md font-bold"><%= poi.place %></h3>
-                            <h1 class="text-md"><%= poi.equipment %></h1>
-                            <p class="text-sm"><%= poi.city %>&nbsp;<%= poi.district %></p>
-                            <p class="text-sm"><%= poi.authority %>&nbsp;(<%= poi.phone_no %>)</p>
+                        <div class="poiItem w-full p-3 my-3 rounded-lg bg-slate-100">
+                            <h1 class="poiPlace text-md font-bold"><%= poi.place %></h3>
+                            <h1 class="poiEquipment text-md"><%= poi.equipment %></h1>
+                            <p class="poiAddress text-sm"><%= poi.city %>&nbsp;<%= poi.district %></p>
+                            <p class="poiContact text-sm"><%= poi.authority %>&nbsp;(<%= poi.phone_no %>)</p>
+                            <p class="poiIndex"><%= poi.index %></p>
+                            <p class="poiLat"><%= poi.latitude %></p>
+                            <p class="poiLng"><%= poi.longitude %></p>
                         </div>
                     <% }) %>
                 <% } %>
@@ -195,4 +198,5 @@
         <div class="w-1"></div>
     </div>
 </body>
+
 </html>

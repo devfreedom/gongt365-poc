@@ -1,4 +1,4 @@
-index,province,city,district,place,latitude,longtitude,equipment,whole_body,neck,shoulder,arm,back,chest,abs,waist,thigh,calf,feet,cardio,muscle,authority,phone_no
+poi_index,province,city,district,place,latitude,longitude,equipment,whole_body,neck,shoulder,arm,back,chest,abs,waist,thigh,calf,feet,cardio,muscle,authority,phone_no
 ,,서울특별시,서대문구,연희지하차도위휴식공간,37.576803,126.934158,체어풀,,,,,,,,,,,,,,서대문구청 푸른도시과,02-330-1395
 ,,서울특별시,서대문구,연희지하차도위휴식공간,37.576792,126.934127,하늘걷기/공중걷기/크로스컨트리,,,,,,,,1,1,1,,1,,서대문구청 푸른도시과,02-330-1395
 ,,서울특별시,서대문구,연희지하차도위휴식공간,37.576783,126.934164,상체근육풀기/워밍암,,1,1,1,1,1,,,,,,,,서대문구청 푸른도시과,02-330-1395

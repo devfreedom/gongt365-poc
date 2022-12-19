@@ -63,32 +63,32 @@ mongoose.connect(uri).then(
 
 // Define MongoDB schema
 const poiSchema = {
-    index: Number,
-    province: String,
-    city: String,
-    district: String,
-    place: String,
-    latitude: Number,
-    longtitude: Number,
-    equipment: String,
-    bodyPart: {
-      whole_body: Boolean,
-      neck: Boolean,
-      shoulder: Boolean,
-      arm: Boolean,
-      back: Boolean,
-      chest: Boolean,
-      abs: Boolean,
-      waist: Boolean,
-      thigh: Boolean,
-      calf: Boolean,
-      feet: Boolean,
-      cardio: Boolean,
-      muscle: Boolean
-      },
-    authority: String,
-    phone_no: String
-  }
+  index: Number,
+  province: String,
+  city: String,
+  district: String,
+  place: String,
+  latitude: Number,
+  longitude: Number,
+  equipment: String,
+  bodyPart: {
+    whole_body: Boolean,
+    neck: Boolean,
+    shoulder: Boolean,
+    arm: Boolean,
+    back: Boolean,
+    chest: Boolean,
+    abs: Boolean,
+    waist: Boolean,
+    thigh: Boolean,
+    calf: Boolean,
+    feet: Boolean,
+    cardio: Boolean,
+    muscle: Boolean
+    },
+  authority: String,
+  phone_no: String
+}
 
 
 // Declare MongoDB Model by 'poi_equipments' collection
@@ -145,15 +145,6 @@ app.get("/", function (req, res) {
     weatherIcon: weatherIconVar
   });
 });
-
-
-
-/*
-app.get('/', function(req, res) {
-  
-});
-*/
-
 
 // run Express server
 app.listen(port, () => {

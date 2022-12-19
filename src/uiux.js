@@ -10,7 +10,7 @@ var profileBtn = document.getElementById("profile-nav-btn");
 
 // Nabivation bar handler
 // Use unobstructive Javascript, don't use OnClick();
-// TODO: [Improvement/Refactor] replace manual attribute assignment with iteration-based toggle switch
+// TODO: [Improvement][Refactor] replace manual attribute assignment with iteration-based toggle switch
 
 document.getElementById("map-nav-btn").addEventListener("click", mapMenu);
 document.getElementById("workout-nav-btn").addEventListener("click", workoutMenu);

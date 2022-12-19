@@ -8,13 +8,13 @@ let currentPosLng = 0;    // The longitude of current position
 
 
 // Global timers
-window.onload = setTimeout(showWeatherInfo, 3000);
+// window.onload = setTimeout(   , 3000);
 
 
 // Initialize Leaflet.js
 var map = L.map('map', {
   center: [37.3306890, 126.5930664],
-  zoom: 13,
+  zoom: 20,
 });
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -39,7 +39,7 @@ function success(position) {                  // when getCurrentPosition() is co
 
 function error(err) {                         // when getCurrentPosition() fails
   const errMsg = ["zero-filler", "PERMISSION_DENIED", "POSITION_UNAVAILABLE", "TIMEOUT"];
-  alert("Couldn't fetch your current location.\nError Code: " + errMsg[err.code]);
+  alert("현재 위치를 가져올 수 없습니다.\nERROR: " + errMsg[err.code]);
 }
 
 function fetchCurrentPos() {
@@ -47,13 +47,18 @@ function fetchCurrentPos() {
 }
 
 
-// Define showCurrentPosMarker()
+// Define current position marker function
+// TODO: [Improvement][Refactor] Fix slow performance when markers are too many
+//      Solution 1: Use WebGL to  
+//      Solution 2: Add markers directly on the canvas (https://github.com/domoritz/leaflet-maskcanvas)
+//      Solution 3: Use official Leaflet.js plugin PixiOverlay (https://github.com/manubb/Leaflet.PixiOverlay) - uses WebGL
+//      Solution 2: Instead of DOM-based client-side rendering, refactor the code to query database flexibly upon different zoom levels
 function showCurrentPosMarker() {
   var currentPositionMarker = L.icon({
     iconUrl: '../img/current-location-marker.png',
-    iconSize:     [50, 50],     // size of the icon
+    iconSize:     [30, 30],     // size of the icon
     // shadowSize:   [50, 64],  // size of the shadow
-    iconAnchor:   [25, 25],     // point of the icon which will correspond to marker's location
+    iconAnchor:   [15, 15],     // point of the icon which will correspond to marker's location
     // shadowAnchor: [4, 62],   // the same for the shadow
     // popupAnchor:  [-3, -76]  // point from which the popup should open relative to the iconAnchor
   });
@@ -65,21 +70,32 @@ function showCurrentPosMarker() {
 document.getElementById('currentPosBtn').addEventListener("click", function() {
   fetchCurrentPos();
   showCurrentPosMarker();
-  map.setView([currentPosLat, currentPosLng], 15);
+  map.setView([currentPosLat, currentPosLng]);
 });
 
 
 // Trigger showCurrentPosMarker() every second when 'trackCurrentPos' is checked 
+var poiIndex = null;
+var poiLat = null;
+var poiLng = null;
+var poiPlace = null;
+var poiEquipment = null;
+var poiTitle = null;
 
 
-function showWeatherInfo(){
-  if(currentPosLat !== 0 && currentPosLng !== 0){
-    // Security audit: use Node.textContents to prevent XSS attack
-    document.getElementById('weatherInfo').innerHTML = weatherDescription + "celsius";      
-    document.getElementById('weatherIcon').innerHTML = "<img src=" + imageURL + ">";       
-  }
-  else {}
-}
+// Display POI markers on the map
+const poiItemList = document.querySelectorAll('.poiItem')
+
+poiItemList.forEach (item => {
+  poiIndex = item.querySelector('.poiIndex').innerText;
+  poiLat = item.querySelector('.poiLat').innerText;
+  poiLng = item.querySelector('.poiLng').innerText;
+  poiPlace = item.querySelector('.poiPlace').innerText;
+  poiEquipment = item.querySelector('.poiEquipment').innerText;
+  poiTitle = poiPlace + " (" + poiEquipment + ")";
+  var addMarker = L.marker([poiLat, poiLng], {title: poiTitle}).addTo(map).bindPopup(poiTitle);;
+});
 
 
+// freeform Leaflet.js map
 map.invalidateSize();
