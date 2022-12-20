@@ -28,7 +28,7 @@ app.use(express.urlencoded({ extended: true }));
 
 
 // API key
-const apiKey = process.env.API_KEY;
+const owmApiKey = process.env.OWM_API_KEY;
 
 
 // Configure javascript template engine
@@ -121,7 +121,7 @@ app.get("/", function (req, res) {
   // Fetch weather data from OpenWeatherMap API
   let district = req.body.district;
   // district is currently hardcoded for testing purpose
-  let url = "http://api.openweathermap.org/data/2.5/weather?q=" + "Seoul" + "&units=metric&lang=kr&appid=" + apiKey;
+  let url = "http://api.openweathermap.org/data/2.5/weather?q=" + "Seoul" + "&units=metric&lang=kr&appid=" + owmApiKey;
   request(url, function(err, response, body) { 
     let weatherData = JSON.parse(body);
     if(err) {

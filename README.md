@@ -1,4 +1,4 @@
-# Gongt365 (공트365) / Proof-of-concept
+# Gongt365 (공트365) 🏋️ Proof-of-concept
 A basic full-stack webapp for the proof-of-concept of 2022 NIA Open Database Hackathon qualifier, Gongt365
 
 2022 한국지능정보사회진흥원 공공데이터 아이디어 해커톤 본선 진출작 '공트365' 의 개념증명을 위해 만든 기초적인 풀스택 웹앱입니다.
@@ -69,13 +69,13 @@ Railway.app
 ### Implementation 
 - Features
     - Scheduled daily/weekly/monthly workout sessions and notification
+        - Needs access to native notification and background service
+            - Progressive Web App
+            - Hybrid webapp (e.g. Webview wrapper)
     - Timer-based fitness assistance (repetition/set counter and beeper)
+        - Use Notifications API
     - Workout diary
         - Calendar-based CRUD
-    - Scheduled workout
-        - Needs access to native notification and background service
-            - Progressive Webapp
-            - Hybrid app (e.g. Webview wrapper)
     - Provide routing from current location to POIs
         - Barebone: Use Leaflet Routing Machine (https://www.liedman.net/leaflet-routing-machine)
         - Commercial-grade: Replace Leaflet.js with domestic Naver Map Directions API
@@ -96,7 +96,7 @@ Railway.app
         - Current: Low performance when there are too many POI markers
         - Refactor: Use Leaflet.js plugin that supports WebGL
 - Backend
-    - Query handlers
+    - Design and query handlers
         - Current: Inefficient, unconventional, hacky, and spartan
         - Major refactoring is needed
 
