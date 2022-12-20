@@ -61,16 +61,11 @@ function profileMenu() {
     profileBtn.classList.add('bg-slate-300');
 }
 
-// Toggle button handler
 
-const toggleBtnOn = "bg-gray-300";
-const toggleBtnOff = "bg-gray-200";
-
+// TODO: [Implementation] Implement poi_equipments query filter
+/*
 const bodyParts = ["neck", "shoulder", "arm", "back", "chest", "abs", "waist", "thigh", "calf", "feet"]
 const selectedBodyParts = []
-
-// FIND OUT HOW TO TOGGLE THESE FOR MONGODB
-/*
 function bodyPartsSelector(){
     for (var i = 0; i < bodyParts.length; i++) {
         if(document.getElementById(bodyParts[i]).classList.contains(toggleBtnOn) == true){
@@ -90,6 +85,9 @@ function trackCurrentPos(){
 
 }
 
+
+// Toggle button handler
+// toggleBtnOn is a pre-defined custom CSS class for UI/UX; See /input.css
 document.querySelectorAll('.toggleBtn').forEach(item => {
     item.addEventListener('click', event => {
         item.classList.toggle("toggleBtnOn");
@@ -120,7 +118,6 @@ const cityList = [['시/군/구'],
                 ['시/군/구'],
                 ['시/군/구'],
                 ['시/군/구']];
-
 
 let provinceListSelect = document.getElementById('select-province')
 let cityListSelect = document.getElementById('select-city')

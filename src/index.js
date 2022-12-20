@@ -48,11 +48,6 @@ function fetchCurrentPos() {
 
 
 // Define current position marker function
-// TODO: [Improvement][Refactor] Fix slow performance when markers are too many
-//      Solution 1: Use WebGL to  
-//      Solution 2: Add markers directly on the canvas (https://github.com/domoritz/leaflet-maskcanvas)
-//      Solution 3: Use official Leaflet.js plugin PixiOverlay (https://github.com/manubb/Leaflet.PixiOverlay) - uses WebGL
-//      Solution 2: Instead of DOM-based client-side rendering, refactor the code to query database flexibly upon different zoom levels
 function showCurrentPosMarker() {
   var currentPositionMarker = L.icon({
     iconUrl: '../img/current-location-marker.png',
@@ -75,6 +70,15 @@ document.getElementById('currentPosBtn').addEventListener("click", function() {
 
 
 // Trigger showCurrentPosMarker() every second when 'trackCurrentPos' is checked 
+
+
+// Display POI markers on the map
+// TODO: [Improvement][Refactor] Fix slow performance when markers are too many
+//      Solution 1: Use WebGL to draw Leaflet.js map (https://gist.github.com/Sumbera/c6fed35c377a46ff74c3)
+//      Solution 2: Use Leaflet.js plugin Leaflet.glify based on Solution 1 (https://robertleeplummerjr.github.io/Leaflet.glify/)
+//      Solution 3: Add markers directly on the canvas (https://github.com/domoritz/leaflet-maskcanvas)
+//      Solution 4: Use official Leaflet.js plugin PixiOverlay which uses WebGL (https://github.com/manubb/Leaflet.PixiOverlay)
+//      Solution 5: Instead of DOM-based client-side rendering, refactor the code to query database flexibly upon different zoom levels
 var poiIndex = null;
 var poiLat = null;
 var poiLng = null;
@@ -82,10 +86,7 @@ var poiPlace = null;
 var poiEquipment = null;
 var poiTitle = null;
 
-
-// Display POI markers on the map
 const poiItemList = document.querySelectorAll('.poiItem')
-
 poiItemList.forEach (item => {
   poiIndex = item.querySelector('.poiIndex').innerText;
   poiLat = item.querySelector('.poiLat').innerText;

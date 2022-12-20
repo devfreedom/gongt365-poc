@@ -1,7 +1,7 @@
 {
-  "name": "gongt365",
+  "name": "gongt365-poc",
   "version": "1.0.0",
-  "description": "Proof-of-concept webapp utilizing South Korean e-government database",
+  "description": "Proof-of-concept version of Gongt365 webapp",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
