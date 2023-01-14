@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>공트365</title>
-  <meta name="description" content="Gongt365 Webapp [Proof-of-concept]">
+  <meta name="description" content="Gongt365 Webapp [Proof-of-concept version]">
   <meta name="author" content="devfreedom">
   <link rel="icon" href="/images/favicon.ico">
   <link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
@@ -63,9 +63,9 @@
                             <h1 class="poiEquipment text-md"><%= poi.equipment %></h1>
                             <p class="poiAddress text-sm"><%= poi.city %>&nbsp;<%= poi.district %></p>
                             <p class="poiContact text-sm"><%= poi.authority %>&nbsp;(<%= poi.phone_no %>)</p>
-                            <p class="poiIndex"><%= poi.index %></p>
-                            <p class="poiLat"><%= poi.latitude %></p>
-                            <p class="poiLng"><%= poi.longitude %></p>
+                            <p class="poiIndex hidden"><%= poi.index %></p>
+                            <p class="poiLat hidden"><%= poi.latitude %></p>
+                            <p class="poiLng hidden"><%= poi.longitude %></p>
                         </div>
                     <% }) %>
                 <% } %>
@@ -76,9 +76,36 @@
         <div id="workout-card" class="flex flex-col h-full w-full hidden">
             <div class="flex w-full bg-blue-300 p-8">
                 <div class="p-5">
-                    <h1 class="text-bold font-black text-lg">Workout</h1>
+                    <h1 class="text-bold font-black text-lg">운동 정보</h1>
                 </div>
             </div>
+
+            <div id="equipment-list" class="flex flex-col w-full h-[70vh] overflow-x-hidden overflow-y-auto p-3">
+                <% if (equipList == null) { %>
+                    <div class="flex flex-col bg-orange-500 rounded-xl p-5 m-5 items-center justify-center">
+                        <h1 class="text-lg font-bold">데이터를 가져올 수 없습니다</h1> 
+                        <p>Error: equipList is null</p>
+                    </div>
+                <% } else if (equipList == undefined) { %>
+                    <div class="flex flex-col bg-orange-500 rounded-xl text-lg font-bold p-5 m-5 items-center justify-center"></div>
+                        <h1 class="text-lg font-bold">데이터를 가져올 수 없습니다</h1> 
+                        <p>Error: equipList is not defined</p>
+                    </div>
+                <% } else { %>
+                    <% equipList.forEach(equipment => { %>
+                        <a href="<%= equipment.video_url %>">
+                            <div class="equipItem flex flex-row w-full p-3 my-3 rounded-xl bg-white border border-slate-300 shadow-xl">
+                                <img src="./img/<%= equipment.image %>" class="w-20 h-20 m-3">
+                                    <div class="flex flex-col">
+                                    <h1 class="equipName text-md font-bold"><%= equipment.name %></h3>
+                                    <h1 class="equipDesc text-md"><%= equipment.desc %></h1>
+                                </div>
+                            </div>
+                        </a>
+                    <% }) %>
+                <% } %>
+            </div>      
+
         </div>
 
 
@@ -105,8 +132,8 @@
                 
                 <div id="location-info" class="flex flex-row justify-between">
                     <div id="address-info" class="flex flex-col">
-                        <p class="font-bold text-md text-slate-500 mb-2">현재 지역</p>
-                        <h1 id="currentRegion" class="font-bold text-3xl text-black">서울특별시 서대문구</p>
+                        <p class="font-bold text-md text-slate-500 mb-2">현재 설정된 지역</p>
+                        <h1 id="currentRegion" class="font-bold text-2xl text-black">서울특별시 서대문구</p>
                     </div>
                     
                     <div id="weatherInfo" class="flex flex-row font-bold mt-3 items-center justify-center">
@@ -123,17 +150,17 @@
                         <% } else { %>
                             <img src="<%= weatherIcon %>" class="m-3">
                             <div class="flex flex-col align-center text-center">
-                                <h1><%= currentWeather %></h1>
+                                <h1 class="text-sm"><%= currentWeather %></h1>
                                 <p><%= currentTemp %>°C</p>
                             </div>
                         <% } %>
                     </div>
                 </div>
-
-
+                
+                <!-- TODO: [Feature] Implement city selector that fetches POI list of the select city accordingly
                 <select id="select-city">
                     <option value="city">서울특별시</option>
-                    <!--
+
                     <option value="empty">시/도</option>
                     <option value="seoul">서울특별시</option>
                     <option value="gyeonggi">경기도</option>
@@ -152,15 +179,20 @@
                     <option value="busan">부산광역시</option>
                     <option value="ulsan">울산광역시</option>
                     <option value="jeju">제주특별자치도</option>
-                    -->
+
                 </select>
                 <select id="select-district">
                     <option value="district">서대문구</option>
-                    <!--
                     <option>시/군/구</option>
-                    -->
                 </select>
-                <button id="currentPosBtn" class="p-1 px-2 ml-3 rounded-lg toggleBtnOff text-gray-400">현재 위치 사용</button> 
+                -->
+
+
+                <button id="currentPosBtn" class="p-1 px-2 my-3 rounded-lg toggleBtnOff text-gray-400">지역 변경</button> 
+
+                <div class="w-full h-[1px] bg-slate-300"></div>
+
+                <!-- TODO: [Feature] Implement POI filter that corresponds to select body parts
 
                 <h3 class="font-bold mt-7 mb-3">집중적으로 운동할 부위</h3>
                 <div id="workoutBodyParts" class="grid grid-cols-3 gap-2">
@@ -182,7 +214,7 @@
                     <button id="muscle" class="toggleBtn p-1 rounded-lg toggleBtnOff">근육 운동</button>
                     <button id="cardio" class="toggleBtn p-1 rounded-lg toggleBtnOff">유산소 운동</button>
                 </div>
-
+                -->
             </div>
         </div>
 

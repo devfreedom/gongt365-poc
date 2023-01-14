@@ -11,9 +11,9 @@ let currentPosLng = 0;    // The longitude of current position
 // window.onload = setTimeout(   , 3000);
 
 
-// Initialize Leaflet.js
+// Initialize Leaflet.js 
 var map = L.map('map', {
-  center: [37.3306890, 126.5930664],
+  center: [37.5663, 126.9779],
   zoom: 20,
 });
 

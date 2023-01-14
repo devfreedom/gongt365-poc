@@ -35,7 +35,7 @@ MongoDB on MongoDB Atlas
 ## Deployment
 ### Platform-as-a-Service
 Railway.app
-  - Builder: Nixpack
+  - Builder: Nixpacks
   - https://gongt365-poc.up.railway.app
 
 ## UI/UX Information Architecture Blueprint

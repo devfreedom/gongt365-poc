@@ -5,6 +5,16 @@ const express = require("express");
 const ejs = require("ejs");
 require('dotenv').config();
 
+const sanitize = require('mongo-sanitize');
+// The sanitize function will strip out any keys that start with '$' in the input,
+// so you can pass it to MongoDB without worrying about malicious users overwriting
+// query selectors.
+
+// var clean = sanitize(req.params.username);
+// Users.findOne({ name: clean }, function(err, doc) {
+  // ...
+// });
+
 
 // Configure Express
 const app = express();
@@ -90,12 +100,21 @@ const poiSchema = {
   phone_no: String
 }
 
+const equipSchema = {
+  index: Number,
+  name: String,
+  image: String,
+  video_url: String,
+  desc: String,
+}
 
 // Declare MongoDB Model by 'poi_equipments' collection
 var poi_equipments = mongoose.model("poi_equipments", poiSchema);
 
+// Declare MongoDB Model by 'equipment_info' collection
+var list_equipments = mongoose.model("list_equipments", equipSchema);
 
-// TODO: [Refactor] Find a better way than this
+// TODO: [Refactor] Find a better implementation
 
 // Declare variables as global
 let poiListVar = null;
@@ -104,17 +123,31 @@ let currentWeatherVar = null;
 let currentTempVar = null;
 let weatherErrVar = null;
 let weatherIconVar = null;
+let equipListVar = null;
+let equipErrVar = null;
 
 app.get("/", function (req, res) {
   // Retrieve fitness equipment POI data from MongoDB
   poi_equipments.find({}, function (err, result) {
     if(err) {
       poiListVar = null;
-      poiErrVar = "ERROR : Couldn't retrieve POI information";
+      poiErrVar = "ERROR : Couldn't retrieve POI list";
     }
     else {
       poiListVar = result;
       poiErrVar = false;
+    }
+  });
+
+  // Retrieve fitness equipment information from MongoDB
+  list_equipments.find({}, function (err, result) {
+    if(err) {
+      equipListVar = null;
+      equipErrVar = "ERROR : Couldn't retrieve equipment information";
+    }
+    else {
+      equipListVar = result;
+      equipErrVar = false;
     }
   });
 
@@ -142,7 +175,9 @@ app.get("/", function (req, res) {
     weatherErr: weatherErrVar,
     currentWeather: currentWeatherVar,
     currentTemp: currentTempVar,
-    weatherIcon: weatherIconVar
+    weatherIcon: weatherIconVar,
+    equipErr: equipErrVar,
+    equipList: equipListVar,
   });
 });
 
