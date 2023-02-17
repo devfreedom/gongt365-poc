@@ -13,9 +13,14 @@
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="stylesheet" href="../dist/output.css">
 
-  <!-- Initiate Leaflet.js -->
+  <!-- Initialize Leaflet.js -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/> 
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+
+  <!-- Initialize Leaflet.markercluster for rapid, clustered marker rendering -->
+  <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css">
 
   <!-- Use ES Module to load multiple Javascript files -->
   <script async src="./src/index.js" type="module"></script>
@@ -114,9 +119,15 @@
             <div class="flex w-full bg-blue-300 p-8">
                 <div class="p-5">
                     <h1 class="text-bold font-black text-lg">Meetup</h1>
+                    <div id="post" class="flex flex-col w-full h-[70vh] hidden"></div>
+                
                 </div>
             </div>
         </div>
+
+
+
+
 
 
         <!-- Profile card -->
@@ -190,11 +201,15 @@
 
                 <button id="currentPosBtn" class="p-1 px-2 my-3 rounded-lg toggleBtnOff text-gray-400">지역 변경</button> 
 
-                <div class="w-full h-[1px] bg-slate-300"></div>
+                <div class="w-full h-[1px] my-3 bg-slate-300"></div>
 
-                <!-- TODO: [Feature] Implement POI filter that corresponds to select body parts
+                <!-- TODO: [Feature] Implement POI filter that corresponds to select body parts, based on the name of the equipment -->
 
-                <h3 class="font-bold mt-7 mb-3">집중적으로 운동할 부위</h3>
+                <h3 class="font-bold text-xl text-orange-500 mt-7 mb-3">회색 색상은 아직 지원되지 않는 기능입니다</h3>
+
+                <h3 class="font-bold text-2xl text-slate-300 mt-7 mb-3">운동기구 필터</h3>
+                
+                <h3 class="font-bold mt-7 mb-3 text-slate-300">집중적으로 운동할 부위</h3>
                 <div id="workoutBodyParts" class="grid grid-cols-3 gap-2">
                     <button id="neck" class="toggleBtn p-1 rounded-lg toggleBtnOff">목</button>
                     <button id="shoulder" class="toggleBtn p-1 rounded-lg toggleBtnOff">어깨</button>
@@ -214,7 +229,7 @@
                     <button id="muscle" class="toggleBtn p-1 rounded-lg toggleBtnOff">근육 운동</button>
                     <button id="cardio" class="toggleBtn p-1 rounded-lg toggleBtnOff">유산소 운동</button>
                 </div>
-                -->
+                
             </div>
         </div>
 

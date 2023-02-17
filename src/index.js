@@ -10,11 +10,23 @@ let currentPosLng = 0;    // The longitude of current position
 // Global timers
 // window.onload = setTimeout(   , 3000);
 
+// Initialize Leaflet.markercluster
+var markers = L.markerClusterGroup({
+  showCoverageOnHover: true,
+  spiderfyOnMaxZoom: false,
+	showCoverageOnHover: false,
+	zoomToBoundsOnClick: true,
+  removeOutsideVisibleBounds: true,
+  spiderLegPolylineOptions: { weight: 1.5, color: '#222', opacity: 0.0 },
+  disableClusteringAtZoom: 16,
+});
+
 
 // Initialize Leaflet.js 
 var map = L.map('map', {
   center: [37.5663, 126.9779],
   zoom: 20,
+
 });
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -35,6 +47,8 @@ function success(position) {                  // when getCurrentPosition() is co
   // alert("Your location is: " + position.coords.latitude + ", " + position.coords.longitude);
   console.log(`Latitude: ${position.coords.latitude}, ` + `Longitude: ${position.coords.longitude}`);
   console.log(`Accuracy: Approximately ${position.coords.accuracy} meters.`);
+  showCurrentPosMarker();
+  map.setView([currentPosLat, currentPosLng]);
 }
 
 function error(err) {                         // when getCurrentPosition() fails
@@ -64,8 +78,6 @@ function showCurrentPosMarker() {
 // Trigger showCurrentPosMarker() when 'currentPosBtn' is clicked
 document.getElementById('currentPosBtn').addEventListener("click", function() {
   fetchCurrentPos();
-  showCurrentPosMarker();
-  map.setView([currentPosLat, currentPosLng]);
 });
 
 
@@ -78,7 +90,11 @@ document.getElementById('currentPosBtn').addEventListener("click", function() {
 //      Solution 2: Use Leaflet.js plugin Leaflet.glify based on Solution 1 (https://robertleeplummerjr.github.io/Leaflet.glify/)
 //      Solution 3: Add markers directly on the canvas (https://github.com/domoritz/leaflet-maskcanvas)
 //      Solution 4: Use official Leaflet.js plugin PixiOverlay which uses WebGL (https://github.com/manubb/Leaflet.PixiOverlay)
-//      Solution 5: Instead of DOM-based client-side rendering, refactor the code to query database flexibly upon different zoom levels
+//      Solution 5: Instead of DOM-based client-side rendering, refactor the codebase to query database flexibly upon different zoom levels
+//      Solution 6: Use leaflet.js layer control function with pre-defined marker clusters
+
+// Current attempt: Use Leaflet.markercluster for responsive clustered rendering
+
 var poiIndex = null;
 var poiLat = null;
 var poiLng = null;
@@ -94,7 +110,12 @@ poiItemList.forEach (item => {
   poiPlace = item.querySelector('.poiPlace').innerText;
   poiEquipment = item.querySelector('.poiEquipment').innerText;
   poiTitle = poiPlace + " (" + poiEquipment + ")";
-  var addMarker = L.marker([poiLat, poiLng], {title: poiTitle}).addTo(map).bindPopup(poiTitle);;
+  
+  // var addMarker = L.marker([poiLat, poiLng], {title: poiTitle}).addTo(map).bindPopup(poiTitle);
+
+  // Use Leaflet.markercluster for rapid rendering of abstracted markers
+  markers.addLayer(L.marker([poiLat, poiLng], {title: poiTitle}).bindPopup(poiTitle));
+  map.addLayer(markers);
 });
 
 

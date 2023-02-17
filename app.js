@@ -108,6 +108,15 @@ const equipSchema = {
   desc: String,
 }
 
+const meetupSchema = {
+  index: Number,
+  user: String,
+  title: String,
+  location: String,
+  rsvp: String,
+}
+
+
 // Declare MongoDB Model by 'poi_equipments' collection
 var poi_equipments = mongoose.model("poi_equipments", poiSchema);
 
