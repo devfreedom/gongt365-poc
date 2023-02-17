@@ -25,8 +25,7 @@ var markers = L.markerClusterGroup({
 // Initialize Leaflet.js 
 var map = L.map('map', {
   center: [37.5663, 126.9779],
-  zoom: 20,
-
+  zoom: 10,
 });
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -90,7 +89,7 @@ document.getElementById('currentPosBtn').addEventListener("click", function() {
 //      Solution 2: Use Leaflet.js plugin Leaflet.glify based on Solution 1 (https://robertleeplummerjr.github.io/Leaflet.glify/)
 //      Solution 3: Add markers directly on the canvas (https://github.com/domoritz/leaflet-maskcanvas)
 //      Solution 4: Use official Leaflet.js plugin PixiOverlay which uses WebGL (https://github.com/manubb/Leaflet.PixiOverlay)
-//      Solution 5: Instead of DOM-based client-side rendering, refactor the codebase to query database flexibly upon different zoom levels
+//      Solution 5: Instead of DOM-based client-side rendering, refactor the codebase to query datasets flexibly upon different zoom levels
 //      Solution 6: Use leaflet.js layer control function with pre-defined marker clusters
 
 // Current attempt: Use Leaflet.markercluster for responsive clustered rendering

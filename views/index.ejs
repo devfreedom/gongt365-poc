@@ -40,11 +40,12 @@
     </header>
 
     <div id="card-container" class="flex flex-col w-full grow">
+
         <!-- Map card -->
         <div id="map-card" class="flex flex-col w-full h-full">
-            <div id="map-hero" class="flex flex-row h-20 bg-blue-300 p-2 items-center justify-between">
+            <div id="map-hero" class="flex flex-row h-20 p-2 items-center justify-between bg-[url('../img/map-hero-bg.svg')]">
                 <h1 class="text-bold font-black text-lg px-3">지도</h1>
-                <button id="currentPosBtn" class="toggleBtn flex flex-row p-2 toggleBtnOff rounded-lg items-center"><img src="./img/current-location-btn.svg" class="w-5 mr-2">현재 위치</button>
+                <button id="currentPosBtn" class="flex flex-row py-2 px-3 mx-2 rounded-lg bg-green-500 items-center"><img src="./img/current-location-btn.svg" class="w-5 mr-2" style="filter: invert(1);"><p class="text-white">현재 위치</p></button>
             </div>
             <!-- Leaflet.js clashes with Tailwind CSS in terms of sizing, fallback to inline script -->
             <div id="map-wrapper" style="width: 100%; height: 60%;">
@@ -63,7 +64,7 @@
                     </div>
                 <% } else { %>
                     <% poiList.forEach(poi => { %>
-                        <div class="poiItem w-full p-3 my-3 rounded-lg bg-slate-100">
+                        <div class="poiItem w-full p-3 my-3 rounded-lg bg-green-200">
                             <h1 class="poiPlace text-md font-bold"><%= poi.place %></h3>
                             <h1 class="poiEquipment text-md"><%= poi.equipment %></h1>
                             <p class="poiAddress text-sm"><%= poi.city %>&nbsp;<%= poi.district %></p>
@@ -79,13 +80,14 @@
 
         <!-- Workout card -->
         <div id="workout-card" class="flex flex-col h-full w-full hidden">
-            <div class="flex w-full bg-blue-300 p-8">
-                <div class="p-5">
-                    <h1 class="text-bold font-black text-lg">운동 정보</h1>
+            <div id="workout-hero" class="flex flex-col h-32 justify-center bg-[url('../img/workout-hero-bg.svg')]">
+                <div class="mx-10">
+                    <h1 class="text-bold font-black text-xl">운동기구 정보</h1>
+                    <h1 class="text-bold text-lg">안전하고 효과적으로 운동하기!</h1>
                 </div>
             </div>
 
-            <div id="equipment-list" class="flex flex-col w-full h-[70vh] overflow-x-hidden overflow-y-auto p-3">
+            <div id="equipment-list" class="flex flex-col w-full h-[72vh] overflow-x-hidden overflow-y-auto p-3">
                 <% if (equipList == null) { %>
                     <div class="flex flex-col bg-orange-500 rounded-xl p-5 m-5 items-center justify-center">
                         <h1 class="text-lg font-bold">데이터를 가져올 수 없습니다</h1> 
@@ -116,12 +118,16 @@
 
         <!-- Meetup card -->
         <div id="meetup-card" class="flex flex-col h-full w-full hidden">
-            <div class="flex w-full bg-blue-300 p-8">
-                <div class="p-5">
-                    <h1 class="text-bold font-black text-lg">Meetup</h1>
-                    <div id="post" class="flex flex-col w-full h-[70vh] hidden"></div>
-                
+            <div id="meetup-hero" class="flex flex-col h-32 justify-center bg-[url('../img/meetup-hero-bg.svg')]">
+                <div class="mx-10">
+                    <h1 class="text-bold font-black text-xl">운동 모임</h1>
+                    <h1 class="text-bold text-lg">함께 모여서 운동해요!</h1>
                 </div>
+            </div>
+            <div id="meetup-content" class="flex flex-col w-full h-[72vh] overflow-x-hidden overflow-y-auto p-3">
+                
+                <div id="meetup-post" class="flex flex-col w-full h-[50vh] hidden"></div>
+                
             </div>
         </div>
 
@@ -132,15 +138,15 @@
 
         <!-- Profile card -->
         <div id="profile-card" class="flex flex-col h-full w-full hidden">
-            <div id="profile-hero" class="flex w-full bg-blue-300 p-5 mb-7">
-                <div id="hero-content" class="flex-row p-3">
-                    <h1 class="text-bold font-black text-lg">안녕하세요 user님!</h1>
+            <div id="profile-hero" class="flex flex-col h-32 justify-center bg-[url('../img/profile-hero-bg.svg')]">
+                <div class="mx-10">
+                    <h1 class="text-bold font-black text-xl">안녕하세요!</h1>
                     <!-- TODO: [Feature] Randomize welcome messages upon page view -->
-                    <h1>오늘도 건강하고 활기차게 운동해볼까요!</h1>
+                    <h1 class="text-bold text-lg">오늘도 활기차게 운동해볼까요!</h1>
                 </div>
             </div>
-            <div id="profile-content" class="p-5 overflow-y-auto">
-                
+            <div id="profile-content" class="flex flex-col w-full h-[72vh] overflow-x-hidden overflow-y-auto p-3">
+    
                 <div id="location-info" class="flex flex-row justify-between">
                     <div id="address-info" class="flex flex-col">
                         <p class="font-bold text-md text-slate-500 mb-2">현재 설정된 지역</p>
@@ -236,7 +242,7 @@
     </div>
 
     <!-- Navbar starts here -->
-    <div id="navbar" class="flex flex-row w-full h-20 bg-slate-100 items-center justify-between">
+    <div id="navbar" class="flex flex-row w-full h-20 bg-slate-200 items-center justify-between">
         <div class="w-1"></div>
         <div id="map-nav-btn" class="flex flex-col items-center px-5 py-1 rounded-lg bg-slate-300"> <img src="./img/map-navbar-icon.svg" class="w-7"> <h1 class="mt-1 text-sm">지도</h1> </div>
         <div id="workout-nav-btn" class="flex flex-col items-center px-5 py-1 rounded-lg"> <img src="./img/workout-navbar-icon.svg" class="w-7"> <h1 class="mt-1 text-sm">운동</h1> </div>

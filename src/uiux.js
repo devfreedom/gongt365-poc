@@ -62,25 +62,6 @@ function profileMenu() {
 }
 
 
-// TODO: [Implementation] Implement poi_equipments query filter
-/*
-const bodyParts = ["neck", "shoulder", "arm", "back", "chest", "abs", "waist", "thigh", "calf", "feet"]
-const selectedBodyParts = []
-function bodyPartsSelector(){
-    for (var i = 0; i < bodyParts.length; i++) {
-        if(document.getElementById(bodyParts[i]).classList.contains(toggleBtnOn) == true){
-            if (!selectedBodyParts.includes(sfdasadf)) {
-                // ✅ only runs if value not in array
-                selectedBodyParts.push(str);
-              }
-            }
-            else(){
-                
-            }
-    }
-}
-*/
-
 function trackCurrentPos(){
 
 }
