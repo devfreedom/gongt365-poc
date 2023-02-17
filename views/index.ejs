@@ -64,7 +64,7 @@
                     </div>
                 <% } else { %>
                     <% poiList.forEach(poi => { %>
-                        <div class="poiItem w-full p-3 my-3 rounded-lg bg-green-200">
+                        <div class="poiItem w-full p-3 my-3 rounded-xl bg-white border border-slate-300 shadow-md">
                             <h1 class="poiPlace text-md font-bold"><%= poi.place %></h3>
                             <h1 class="poiEquipment text-md"><%= poi.equipment %></h1>
                             <p class="poiAddress text-sm"><%= poi.city %>&nbsp;<%= poi.district %></p>
@@ -101,7 +101,7 @@
                 <% } else { %>
                     <% equipList.forEach(equipment => { %>
                         <a href="<%= equipment.video_url %>">
-                            <div class="equipItem flex flex-row w-full p-3 my-3 rounded-xl bg-white border border-slate-300 shadow-xl">
+                            <div class="equipItem flex flex-row w-full p-3 my-3 rounded-xl bg-white border border-slate-300 shadow-md">
                                 <img src="./img/<%= equipment.image %>" class="w-20 h-20 m-3">
                                     <div class="flex flex-col">
                                     <h1 class="equipName text-md font-bold"><%= equipment.name %></h3>
@@ -112,7 +112,6 @@
                     <% }) %>
                 <% } %>
             </div>      
-
         </div>
 
 
@@ -147,7 +146,7 @@
             </div>
             <div id="profile-content" class="flex flex-col w-full h-[72vh] overflow-x-hidden overflow-y-auto p-3">
     
-                <div id="location-info" class="flex flex-row justify-between">
+                <div id="location-info" class="flex flex-row justify-between mt-3">
                     <div id="address-info" class="flex flex-col">
                         <p class="font-bold text-md text-slate-500 mb-2">현재 설정된 지역</p>
                         <h1 id="currentRegion" class="font-bold text-2xl text-black">서울특별시 서대문구</p>
@@ -229,7 +228,7 @@
                     <button id="feet" class="toggleBtn p-1 rounded-lg toggleBtnOff">발</button>
                 </div>
 
-                <h3 class="font-bold mt-7 mb-3">운동 유형</h3>
+                <h3 class="font-bold mt-7 mb-3 text-slate-300">운동 유형</h3>
                 <div id="workoutBodyParts" class="grid grid-cols-3 gap-2">
                     <button id="whole-body" class="toggleBtn p-1 rounded-lg toggleBtnOff">전신 운동</button>
                     <button id="muscle" class="toggleBtn p-1 rounded-lg toggleBtnOff">근육 운동</button>
