@@ -81,21 +81,6 @@ const poiSchema = {
   latitude: Number,
   longitude: Number,
   equipment: String,
-  bodyPart: {
-    whole_body: Boolean,
-    neck: Boolean,
-    shoulder: Boolean,
-    arm: Boolean,
-    back: Boolean,
-    chest: Boolean,
-    abs: Boolean,
-    waist: Boolean,
-    thigh: Boolean,
-    calf: Boolean,
-    feet: Boolean,
-    cardio: Boolean,
-    muscle: Boolean
-    },
   authority: String,
   phone_no: String
 }
@@ -110,10 +95,15 @@ const equipSchema = {
 
 const meetupSchema = {
   index: Number,
-  user: String,
+  username: String,
   title: String,
-  location: String,
-  rsvp: String,
+  city: String,
+  district: String,
+  date: String,
+  time: String,
+  poi: String,
+  duration_min: Number,
+  rsvp_count: String,
 }
 
 
@@ -121,7 +111,10 @@ const meetupSchema = {
 var poi_equipments = mongoose.model("poi_equipments", poiSchema);
 
 // Declare MongoDB Model by 'equipment_info' collection
-var list_equipments = mongoose.model("list_equipments", equipSchema);
+var equipment_details = mongoose.model("equipment_details", equipSchema);
+
+// Declare MongoDB Model by 'meetup' collection
+var meetup_events = mongoose.model("meetup_events", meetupSchema);
 
 // TODO: [Refactor] Find a better implementation
 
@@ -134,6 +127,8 @@ let weatherErrVar = null;
 let weatherIconVar = null;
 let equipListVar = null;
 let equipErrVar = null;
+let meetupListVar = null;
+let meetupErrVar = null;
 
 app.get("/", function (req, res) {
   // Retrieve fitness equipment POI data from MongoDB
@@ -149,7 +144,7 @@ app.get("/", function (req, res) {
   });
 
   // Retrieve fitness equipment information from MongoDB
-  list_equipments.find({}, function (err, result) {
+  equipment_details.find({}, function (err, result) {
     if(err) {
       equipListVar = null;
       equipErrVar = "ERROR : Couldn't retrieve equipment information";
@@ -157,6 +152,18 @@ app.get("/", function (req, res) {
     else {
       equipListVar = result;
       equipErrVar = false;
+    }
+  });
+
+  // Retrieve meetup event data from MongoDB
+  meetup_events.find({}, function (err, result) {
+    if(err) {
+      meetupListVar = null;
+      meetupErrVar = "ERROR : Couldn't retrieve meetup information";
+    }
+    else {
+      meetupListVar = result;
+      meetupErrVar = false;
     }
   });
 
@@ -187,6 +194,8 @@ app.get("/", function (req, res) {
     weatherIcon: weatherIconVar,
     equipErr: equipErrVar,
     equipList: equipListVar,
+    meetupErr: meetupErrVar,
+    meetupList: meetupListVar,
   });
 });
 

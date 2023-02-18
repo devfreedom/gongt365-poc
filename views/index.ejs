@@ -44,7 +44,7 @@
  
 
     <!-- Map view -->
-    <div id="map-view" class="flex flex-col overflow-y-auto">
+    <div id="map-view" class="flex flex-col overflow-y-auto grow">
         <div id="map-hero" class="flex-none">
             <div class="flex flex-row h-20 p-2 items-center justify-between bg-[url('../img/map-hero-bg.svg')] bg-right bg-cover">
                 <h1 class="text-bold font-black text-lg px-3">지도</h1>
@@ -88,7 +88,7 @@
 
 
     <!-- Workout view -->
-    <div id="workout-view" class="flex flex-col overflow-y-auto hidden">
+    <div id="workout-view" class="flex flex-col overflow-y-auto hidden grow">
 
         <div id="workout-hero" class="flex-none">
             <div class="flex flex-col h-32 justify-center bg-[url('../img/workout-hero-bg.svg')] bg-right bg-cover px-5">
@@ -129,7 +129,7 @@
 
 
     <!-- Meetup view -->
-    <div id="meetup-view" class="flex flex-col overflow-y-auto hidden">
+    <div id="meetup-view" class="flex flex-col overflow-y-auto hidden grow">
         
         <div id="meetup-hero" class="flex-none">
             <div class="flex flex-col h-32 justify-center bg-[url('../img/meetup-hero-bg.svg')] bg-right bg-cover px-5">
@@ -138,16 +138,38 @@
             </div>
         </div>
         
-        <div id="meetup-content" class="flex flex-col w-full h-[72vh] overflow-x-hidden overflow-y-auto p-3">
-            
-            <div id="meetup-post" class="flex flex-col w-full h-[50vh] hidden"></div>
-            
-        </div>
+        <div id="meetup-list" class="grow overflow-y-auto">
+            <div class="flex flex-col w-full h-full overflow-x-hidden overflow-y-auto">
+                <% if (meetupList == null) { %>
+                    <div class="flex flex-col bg-orange-500 rounded-xl p-5 m-5 items-center justify-center">
+                        <h1 class="text-lg font-bold">데이터를 가져올 수 없습니다</h1> 
+                        <p>Error: meetupList is null</p>
+                    </div>
+                <% } else if (meetupList == undefined) { %>
+                    <div class="flex flex-col bg-orange-500 rounded-xl text-lg font-bold p-5 m-5 items-center justify-center"></div>
+                        <h1 class="text-lg font-bold">데이터를 가져올 수 없습니다</h1> 
+                        <p>Error: meetupList is not defined</p>
+                    </div>
+                <% } else { %>
+                    <% meetupList.forEach(meetup => { %>
+                        <div class="meetupItem w-full">
+                            <h1 class="meetupUsername text-md font-bold"><%= meetup.username %></h3>
+                            <h1 class="meetupTitle text-md"><%= meetup.title %></h1>
+                            <p class="meetupAddress text-sm"><%= meetup.city %>&nbsp;<%= meetup.district %>&nbsp;<%= meetup.poi %></p>
+                            <p class="meetupDatetime text-sm"><%= meetup.date %>&nbsp;(<%= meetup.time %>)</p>
+                            <p class="meetupDuration"><%= meetup.duration_min %>분간 운동할 예정</p>
+                            <p class="meetupRsvpCount"><%= meetup.rsvp_count %>명 참석 예정</p>
+                            <div class="w-full h-1 bg-slate-200 my-3"></div>
+                        </div>
+                    <% }) %>
+                <% } %>
+            </div>
+        </div>      
     </div>
 
 
     <!-- Profile view -->
-    <div id="profile-view" class="flex flex-col overflow-y-auto hidden">
+    <div id="profile-view" class="flex flex-col overflow-y-auto hidden grow">
 
         <div id="profile-hero" class="flex-none">
             <div class="flex flex-col h-32 justify-center bg-[url('../img/profile-hero-bg.svg')] bg-right bg-cover px-5">
