@@ -92,8 +92,8 @@
 
         <div id="workout-hero" class="flex-none">
             <div class="flex flex-col h-32 justify-center bg-[url('../img/workout-hero-bg.svg')] bg-right bg-cover px-5">
-                <h1 class="text-bold font-black text-xl">운동기구 정보</h1>
-                <h1 class="text-bold text-lg">안전하고 효과적으로 운동하기!</h1>
+                <h1 class="text-bold font-black text-lg">운동기구 정보</h1>
+                <h1 class="text-bold text-md">안전하고 효과적으로 운동하기!</h1>
             </div>
         </div>
 
@@ -133,8 +133,8 @@
         
         <div id="meetup-hero" class="flex-none">
             <div class="flex flex-col h-32 justify-center bg-[url('../img/meetup-hero-bg.svg')] bg-right bg-cover px-5">
-                <h1 class="text-bold font-black text-xl">운동 모임</h1>
-                <h1 class="text-bold text-lg">함께 모여서 운동해요!</h1>
+                <h1 class="text-bold font-black text-lg">운동 모임</h1>
+                <h1 class="text-bold text-md">함께 모여서 운동해요!</h1>
             </div>
         </div>
         
@@ -151,16 +151,16 @@
 
         <div id="profile-hero" class="flex-none">
             <div class="flex flex-col h-32 justify-center bg-[url('../img/profile-hero-bg.svg')] bg-right bg-cover px-5">
-                <h1 class="text-bold font-black text-xl">안녕하세요!</h1>
+                <h1 class="text-bold font-black text-lg">안녕하세요!</h1>
                 <!-- TODO: [Feature] Randomize welcome messages upon page view -->
-                <h1 class="text-bold text-lg">오늘도 활기차게 운동해볼까요!</h1>
+                <h1 class="text-bold text-md">오늘도 활기차게 운동해볼까요!</h1>
             </div>
         </div>
 
         <div id="location-info" class="flex flex-row justify-between mt-3 p-3">
             <div id="address-info" class="flex flex-col">
                 <div>
-                    <p class="font-bold text-md text-slate-500 mb-2">현재 설정된 지역</p>
+                    <p class="font-bold text-md text-slate-500 mb-2">설정된 현재 지역</p>
                     <h1 id="currentRegion" class="font-bold text-2xl text-black">서울특별시 서대문구</p>
                 </div>
             <button id="currentPosBtn" class="p-1 px-2 my-3 w-rounded-lg toggleBtnOff text-gray-400">지역 변경</button> 
@@ -191,20 +191,20 @@
 
             <!-- TODO: [Feature] Implement POI filter that corresponds to select body parts, based on the name of the equipment -->
 
-            <h3 class="font-bold text-xl text-orange-500 mt-3">회색 제목의 기능은 아직 지원되지 않습니다</h3>
+            <h3 class="font-bold text-lg text-orange-500 mt-3">회색 제목의 기능은 아직 지원되지 않습니다</h3>
 
-            <h3 class="font-bold text-2xl text-slate-300 mt-10">운동 타이머</h3>
+            <h3 class="font-bold text-xl text-slate-300 mt-10">운동 타이머</h3>
             
-            <h3 class="font-bold mt-7 mb-3 text-slate-300">1세트 시간</h3>
+            <h3 class="font-bold text-md text-slate-300 mt-5 mb-3 ">1세트 시간</h3>
             <div id="workoutBodyParts" class="grid grid-cols-3 gap-2">
-                <button id="neck" class="toggleBtn p-1 rounded-lg toggleBtnOff">5분</button>
-                <button id="shoulder" class="toggleBtn p-1 rounded-lg toggleBtnOff">10분</button>
-                <button id="arm" class="toggleBtn p-1 rounded-lg toggleBtnOff">15분</button>
+                <button id="neck" class="p-1 rounded-lg toggleBtnOff">5분</button>
+                <button id="shoulder" class="p-1 rounded-lg toggleBtnOff">10분</button>
+                <button id="arm" class="p-1 rounded-lg toggleBtnOff">15분</button>
             </div>
 
-            <h3 class="font-bold text-2xl text-slate-300 mt-16">운동기구 필터</h3>
+            <h3 class="font-bold text-xl text-slate-300 mt-12">운동기구 필터</h3>
             
-            <h3 class="font-bold mt-7 mb-3 text-slate-300">집중적으로 운동할 부위</h3>
+            <h3 class="font-bold text-md text-slate-300 mt-5 mb-3 ">집중적으로 운동할 부위</h3>
             <div id="workoutBodyParts" class="grid grid-cols-3 gap-2">
                 <button id="neck" class="toggleBtn p-1 rounded-lg toggleBtnOff">목</button>
                 <button id="shoulder" class="toggleBtn p-1 rounded-lg toggleBtnOff">어깨</button>
@@ -218,7 +218,7 @@
                 <button id="feet" class="toggleBtn p-1 rounded-lg toggleBtnOff">발</button>
             </div>
 
-            <h3 class="font-bold mt-7 mb-3 text-slate-300">운동 유형</h3>
+            <h3 class="font-bold text-md text-slate-300 mt-5 mb-3 ">운동 유형</h3>
             <div id="workoutBodyParts" class="grid grid-cols-3 gap-2">
                 <button id="whole-body" class="toggleBtn p-1 rounded-lg toggleBtnOff">전신 운동</button>
                 <button id="muscle" class="toggleBtn p-1 rounded-lg toggleBtnOff">근육 운동</button>
