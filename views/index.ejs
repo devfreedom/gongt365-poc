@@ -53,7 +53,7 @@
         </div>
 
         <!-- Leaflet.js clashes with Tailwind CSS in terms of sizing, fallback to inline script -->
-        <div id="map-wrapper" style="width: 100%; height: 25rem; flex: none;">
+        <div id="map-wrapper" style="width: 100%; height: 40%; flex: none;">
             <div id="map" style="width: 100%; height: 100%;"></div> 
         </div>
 
@@ -88,10 +88,10 @@
 
 
     <!-- Workout view -->
-    <div id="workout-view" class="flex flex-col overflow-y-auto">
+    <div id="workout-view" class="flex flex-col overflow-y-auto hidden">
 
         <div id="workout-hero" class="flex-none">
-            <div class="flex flex-col h-32 justify-center bg-[url('../img/workout-hero-bg.svg')] bg-right bg-cover px-10">
+            <div class="flex flex-col h-32 justify-center bg-[url('../img/workout-hero-bg.svg')] bg-right bg-cover px-5">
                 <h1 class="text-bold font-black text-xl">운동기구 정보</h1>
                 <h1 class="text-bold text-lg">안전하고 효과적으로 운동하기!</h1>
             </div>
@@ -132,7 +132,7 @@
     <div id="meetup-view" class="flex flex-col overflow-y-auto hidden">
         
         <div id="meetup-hero" class="flex-none">
-            <div class="flex flex-col h-32 justify-center bg-[url('../img/meetup-hero-bg.svg')] bg-right bg-cover px-10">
+            <div class="flex flex-col h-32 justify-center bg-[url('../img/meetup-hero-bg.svg')] bg-right bg-cover px-5">
                 <h1 class="text-bold font-black text-xl">운동 모임</h1>
                 <h1 class="text-bold text-lg">함께 모여서 운동해요!</h1>
             </div>
@@ -150,7 +150,7 @@
     <div id="profile-view" class="flex flex-col overflow-y-auto hidden">
 
         <div id="profile-hero" class="flex-none">
-            <div class="flex flex-col h-32 justify-center bg-[url('../img/profile-hero-bg.svg')] bg-right bg-cover px-10">
+            <div class="flex flex-col h-32 justify-center bg-[url('../img/profile-hero-bg.svg')] bg-right bg-cover px-5">
                 <h1 class="text-bold font-black text-xl">안녕하세요!</h1>
                 <!-- TODO: [Feature] Randomize welcome messages upon page view -->
                 <h1 class="text-bold text-lg">오늘도 활기차게 운동해볼까요!</h1>
