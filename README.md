@@ -11,10 +11,10 @@ A basic full-stack webapp for the proof-of-concept of 2022 NIA Open Database Hac
 
 ## Technology Stack 
 ### Frontend
-HTML + CSS + Vanilla JavaScript
+HTML + CSS + JavaScript
 - CSS framework: Tailwind CSS
 - Template engine: EJS (Embedded JavaScript templates)
-- Geolocation rendering: Leaflet.js
+- Interactive map rendering library: Leaflet.js
 
 ### Backend
 - Node.js
@@ -91,10 +91,11 @@ Railway.app
     - UI handlers
         - Current: If statement-based switches
         - Refactor: Array and iterator-based switches
-            - or migrate to frontend framework like React or Vue
+            - Migrate to frontend frameworks such as React or Vue in the future
     - Leaflet.js rendering
-        - Current: Low performance when there are too many POI markers
-        - Refactor: Use Leaflet.js plugin that supports WebGL
+        - ~~Current: Low performance when there are too many POI markers~~
+        - ~~Refactor: Use Leaflet.js plugin that supports WebGL~~
+            - Using Leaflet.markercluster as a straightforward workaround
 - Backend
     - Design and query handlers
         - Current: Inefficient, unconventional, hacky, and spartan

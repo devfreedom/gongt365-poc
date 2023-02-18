@@ -597,8 +597,20 @@ video {
   background-color: #80FFFFFF;
 }
 
+.fixed {
+  position: fixed;
+}
+
+.absolute {
+  position: absolute;
+}
+
 .relative {
   position: relative;
+}
+
+.sticky {
+  position: sticky;
 }
 
 .m-5 {
@@ -641,6 +653,18 @@ video {
 
 .mt-1 {
   margin-top: 0.25rem;
+}
+
+.mt-5 {
+  margin-top: 1.25rem;
+}
+
+.mt-10 {
+  margin-top: 2.5rem;
+}
+
+.mt-16 {
+  margin-top: 4rem;
 }
 
 .inline {
@@ -727,12 +751,28 @@ video {
   min-width: 45vh;
 }
 
+.min-w-\[40vh\] {
+  min-width: 40vh;
+}
+
 .max-w-\[48vh\] {
   max-width: 48vh;
 }
 
+.max-w-\[50vh\] {
+  max-width: 50vh;
+}
+
 .flex-none {
   flex: none;
+}
+
+.flex-1 {
+  flex: 1 1 0%;
+}
+
+.flex-auto {
+  flex: 1 1 auto;
 }
 
 .grow {
@@ -743,12 +783,24 @@ video {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.grid-rows-2 {
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+}
+
 .flex-row {
   flex-direction: row;
 }
 
 .flex-col {
   flex-direction: column;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
 }
 
 .items-center {
@@ -833,6 +885,10 @@ video {
   background-image: url('../img/profile-hero-bg.svg');
 }
 
+.bg-cover {
+  background-size: cover;
+}
+
 .bg-right {
   background-position: right;
 }
@@ -886,6 +942,10 @@ video {
 .py-1 {
   padding-top: 0.25rem;
   padding-bottom: 0.25rem;
+}
+
+.pt-16 {
+  padding-top: 4rem;
 }
 
 .text-center {

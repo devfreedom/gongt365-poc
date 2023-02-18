@@ -1,7 +1,7 @@
-var mapCard = document.getElementById("map-card");
-var workoutCard = document.getElementById("workout-card");
-var meetupCard = document.getElementById("meetup-card");
-var profileCard = document.getElementById("profile-card");
+var mapView = document.getElementById("map-view");
+var workoutView = document.getElementById("workout-view");
+var meetupView = document.getElementById("meetup-view");
+var profileView = document.getElementById("profile-view");
 
 var mapHero = document.getElementById("map-hero");
 var workoutHero = document.getElementById("workout-hero");
@@ -13,6 +13,8 @@ var workoutBtn = document.getElementById("workout-nav-btn");
 var meetupBtn = document.getElementById("meetup-nav-btn");
 var profileBtn = document.getElementById("profile-nav-btn");
 
+var mapWrapper = document.getElementById("map-wrapper");
+
 // Nabivation bar handler
 // Use unobstructive Javascript, don't use OnClick();
 // TODO: [Improvement][Refactor] replace manual attribute assignment with iteration-based toggle switch
@@ -23,10 +25,10 @@ document.getElementById("meetup-nav-btn").addEventListener("click", meetupMenu);
 document.getElementById("profile-nav-btn").addEventListener("click", profileMenu);
 
 function mapMenu() {
-    mapCard.classList.remove('hidden');
-    workoutCard.classList.add('hidden');
-    meetupCard.classList.add('hidden');
-    profileCard.classList.add('hidden');
+    mapView.classList.remove('hidden');
+    workoutView.classList.add('hidden');
+    meetupView.classList.add('hidden');
+    profileView.classList.add('hidden');
 
     mapHero.classList.remove('hidden');
     workoutHero.classList.add('hidden');
@@ -40,10 +42,10 @@ function mapMenu() {
 }
 
 function workoutMenu() {
-    mapCard.classList.add('hidden');
-    workoutCard.classList.remove('hidden');
-    meetupCard.classList.add('hidden');
-    profileCard.classList.add('hidden');
+    mapView.classList.add('hidden');
+    workoutView.classList.remove('hidden');
+    meetupView.classList.add('hidden');
+    profileView.classList.add('hidden');
 
     mapHero.classList.add('hidden');
     workoutHero.classList.remove('hidden');
@@ -57,10 +59,10 @@ function workoutMenu() {
 }
 
 function meetupMenu() {
-    mapCard.classList.add('hidden');
-    workoutCard.classList.add('hidden');
-    meetupCard.classList.remove('hidden');
-    profileCard.classList.add('hidden');
+    mapView.classList.add('hidden');
+    workoutView.classList.add('hidden');
+    meetupView.classList.remove('hidden');
+    profileView.classList.add('hidden');
 
     mapHero.classList.add('hidden');
     workoutHero.classList.add('hidden');
@@ -74,10 +76,10 @@ function meetupMenu() {
 }
 
 function profileMenu() {
-    mapCard.classList.add('hidden');
-    workoutCard.classList.add('hidden');
-    meetupCard.classList.add('hidden');
-    profileCard.classList.remove('hidden');
+    mapView.classList.add('hidden');
+    workoutView.classList.add('hidden');
+    meetupView.classList.add('hidden');
+    profileView.classList.remove('hidden');
 
     mapHero.classList.add('hidden');
     workoutHero.classList.add('hidden');
