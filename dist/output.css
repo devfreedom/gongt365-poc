@@ -551,12 +551,50 @@ video {
   --tw-backdrop-sepia:  ;
 }
 
+.container {
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .container {
+    max-width: 640px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 768px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1024px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container {
+    max-width: 1280px;
+  }
+}
+
+@media (min-width: 1536px) {
+  .container {
+    max-width: 1536px;
+  }
+}
+
 .toggleBtnOff {
   background-color: #BBF7D0;
 }
 
 .toggleBtnOn {
   background-color: #22C55E;
+}
+
+.toggleMenuBtnOn {
+  background-color: #80FFFFFF;
 }
 
 .relative {
@@ -581,21 +619,16 @@ video {
   margin-bottom: 0.75rem;
 }
 
-.mx-10 {
-  margin-left: 2.5rem;
-  margin-right: 2.5rem;
-}
-
 .mr-2 {
   margin-right: 0.5rem;
 }
 
-.mb-2 {
-  margin-bottom: 0.5rem;
-}
-
 .mt-3 {
   margin-top: 0.75rem;
+}
+
+.mb-2 {
+  margin-bottom: 0.5rem;
 }
 
 .mt-7 {
@@ -626,8 +659,8 @@ video {
   display: none;
 }
 
-.h-full {
-  height: 100%;
+.h-screen {
+  height: 100vh;
 }
 
 .h-\[100vh\] {
@@ -638,16 +671,20 @@ video {
   height: 4rem;
 }
 
+.h-full {
+  height: 100%;
+}
+
 .h-20 {
   height: 5rem;
 }
 
-.h-\[40vh\] {
-  height: 40vh;
-}
-
 .h-32 {
   height: 8rem;
+}
+
+.h-\[40vh\] {
+  height: 40vh;
 }
 
 .h-\[72vh\] {
@@ -660,6 +697,10 @@ video {
 
 .h-\[1px\] {
   height: 1px;
+}
+
+.w-screen {
+  width: 100vw;
 }
 
 .w-full {
@@ -688,6 +729,10 @@ video {
 
 .max-w-\[48vh\] {
   max-width: 48vh;
+}
+
+.flex-none {
+  flex: none;
 }
 
 .grow {
@@ -767,11 +812,6 @@ video {
   background-color: rgb(249 115 22 / var(--tw-bg-opacity));
 }
 
-.bg-green-200 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(187 247 208 / var(--tw-bg-opacity));
-}
-
 .bg-slate-200 {
   --tw-bg-opacity: 1;
   background-color: rgb(226 232 240 / var(--tw-bg-opacity));
@@ -791,6 +831,10 @@ video {
 
 .bg-\[url\(\'\.\.\/img\/profile-hero-bg\.svg\'\)\] {
   background-image: url('../img/profile-hero-bg.svg');
+}
+
+.bg-right {
+  background-position: right;
 }
 
 .object-scale-down {
@@ -824,6 +868,11 @@ video {
   padding-bottom: 0.5rem;
 }
 
+.px-10 {
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
+}
+
 .px-2 {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
@@ -848,14 +897,14 @@ video {
   line-height: 1.75rem;
 }
 
-.text-sm {
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-}
-
 .text-xl {
   font-size: 1.25rem;
   line-height: 1.75rem;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
 }
 
 .text-2xl {

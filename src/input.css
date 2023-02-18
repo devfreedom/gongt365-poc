@@ -9,4 +9,18 @@
     .toggleBtnOn {
         background-color: #22C55E;
     }
+    .toggleMenuBtnOn {
+        background-color: #80FFFFFF;
+    }
+    .toggleMenuBtnOff {
+        background-color: #00000000;
+    }
+    .visibilityOn {
+        flex: none;
+        display: hidden;
+    }
+    .visibilityOff {
+        flex: none;
+        display: hidden;
+    }
 }

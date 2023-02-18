@@ -84,7 +84,7 @@ document.getElementById('currentPosBtn').addEventListener("click", function() {
 
 
 // Display POI markers on the map
-// TODO: [Improvement][Refactor] Fix slow performance when markers are too many
+// TODO: [Refactor] Fix slow performance when there are too many markers
 //      Solution 1: Use WebGL to draw Leaflet.js map (https://gist.github.com/Sumbera/c6fed35c377a46ff74c3)
 //      Solution 2: Use Leaflet.js plugin Leaflet.glify based on Solution 1 (https://robertleeplummerjr.github.io/Leaflet.glify/)
 //      Solution 3: Add markers directly on the canvas (https://github.com/domoritz/leaflet-maskcanvas)
@@ -109,13 +109,21 @@ poiItemList.forEach (item => {
   poiPlace = item.querySelector('.poiPlace').innerText;
   poiEquipment = item.querySelector('.poiEquipment').innerText;
   poiTitle = poiPlace + " (" + poiEquipment + ")";
-  
+
+  // Zoom into the marker location upon clicking the POI item
+  item.addEventListener("click", function(){
+    map.setView([item.querySelector('.poiLat').innerText, item.querySelector('.poiLng').innerText], 20);
+  });
+
+  // Original Leaflet.js marker code
   // var addMarker = L.marker([poiLat, poiLng], {title: poiTitle}).addTo(map).bindPopup(poiTitle);
 
-  // Use Leaflet.markercluster for rapid rendering of abstracted markers
+  // Use Leaflet.markercluster for rapid abstract rendering
   markers.addLayer(L.marker([poiLat, poiLng], {title: poiTitle}).bindPopup(poiTitle));
   map.addLayer(markers);
 });
+
+
 
 
 // freeform Leaflet.js map

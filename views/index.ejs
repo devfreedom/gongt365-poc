@@ -27,67 +27,89 @@
 </head>
 
 <body>
-<div id="mobile-app-container" class="flex w-full h-full justify-center items-center">
+<div id="viewport" class="flex w-screen h-screen justify-center items-center">
 
-  <!-- Viewport starts here -->
-  <div id="viewport" class="flex flex-col w-full min-w-[45vh] max-w-[48vh] h-[100vh] justify-between">
+  <!-- App container starts here -->
+  <div id="app-container" class="flex flex-col min-w-[45vh] max-w-[48vh] h-[100vh] justify-between">
 
     <!-- Header starts here -->
-    <header class="flex w-full h-16 bg-white items-center">
-        <div id="header-logo" class="flex flex-row w-full h-full"> 
-            <img src="../img/gongt365-icon.svg" class="object-scale-down p-2"><img src="../img/gongt365-typo.svg" class="object-scale-down p-2">
+    <header class="flex-none">
+        <div class="w-full h-16 bg-white items-center">
+            <div id="header-logo" class="flex flex-row w-full h-full"> 
+                <img src="../img/gongt365-icon.svg" class="object-scale-down p-2"><img src="../img/gongt365-typo.svg" class="object-scale-down p-2">
+            </div>
         </div>
     </header>
-
-    <div id="card-container" class="flex flex-col w-full grow">
-
-        <!-- Map card -->
-        <div id="map-card" class="flex flex-col w-full h-full">
-            <div id="map-hero" class="flex flex-row h-20 p-2 items-center justify-between bg-[url('../img/map-hero-bg.svg')]">
-                <h1 class="text-bold font-black text-lg px-3">지도</h1>
-                <button id="currentPosBtn" class="flex flex-row py-2 px-3 mx-2 rounded-lg bg-green-500 items-center"><img src="./img/current-location-btn.svg" class="w-5 mr-2" style="filter: invert(1);"><p class="text-white">현재 위치</p></button>
-            </div>
-            <!-- Leaflet.js clashes with Tailwind CSS in terms of sizing, fallback to inline script -->
-            <div id="map-wrapper" style="width: 100%; height: 60%;">
-                <div id="map" style="width: 100%; height: 100%;"></div> 
-            </div>
-            <div id="poi-list" class="flex flex-col w-full h-[40vh] overflow-x-hidden overflow-y-auto p-3">
-                <% if (poiList == null) { %>
-                    <div class="flex flex-col bg-orange-500 rounded-xl p-5 m-5 items-center justify-center">
-                        <h1 class="text-lg font-bold">데이터를 가져올 수 없습니다</h1> 
-                        <p>Error: poiList is null</p>
-                    </div>
-                <% } else if (poiList == undefined) { %>
-                    <div class="flex flex-col bg-orange-500 rounded-xl text-lg font-bold p-5 m-5 items-center justify-center"></div>
-                        <h1 class="text-lg font-bold">데이터를 가져올 수 없습니다</h1> 
-                        <p>Error: poiList is not defined</p>
-                    </div>
-                <% } else { %>
-                    <% poiList.forEach(poi => { %>
-                        <div class="poiItem w-full p-3 my-3 rounded-xl bg-white border border-slate-300 shadow-md">
-                            <h1 class="poiPlace text-md font-bold"><%= poi.place %></h3>
-                            <h1 class="poiEquipment text-md"><%= poi.equipment %></h1>
-                            <p class="poiAddress text-sm"><%= poi.city %>&nbsp;<%= poi.district %></p>
-                            <p class="poiContact text-sm"><%= poi.authority %>&nbsp;(<%= poi.phone_no %>)</p>
-                            <p class="poiIndex hidden"><%= poi.index %></p>
-                            <p class="poiLat hidden"><%= poi.latitude %></p>
-                            <p class="poiLng hidden"><%= poi.longitude %></p>
-                        </div>
-                    <% }) %>
-                <% } %>
-            </div>
+    
+    <!-- Hero starts here -->
+    <div id="map-hero" class="flex-none">
+        <div class="flex flex-row h-20 p-2 items-center justify-between bg-[url('../img/map-hero-bg.svg')] bg-right">
+            <h1 class="text-bold font-black text-lg px-3">지도</h1>
+            <button id="currentPosBtn" class="flex flex-row py-2 px-3 mx-2 rounded-lg bg-green-500 items-center"><img src="./img/current-location-btn.svg" class="w-5 mr-2" style="filter: invert(1);"><p class="text-white">현재 위치</p></button>
         </div>
+    </div>
 
-        <!-- Workout card -->
-        <div id="workout-card" class="flex flex-col h-full w-full hidden">
-            <div id="workout-hero" class="flex flex-col h-32 justify-center bg-[url('../img/workout-hero-bg.svg')]">
-                <div class="mx-10">
-                    <h1 class="text-bold font-black text-xl">운동기구 정보</h1>
-                    <h1 class="text-bold text-lg">안전하고 효과적으로 운동하기!</h1>
+    <div id="workout-hero" class="flex-none hidden">
+        <div class="flex flex-col h-32 justify-center bg-[url('../img/workout-hero-bg.svg')] bg-right px-10">
+            <h1 class="text-bold font-black text-xl">운동기구 정보</h1>
+            <h1 class="text-bold text-lg">안전하고 효과적으로 운동하기!</h1>
+        </div>
+    </div>
+
+    <div id="meetup-hero" class="flex-none hidden">
+        <div class="flex flex-col h-32 justify-center bg-[url('../img/meetup-hero-bg.svg')] bg-right px-10">
+            <h1 class="text-bold font-black text-xl">운동 모임</h1>
+            <h1 class="text-bold text-lg">함께 모여서 운동해요!</h1>
+        </div>
+    </div>
+
+    <div id="profile-hero" class="flex-none hidden">
+        <div class="flex flex-col h-32 justify-center bg-[url('../img/profile-hero-bg.svg')] bg-right px-10">
+            <h1 class="text-bold font-black text-xl">안녕하세요!</h1>
+            <!-- TODO: [Feature] Randomize welcome messages upon page view -->
+            <h1 class="text-bold text-lg">오늘도 활기차게 운동해볼까요!</h1>
+        </div>
+    </div>
+
+
+    <!-- Map card -->
+    <div id="map-card" class="grow">
+        <!-- Leaflet.js clashes with Tailwind CSS in terms of sizing, fallback to inline script -->
+        <div id="map-wrapper" style="width: 100%; height: 60%;">
+            <div id="map" style="width: 100%; height: 100%;"></div> 
+        </div>
+        <div id="poi-list" class="flex flex-col w-full h-[40vh] overflow-x-hidden overflow-y-auto p-3">
+            <% if (poiList == null) { %>
+                <div class="flex flex-col bg-orange-500 rounded-xl p-5 m-5 items-center justify-center">
+                    <h1 class="text-lg font-bold">데이터를 가져올 수 없습니다</h1> 
+                    <p>Error: poiList is null</p>
                 </div>
-            </div>
+            <% } else if (poiList == undefined) { %>
+                <div class="flex flex-col bg-orange-500 rounded-xl text-lg font-bold p-5 m-5 items-center justify-center"></div>
+                    <h1 class="text-lg font-bold">데이터를 가져올 수 없습니다</h1> 
+                    <p>Error: poiList is not defined</p>
+                </div>
+            <% } else { %>
+                <% poiList.forEach(poi => { %>
+                    <div class="poiItem w-full p-3 my-3 rounded-xl bg-white border border-slate-300 shadow-md">
+                        <h1 class="poiPlace text-md font-bold"><%= poi.place %></h3>
+                        <h1 class="poiEquipment text-md"><%= poi.equipment %></h1>
+                        <p class="poiAddress text-sm"><%= poi.city %>&nbsp;<%= poi.district %></p>
+                        <p class="poiContact text-sm"><%= poi.authority %>&nbsp;(<%= poi.phone_no %>)</p>
+                        <p class="poiIndex hidden"><%= poi.index %></p>
+                        <p class="poiLat hidden"><%= poi.latitude %></p>
+                        <p class="poiLng hidden"><%= poi.longitude %></p>
+                    </div>
+                <% }) %>
+            <% } %>
+        </div>
+    </div>
 
-            <div id="equipment-list" class="flex flex-col w-full h-[72vh] overflow-x-hidden overflow-y-auto p-3">
+    
+    <!-- Workout card -->
+    <div id="workout-card" class="flex flex-col h-full w-full hidden">
+        <div id="equipment-list" class="grow">
+            <div class="flex flex-col w-full h-full overflow-x-hidden overflow-y-auto p-3">
                 <% if (equipList == null) { %>
                     <div class="flex flex-col bg-orange-500 rounded-xl p-5 m-5 items-center justify-center">
                         <h1 class="text-lg font-bold">데이터를 가져올 수 없습니다</h1> 
@@ -111,143 +133,129 @@
                         </a>
                     <% }) %>
                 <% } %>
-            </div>      
+            </div>
+        </div>      
+    </div>
+
+
+    <!-- Meetup card -->
+    <div id="meetup-card" class="flex flex-col h-full w-full hidden">
+        
+        <div id="meetup-content" class="flex flex-col w-full h-[72vh] overflow-x-hidden overflow-y-auto p-3">
+            
+            <div id="meetup-post" class="flex flex-col w-full h-[50vh] hidden"></div>
+            
         </div>
+    </div>
 
 
-        <!-- Meetup card -->
-        <div id="meetup-card" class="flex flex-col h-full w-full hidden">
-            <div id="meetup-hero" class="flex flex-col h-32 justify-center bg-[url('../img/meetup-hero-bg.svg')]">
-                <div class="mx-10">
-                    <h1 class="text-bold font-black text-xl">운동 모임</h1>
-                    <h1 class="text-bold text-lg">함께 모여서 운동해요!</h1>
+    <!-- Profile card -->
+    <div id="profile-card" class="flex flex-col h-full w-full hidden">
+        
+        <div id="profile-content" class="flex flex-col w-full h-[72vh] overflow-x-hidden overflow-y-auto p-3">
+
+            <div id="location-info" class="flex flex-row justify-between mt-3">
+                <div id="address-info" class="flex flex-col">
+                    <p class="font-bold text-md text-slate-500 mb-2">현재 설정된 지역</p>
+                    <h1 id="currentRegion" class="font-bold text-2xl text-black">서울특별시 서대문구</p>
                 </div>
-            </div>
-            <div id="meetup-content" class="flex flex-col w-full h-[72vh] overflow-x-hidden overflow-y-auto p-3">
                 
-                <div id="meetup-post" class="flex flex-col w-full h-[50vh] hidden"></div>
-                
-            </div>
-        </div>
-
-
-
-
-
-
-        <!-- Profile card -->
-        <div id="profile-card" class="flex flex-col h-full w-full hidden">
-            <div id="profile-hero" class="flex flex-col h-32 justify-center bg-[url('../img/profile-hero-bg.svg')]">
-                <div class="mx-10">
-                    <h1 class="text-bold font-black text-xl">안녕하세요!</h1>
-                    <!-- TODO: [Feature] Randomize welcome messages upon page view -->
-                    <h1 class="text-bold text-lg">오늘도 활기차게 운동해볼까요!</h1>
-                </div>
-            </div>
-            <div id="profile-content" class="flex flex-col w-full h-[72vh] overflow-x-hidden overflow-y-auto p-3">
-    
-                <div id="location-info" class="flex flex-row justify-between mt-3">
-                    <div id="address-info" class="flex flex-col">
-                        <p class="font-bold text-md text-slate-500 mb-2">현재 설정된 지역</p>
-                        <h1 id="currentRegion" class="font-bold text-2xl text-black">서울특별시 서대문구</p>
-                    </div>
-                    
-                    <div id="weatherInfo" class="flex flex-row font-bold mt-3 items-center justify-center">
-                        <% if (currentWeather == null) { %>
-                            <h1 class="font-bold text-orange-500">현재 날씨를 가져올 수 없습니다</h1>
-                            <% if (weatherErr !== false ) { %>
-                                <p><%= weatherErr %></p>
-                            <% } else { %>
-                                <p>Error: currentWeather is null</p>
-                            <% } %>
-                        <% } else if (currentWeather == undefined) { %>
-                            <h1 class="font-bold text-orange-500">현재 날씨를 가져올 수 없습니다</h1>
-                            <p>Error: currentWeather is not defined</p>
+                <div id="weatherInfo" class="flex flex-row font-bold mt-3 items-center justify-center">
+                    <% if (currentWeather == null) { %>
+                        <h1 class="font-bold text-orange-500">현재 날씨를 가져올 수 없습니다</h1>
+                        <% if (weatherErr !== false ) { %>
+                            <p><%= weatherErr %></p>
                         <% } else { %>
-                            <img src="<%= weatherIcon %>" class="m-3">
-                            <div class="flex flex-col align-center text-center">
-                                <h1 class="text-sm"><%= currentWeather %></h1>
-                                <p><%= currentTemp %>°C</p>
-                            </div>
+                            <p>Error: currentWeather is null</p>
                         <% } %>
-                    </div>
+                    <% } else if (currentWeather == undefined) { %>
+                        <h1 class="font-bold text-orange-500">현재 날씨를 가져올 수 없습니다</h1>
+                        <p>Error: currentWeather is not defined</p>
+                    <% } else { %>
+                        <img src="<%= weatherIcon %>" class="m-3">
+                        <div class="flex flex-col align-center text-center">
+                            <h1 class="text-sm"><%= currentWeather %></h1>
+                            <p><%= currentTemp %>°C</p>
+                        </div>
+                    <% } %>
                 </div>
-                
-                <!-- TODO: [Feature] Implement city selector that fetches POI list of the select city accordingly
-                <select id="select-city">
-                    <option value="city">서울특별시</option>
-
-                    <option value="empty">시/도</option>
-                    <option value="seoul">서울특별시</option>
-                    <option value="gyeonggi">경기도</option>
-                    <option value="incheon">인천광역시</option>
-                    <option value="gangwon">강원도</option>
-                    <option value="chungbuk">충청북도</option>
-                    <option value="chungnam">충청남도</option>
-                    <option value="sejong">세종특별시</option>
-                    <option value="daejeon">대전광역시</option>
-                    <option value="jeonbuk">전라북도</option>
-                    <option value="jeonnam">전라남도</option>
-                    <option value="gwangju">광주광역시</option>
-                    <option value="gyeongbuk">경상북도</option>
-                    <option value="gyeongnam">경상남도</option>
-                    <option value="daegu">대구광역시</option>
-                    <option value="busan">부산광역시</option>
-                    <option value="ulsan">울산광역시</option>
-                    <option value="jeju">제주특별자치도</option>
-
-                </select>
-                <select id="select-district">
-                    <option value="district">서대문구</option>
-                    <option>시/군/구</option>
-                </select>
-                -->
-
-
-                <button id="currentPosBtn" class="p-1 px-2 my-3 rounded-lg toggleBtnOff text-gray-400">지역 변경</button> 
-
-                <div class="w-full h-[1px] my-3 bg-slate-300"></div>
-
-                <!-- TODO: [Feature] Implement POI filter that corresponds to select body parts, based on the name of the equipment -->
-
-                <h3 class="font-bold text-xl text-orange-500 mt-7 mb-3">회색 색상은 아직 지원되지 않는 기능입니다</h3>
-
-                <h3 class="font-bold text-2xl text-slate-300 mt-7 mb-3">운동기구 필터</h3>
-                
-                <h3 class="font-bold mt-7 mb-3 text-slate-300">집중적으로 운동할 부위</h3>
-                <div id="workoutBodyParts" class="grid grid-cols-3 gap-2">
-                    <button id="neck" class="toggleBtn p-1 rounded-lg toggleBtnOff">목</button>
-                    <button id="shoulder" class="toggleBtn p-1 rounded-lg toggleBtnOff">어깨</button>
-                    <button id="arm" class="toggleBtn p-1 rounded-lg toggleBtnOff">팔</button>
-                    <button id="back" class="toggleBtn p-1 rounded-lg toggleBtnOff">등</button>
-                    <button id="chest" class="toggleBtn p-1 rounded-lg toggleBtnOff">가슴</button>
-                    <button id="abs" class="toggleBtn p-1 rounded-lg toggleBtnOff">복부</button>
-                    <button id="waist" class="toggleBtn p-1 rounded-lg toggleBtnOff">허리</button>
-                    <button id="thigh" class="toggleBtn p-1 rounded-lg toggleBtnOff">허벅지</button>
-                    <button id="calf" class="toggleBtn p-1 rounded-lg toggleBtnOff">종아리</button>
-                    <button id="feet" class="toggleBtn p-1 rounded-lg toggleBtnOff">발</button>
-                </div>
-
-                <h3 class="font-bold mt-7 mb-3 text-slate-300">운동 유형</h3>
-                <div id="workoutBodyParts" class="grid grid-cols-3 gap-2">
-                    <button id="whole-body" class="toggleBtn p-1 rounded-lg toggleBtnOff">전신 운동</button>
-                    <button id="muscle" class="toggleBtn p-1 rounded-lg toggleBtnOff">근육 운동</button>
-                    <button id="cardio" class="toggleBtn p-1 rounded-lg toggleBtnOff">유산소 운동</button>
-                </div>
-                
             </div>
-        </div>
+            
+            <!-- TODO: [Feature] Implement city selector that fetches POI list of the select city accordingly
+            <select id="select-city">
+                <option value="city">서울특별시</option>
 
+                <option value="empty">시/도</option>
+                <option value="seoul">서울특별시</option>
+                <option value="gyeonggi">경기도</option>
+                <option value="incheon">인천광역시</option>
+                <option value="gangwon">강원도</option>
+                <option value="chungbuk">충청북도</option>
+                <option value="chungnam">충청남도</option>
+                <option value="sejong">세종특별시</option>
+                <option value="daejeon">대전광역시</option>
+                <option value="jeonbuk">전라북도</option>
+                <option value="jeonnam">전라남도</option>
+                <option value="gwangju">광주광역시</option>
+                <option value="gyeongbuk">경상북도</option>
+                <option value="gyeongnam">경상남도</option>
+                <option value="daegu">대구광역시</option>
+                <option value="busan">부산광역시</option>
+                <option value="ulsan">울산광역시</option>
+                <option value="jeju">제주특별자치도</option>
+
+            </select>
+            <select id="select-district">
+                <option value="district">서대문구</option>
+                <option>시/군/구</option>
+            </select>
+            -->
+
+
+            <button id="currentPosBtn" class="p-1 px-2 my-3 rounded-lg toggleBtnOff text-gray-400">지역 변경</button> 
+
+            <div class="w-full h-[1px] my-3 bg-slate-300"></div>
+
+            <!-- TODO: [Feature] Implement POI filter that corresponds to select body parts, based on the name of the equipment -->
+
+            <h3 class="font-bold text-xl text-orange-500 mt-7 mb-3">회색 색상은 아직 지원되지 않는 기능입니다</h3>
+
+            <h3 class="font-bold text-2xl text-slate-300 mt-7 mb-3">운동기구 필터</h3>
+            
+            <h3 class="font-bold mt-7 mb-3 text-slate-300">집중적으로 운동할 부위</h3>
+            <div id="workoutBodyParts" class="grid grid-cols-3 gap-2">
+                <button id="neck" class="toggleBtn p-1 rounded-lg toggleBtnOff">목</button>
+                <button id="shoulder" class="toggleBtn p-1 rounded-lg toggleBtnOff">어깨</button>
+                <button id="arm" class="toggleBtn p-1 rounded-lg toggleBtnOff">팔</button>
+                <button id="back" class="toggleBtn p-1 rounded-lg toggleBtnOff">등</button>
+                <button id="chest" class="toggleBtn p-1 rounded-lg toggleBtnOff">가슴</button>
+                <button id="abs" class="toggleBtn p-1 rounded-lg toggleBtnOff">복부</button>
+                <button id="waist" class="toggleBtn p-1 rounded-lg toggleBtnOff">허리</button>
+                <button id="thigh" class="toggleBtn p-1 rounded-lg toggleBtnOff">허벅지</button>
+                <button id="calf" class="toggleBtn p-1 rounded-lg toggleBtnOff">종아리</button>
+                <button id="feet" class="toggleBtn p-1 rounded-lg toggleBtnOff">발</button>
+            </div>
+
+            <h3 class="font-bold mt-7 mb-3 text-slate-300">운동 유형</h3>
+            <div id="workoutBodyParts" class="grid grid-cols-3 gap-2">
+                <button id="whole-body" class="toggleBtn p-1 rounded-lg toggleBtnOff">전신 운동</button>
+                <button id="muscle" class="toggleBtn p-1 rounded-lg toggleBtnOff">근육 운동</button>
+                <button id="cardio" class="toggleBtn p-1 rounded-lg toggleBtnOff">유산소 운동</button>
+            </div>
+            
+        </div>
     </div>
 
     <!-- Navbar starts here -->
-    <div id="navbar" class="flex flex-row w-full h-20 bg-slate-200 items-center justify-between">
-        <div class="w-1"></div>
-        <div id="map-nav-btn" class="flex flex-col items-center px-5 py-1 rounded-lg bg-slate-300"> <img src="./img/map-navbar-icon.svg" class="w-7"> <h1 class="mt-1 text-sm">지도</h1> </div>
-        <div id="workout-nav-btn" class="flex flex-col items-center px-5 py-1 rounded-lg"> <img src="./img/workout-navbar-icon.svg" class="w-7"> <h1 class="mt-1 text-sm">운동</h1> </div>
-        <div id="meetup-nav-btn" class="flex flex-col items-center px-5 py-1 rounded-lg"> <img src="./img/meetup-navbar-icon.svg" class="w-7"> <h1 class="mt-1 text-sm">모임</h1> </div>
-        <div id="profile-nav-btn" class="flex flex-col items-center px-5 py-1 rounded-lg"> <img src="./img/profile-navbar-icon.svg" class="w-7"> <h1 class="mt-1 text-sm">프로필</h1> </div>
-        <div class="w-1"></div>
+    <div id="navbar" class="flex-none">
+        <div class="flex flex-row w-full h-20 bg-slate-200 items-center justify-between">
+            <div class="w-1"></div>
+            <div id="map-nav-btn" class="toggleMenuBtn toggleMenuBtnOn flex flex-col items-center px-5 py-1 rounded-lg"> <img src="./img/map-navbar-icon.svg" class="w-7"> <h1 class="mt-1 text-sm">지도</h1> </div>
+            <div id="workout-nav-btn" class="toggleMenuBtn flex flex-col items-center px-5 py-1 rounded-lg"> <img src="./img/workout-navbar-icon.svg" class="w-7"> <h1 class="mt-1 text-sm">운동</h1> </div>
+            <div id="meetup-nav-btn" class="toggleMenuBtn flex flex-col items-center px-5 py-1 rounded-lg"> <img src="./img/meetup-navbar-icon.svg" class="w-7"> <h1 class="mt-1 text-sm">모임</h1> </div>
+            <div id="profile-nav-btn" class="toggleMenuBtn flex flex-col items-center px-5 py-1 rounded-lg"> <img src="./img/profile-navbar-icon.svg" class="w-7"> <h1 class="mt-1 text-sm">프로필</h1> </div>
+            <div class="w-1"></div>
+        </div>
     </div>
 </body>
 
