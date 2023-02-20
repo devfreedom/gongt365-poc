@@ -187,31 +187,32 @@
             </div>
         </div>
         
-        <div id="new-meetup-modal" class="grow bg-slate-100 mx-2 my-10 p-10 rounded-2xl hidden">
-            <div class="flex flex-col items-between">
+        <div id="new-meetup-modal" class="grow bg-slate-100 mx-3 my-5 px-5 py-10 rounded-2xl hidden">
+            <div class="flex flex-col h-full justify-between">
                 <h1 class="text-xl font-black">운동 모임을 만들어보세요!</h1>
-                <div class="flex flex-col pt-10 pb-10 justify-between">
+                
+                <div class="flex-1 flex-col justify-between my-10">
                     
                     <div class="flex flex-row items-center w-full">
-                        <p>사용자 이름:</p> <input id="meetup-username" class="bg-white rounded-lg h-10 m-1 px-3 ml-5" type="text" name="meetupUsernameInput" required minlength="5" maxlength="15">
+                        <p class="shrink-0">이름:</p> <input id="meetup-username" class="flex-1 bg-white rounded-lg h-10 m-1 px-3 ml-5" type="text" name="meetupUsernameInput" required minlength="5" maxlength="15">
                     </div>
 
                     <div class="flex flex-row items-center w-full">
-                        <p>사용자 암호:</p> <input id="meetup-password" class="bg-white rounded-lg h-10 m-1 px-3 ml-5" type="text" name="meetupUsernameInput" required minlength="8" maxlength="20">
+                        <p class="shrink-0">암호:</p> <input id="meetup-password" class="flex-1 bg-white rounded-lg h-10 m-1 px-3 ml-5" type="text" name="meetupUsernameInput" required minlength="8" maxlength="20">
                     </div>
 
-                    <div class="flex flex-row items-center">
-                        <p>모임 제목:</p> <input id="meetup-title" class="bg-white rounded-lg h-10 m-1 px-3 ml-5" type="text" name="meetupTitleInput" required minlength="1" maxlength="20">
+                    <div class="flex flex-row items-center w-full">
+                        <p class="shrink-0">모임 제목:</p> <input id="meetup-title" class="flex-1 bg-white rounded-lg h-10 m-1 px-3 ml-5" type="text" name="meetupTitleInput" required minlength="1" maxlength="20">
                     </div>
 
-                    <div class="flex flex-row items-center">
-                        <p>모임 장소:</p> 
+                    <div class="flex flex-row items-center w-full">
+                        <p class="shrink-0">모임 장소:</p> 
                         <% if (meetupPlaceList == null) { %>
                             <p class="h-10 m-1 px-3 ml-5">Error: meetupPlaceList is null</p>
                         <% } else if (meetupPlaceList == undefined) { %>
                             <p class="h-10 m-1 px-3 ml-5">Error: meetupPlaceList is not defined</p>
                         <% } else { %>
-                            <select id="meetup-place" class="bg-white rounded-lg h-10 m-1 px-3 ml-5" name="meetupPlaceInput">
+                            <select id="meetup-place" class="flex-1 bg-white rounded-lg h-10 m-1 px-3 ml-5" name="meetupPlaceInput">
                             <% meetupPlaceList.forEach(meetupPlace => { %>
                                 <option value="<%= meetupPlace %>"><%= meetupPlace %></option>
                             <% }) %>
@@ -219,12 +220,12 @@
                         <% } %>
                     </div>
 
-                    <div class="flex flex-row items-center">
-                        <p>모임 날짜:</p> <input id="meetup-date" class="bg-white rounded-lg h-10 m-1 px-3 ml-5" type="text" name="meetupDateInput" value="날짜를 선택하세요." readonly required minlength="1" maxlength="20">
+                    <div class="flex flex-row items-center w-full">
+                        <p class="shrink-0">모임 날짜:</p> <input id="meetup-date" class="flex-1 bg-white rounded-lg h-10 m-1 px-3 ml-5" type="text" name="meetupDateInput" value="날짜를 선택하세요." readonly required minlength="1" maxlength="20">
                     </div>
 
-                    <div class="flex flex-row items-center">
-                        <p>모임 시간:</p> 
+                    <div class="flex flex-row items-center w-full">
+                        <p class="shrink-0">모임 시간:</p> 
                         <div class="flex flex-row">
                             <select id="meetup-hour" class="bg-white rounded-lg h-10 m-1 px-3 ml-5" name="meetupHourInput">
                                 <option value="12">오후 12시</option>
@@ -270,8 +271,8 @@
                     </div>
 
 
-                    <div class="flex flex-row items-center">
-                        <p>예상 운동 시간:</p>
+                    <div class="flex flex-row items-center w-full">
+                        <p class="shrink-0">예상 운동 시간:</p>
                         <div class="flex flex-row"> 
                             <select id="meetup-duration" class="bg-white rounded-lg h-10 m-1 px-3 ml-5" name="meetupDurationInput">
                                 <option value="10">10분</option>
