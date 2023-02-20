@@ -15,12 +15,4 @@
     .toggleMenuBtnOff {
         background-color: #00000000;
     }
-    .visibilityOn {
-        flex: none;
-        display: hidden;
-    }
-    .visibilityOff {
-        flex: none;
-        display: hidden;
-    }
 }

@@ -6,8 +6,6 @@ import "./uiux.js";
 let currentPosLat = 0;    // The latitude of current position
 let currentPosLng = 0;    // The longitude of current position
 
-var currentTime = new Date();
-
 
 // Global timers
 // window.onload = setTimeout(   , 3000);
@@ -82,7 +80,7 @@ document.getElementById('currentPosBtn').addEventListener("click", function() {
 });
 
 
-// Trigger showCurrentPosMarker() every second when 'trackCurrentPos' is checked 
+// TODO: [Implement] Update the current location marker every second when 'trackCurrentPos' button is toggled on, by triggering showCurrentPosMarker()
 
 
 // Display POI markers on the map
@@ -124,8 +122,6 @@ poiItemList.forEach (item => {
   markers.addLayer(L.marker([poiLat, poiLng], {title: poiTitle}).bindPopup(poiTitle));
   map.addLayer(markers);
 });
-
-
 
 
 // freeform Leaflet.js map

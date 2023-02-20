@@ -15,7 +15,6 @@ const sanitize = require('mongo-sanitize');
   // ...
 // });
 
-
 // Configure Express
 const app = express();
 
@@ -128,6 +127,7 @@ let equipListVar = null;
 let equipErrVar = null;
 let meetupListVar = null;
 let meetupErrVar = null;
+let meetupPlaceListVar = null;
 
 app.get("/", function (req, res) {
   // Retrieve fitness equipment POI data from MongoDB
@@ -167,6 +167,18 @@ app.get("/", function (req, res) {
     }
   });
 
+  // Retrieve distinct POI place names for the meetup event modal
+  poi_equipments.distinct('place', function (err, result) {
+    if(err) {
+      meetupPlaceListVar = null;
+      poiErrVar = "ERROR : Couldn't retrieve POI list";
+    }
+    else {
+      meetupPlaceListVar = result;
+      poiErrVar = false;
+    }
+  });
+
   // Fetch weather data from OpenWeatherMap API
   let district = req.body.district;
   // district is currently hardcoded for testing purpose
@@ -196,6 +208,7 @@ app.get("/", function (req, res) {
     equipList: equipListVar,
     meetupErr: meetupErrVar,
     meetupList: meetupListVar,
+    meetupPlaceList: meetupPlaceListVar,
   });
 });
 

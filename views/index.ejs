@@ -22,6 +22,10 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css">
 
+  <!-- Initialize js-datepicker -->
+  <link rel="stylesheet" href="https://unpkg.com/js-datepicker/dist/datepicker.min.css">
+  <script src="https://unpkg.com/js-datepicker"></script>
+
   <!-- Use ES Module to load multiple Javascript files -->
   <script async src="./src/index.js" type="module"></script>
 </head>
@@ -98,7 +102,7 @@
         </div>
 
         <div class="mx-5 mt-7 mb-5">
-            <h3 class="text-lg font-black">운동기구를 터치하시면 사용법 안내 동영상이 재생됩니다.</h3>
+            <h3 class="text-lg font-black text-green-500">운동기구를 터치하시면 사용법 안내 동영상이 재생됩니다.</h3>
         </div>
 
         <div id="equipment-list" class="grow overflow-y-auto">
@@ -140,7 +144,12 @@
                 <h1 class="text-bold text-md">함께 모여서 운동해요!</h1>
             </div>
         </div>
-        
+
+        <div id="meetup-toolbar" class="flex flex-row mx-2 mt-7 mb-5 justify-between items-center">
+            <h3 class="text-lg font-black text-green-500">서울특별시 서대문구의 모임 목록</h3>
+            <button id="new-meetup-btn" class="flex flex-row py-2 px-3 rounded-lg bg-green-500 items-center"><p class="text-white">모임 약속 만들기</p></button>
+        </div>
+
         <div id="meetup-list" class="grow overflow-y-auto">
             <div class="flex flex-col w-full h-full overflow-x-hidden overflow-y-auto">
                 <% if (meetupList == null) { %>
@@ -156,22 +165,137 @@
                 <% } else { %>
                     <% meetupList.forEach(meetup => { %>
                         <div class="meetupItem w-full">
-                            <h1 class="meetupUsername text-md font-bold"><%= meetup.username %></h3>
-                            <h1 class="meetupTitle text-md"><%= meetup.title %></h1>
-                            <p class="meetupAddress text-sm"><%= meetup.city %>&nbsp;<%= meetup.district %>&nbsp;<%= meetup.poi %></p>
-                           
-                            <!-- [TODO] Convert ISO Date format to YYYY-MM-DD hh:ss -->
-                            <!-- <p class="meetupDatetime text-sm"><%= meetup.date %>&nbsp;(<%= meetup.time %>)</p> -->
-                            
-                            <p class="meetupDatetime text-sm"><%= meetup.isodate %></p>
-                            <p class="meetupDuration"><%= meetup.duration_min %>분간 운동할 예정</p>
-                            <p class="meetupRsvpCount"><%= meetup.rsvp_count %>명 참석 예정</p>
+                            <div class="p-3">
+                                <h1 class="meetupUsername text-md font-bold"><%= meetup.username %></h3>
+                                <h1 class="meetupTitle text-lg"><%= meetup.title %></h1>
+                                <p class="meetupAddress text-md"><%= meetup.city %>&nbsp;<%= meetup.district %>&nbsp;<%= meetup.poi %></p>
+                                <p class="meetupDatetime text-md"><%= meetup.isodate.slice(0,4) %>년&nbsp;<%= meetup.isodate.slice(5,7) %>월&nbsp;<%= meetup.isodate.slice(8,10) %>일&nbsp;<%= meetup.isodate.slice(11,13) %>시&nbsp;<%= meetup.isodate.slice(14,16) %>분</p>
+                                <!-- [TODO] Convert ISO Date format to YYYY-MM-DD hh:ss -->
+                                <!-- <p class="meetupDatetime text-sm"><%= meetup.date %>&nbsp;(<%= meetup.time %>)</p> -->
+                                <div class="flex flex-row justify-between">
+                                    <div>
+                                        <p class="meetupDuration text-md"><%= meetup.duration_min %>분간 운동할 예정</p>
+                                        <p class="meetupRsvpCount text-md"><%= meetup.rsvp_count %>명 참석 예정</p>
+                                    </div>
+                                    <button class="toggleBtn toggleBtnOff flex flex-row px-3 py-2 rounded-lg items-center">참석할래요!</button>
+                                </div>
+                            </div>
                             <div class="w-full h-1 bg-slate-200 my-3"></div>
                         </div>
                     <% }) %>
                 <% } %>
             </div>
-        </div>      
+        </div>
+        
+        <div id="new-meetup-modal" class="grow bg-slate-100 mx-2 my-10 p-10 rounded-2xl hidden">
+            <div class="flex flex-col items-between">
+                <h1 class="text-xl font-black">운동 모임을 만들어보세요!</h1>
+                <div class="flex flex-col pt-10 pb-10 justify-between">
+                    
+                    <div class="flex flex-row items-center w-full">
+                        <p>사용자 이름:</p> <input id="meetup-username" class="bg-white rounded-lg h-10 m-1 px-3 ml-5" type="text" name="meetupUsernameInput" required minlength="5" maxlength="15">
+                    </div>
+
+                    <div class="flex flex-row items-center w-full">
+                        <p>사용자 암호:</p> <input id="meetup-password" class="bg-white rounded-lg h-10 m-1 px-3 ml-5" type="text" name="meetupUsernameInput" required minlength="8" maxlength="20">
+                    </div>
+
+                    <div class="flex flex-row items-center">
+                        <p>모임 제목:</p> <input id="meetup-title" class="bg-white rounded-lg h-10 m-1 px-3 ml-5" type="text" name="meetupTitleInput" required minlength="1" maxlength="20">
+                    </div>
+
+                    <div class="flex flex-row items-center">
+                        <p>모임 장소:</p> 
+                        <% if (meetupPlaceList == null) { %>
+                            <p class="h-10 m-1 px-3 ml-5">Error: meetupPlaceList is null</p>
+                        <% } else if (meetupPlaceList == undefined) { %>
+                            <p class="h-10 m-1 px-3 ml-5">Error: meetupPlaceList is not defined</p>
+                        <% } else { %>
+                            <select id="meetup-place" class="bg-white rounded-lg h-10 m-1 px-3 ml-5" name="meetupPlaceInput">
+                            <% meetupPlaceList.forEach(meetupPlace => { %>
+                                <option value="<%= meetupPlace %>"><%= meetupPlace %></option>
+                            <% }) %>
+                            </select>
+                        <% } %>
+                    </div>
+
+                    <div class="flex flex-row items-center">
+                        <p>모임 날짜:</p> <input id="meetup-date" class="bg-white rounded-lg h-10 m-1 px-3 ml-5" type="text" name="meetupDateInput" value="날짜를 선택하세요." readonly required minlength="1" maxlength="20">
+                    </div>
+
+                    <div class="flex flex-row items-center">
+                        <p>모임 시간:</p> 
+                        <div class="flex flex-row">
+                            <select id="meetup-hour" class="bg-white rounded-lg h-10 m-1 px-3 ml-5" name="meetupHourInput">
+                                <option value="12">오후 12시</option>
+                                <option value="13">오후 1시</option>
+                                <option value="14">오후 2시</option>
+                                <option value="15">오후 3시</option>
+                                <option value="16">오후 4시</option>
+                                <option value="17">오후 5시</option>
+                                <option value="18">오후 6시</option>
+                                <option value="19">오후 7시</option>
+                                <option value="20">오후 8시</option>
+                                <option value="21">오후 9시</option>
+                                <option value="22">오후 10시</option>
+                                <option value="23">오후 11시</option>
+                                <option value="24">오전 0시</option>
+                                <option value="01">오전 1시</option>
+                                <option value="02">오전 2시</option>
+                                <option value="03">오전 3시</option>
+                                <option value="04">오전 4시</option>
+                                <option value="05">오전 5시</option>
+                                <option value="06">오전 6시</option>
+                                <option value="07">오전 7시</option>
+                                <option value="08">오전 8시</option>
+                                <option value="09">오전 9시</option>
+                                <option value="10">오전 10시</option>
+                                <option value="11">오전 11시</option>
+                            </select>
+                            <select id="meetup-minute" class="bg-white rounded-lg h-10 m-1 px-3 ml-5" name="meetupMinuteInput">
+                                <option value="00">00분</option>
+                                <option value="05">05분</option>
+                                <option value="10">10분</option>
+                                <option value="15">15분</option>
+                                <option value="20">20분</option>
+                                <option value="25">25분</option>
+                                <option value="30">30분</option>
+                                <option value="35">35분</option>
+                                <option value="40">40분</option>
+                                <option value="45">45분</option>
+                                <option value="50">50분</option>
+                                <option value="55">55분</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="flex flex-row items-center">
+                        <p>예상 운동 시간:</p>
+                        <div class="flex flex-row"> 
+                            <select id="meetup-duration" class="bg-white rounded-lg h-10 m-1 px-3 ml-5" name="meetupDurationInput">
+                                <option value="10">10분</option>
+                                <option value="15">15분</option>
+                                <option value="20">20분</option>
+                                <option value="25">25분</option>
+                                <option value="30">30분</option>
+                                <option value="35">35분</option>
+                                <option value="40">40분</option>
+                                <option value="45">45분</option>
+                                <option value="50">50분</option>
+                                <option value="55">55분</option>
+                                <option value="60">60분</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-row justify-between items-center">
+                    <button id="new-meetup-cancel-btn" class="flex flex-row py-2 px-3 rounded-lg bg-green-500 items-center"><p class="text-white">취소</p></button>
+                    <button id="new-meetup-create-btn" class="flex flex-row py-2 px-3 rounded-lg bg-green-500 items-center"><p class="text-white">모임 만들기</p></button>
+                </div>
+            </div>
+        </div>
+
     </div>
 
 
