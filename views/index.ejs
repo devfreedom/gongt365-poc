@@ -171,10 +171,10 @@
                                 <h1 class="meetupUsername text-md font-bold"><%= meetup.username %></h3>
                                 <h1 class="meetupTitle text-lg"><%= meetup.title %></h1>
                                 <p class="meetupAddress text-md"><%= meetup.city %>&nbsp;<%= meetup.district %>&nbsp;<%= meetup.poi %></p>
-                                
+                                <p class="text-md"><%= meetup.isodate.slice(0,4) %>년&nbsp;<%= meetup.isodate.slice(5,7) %>월&nbsp;<%= meetup.isodate.slice(8,10) %>일</p>
                                 <div class="flex flex-row justify-between">
                                     <div>
-                                        <p class="meetupDatetimeDuration text-md"><%= meetup.isodate.slice(0,4) %>년&nbsp;<%= meetup.isodate.slice(5,7) %>월&nbsp;<%= meetup.isodate.slice(8,10) %>일&nbsp;<%= meetup.isodate.slice(11,13) %>시&nbsp;<%= meetup.isodate.slice(14,16) %>분, <%= meetup.duration_min %>분간 운동</p>
+                                        <p class="text-md"><%= meetup.isodate.slice(11,13) %>시&nbsp;<%= meetup.isodate.slice(14,16) %>분&nbsp;(<%= meetup.duration_min %>분간 운동)</p>
                                         <p class="meetupRsvpCount text-green-700 text-md"><%= meetup.rsvp_count %>명 참석 예정</p>
                                     </div>
                                     <button class="toggleBtn toggleBtnOff flex flex-row items-center px-3 py-2 rounded-lg text-sm">참석할래요!</button>
