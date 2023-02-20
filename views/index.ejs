@@ -146,8 +146,10 @@
         </div>
 
         <div id="meetup-toolbar" class="flex flex-row mx-2 mt-7 mb-5 justify-between items-center">
-            <h3 class="text-lg font-black text-green-500">서울특별시 서대문구의 모임 목록</h3>
-            <button id="new-meetup-btn" class="flex flex-row py-2 px-3 rounded-lg bg-green-500 items-center"><p class="text-white">모임 약속 만들기</p></button>
+            <div class="text-lg font-black text-green-500">
+                <p>서울특별시 서대문구</p>
+            </div>
+            <button id="new-meetup-btn" class="flex flex-row py-2 px-3 rounded-lg bg-green-500 items-center"><p class="text-white">모임 만들기</p></button>
         </div>
 
         <div id="meetup-list" class="grow overflow-y-auto">
@@ -169,18 +171,16 @@
                                 <h1 class="meetupUsername text-md font-bold"><%= meetup.username %></h3>
                                 <h1 class="meetupTitle text-lg"><%= meetup.title %></h1>
                                 <p class="meetupAddress text-md"><%= meetup.city %>&nbsp;<%= meetup.district %>&nbsp;<%= meetup.poi %></p>
-                                <p class="meetupDatetime text-md"><%= meetup.isodate.slice(0,4) %>년&nbsp;<%= meetup.isodate.slice(5,7) %>월&nbsp;<%= meetup.isodate.slice(8,10) %>일&nbsp;<%= meetup.isodate.slice(11,13) %>시&nbsp;<%= meetup.isodate.slice(14,16) %>분</p>
-                                <!-- [TODO] Convert ISO Date format to YYYY-MM-DD hh:ss -->
-                                <!-- <p class="meetupDatetime text-sm"><%= meetup.date %>&nbsp;(<%= meetup.time %>)</p> -->
+                                
                                 <div class="flex flex-row justify-between">
                                     <div>
-                                        <p class="meetupDuration text-md"><%= meetup.duration_min %>분간 운동할 예정</p>
-                                        <p class="meetupRsvpCount text-md"><%= meetup.rsvp_count %>명 참석 예정</p>
+                                        <p class="meetupDatetimeDuration text-md"><%= meetup.isodate.slice(0,4) %>년&nbsp;<%= meetup.isodate.slice(5,7) %>월&nbsp;<%= meetup.isodate.slice(8,10) %>일&nbsp;<%= meetup.isodate.slice(11,13) %>시&nbsp;<%= meetup.isodate.slice(14,16) %>분, <%= meetup.duration_min %>분간 운동</p>
+                                        <p class="meetupRsvpCount text-green-700 text-md"><%= meetup.rsvp_count %>명 참석 예정</p>
                                     </div>
-                                    <button class="toggleBtn toggleBtnOff flex flex-row px-3 py-2 rounded-lg items-center">참석할래요!</button>
+                                    <button class="toggleBtn toggleBtnOff flex flex-row items-center px-3 py-2 rounded-lg text-sm">참석할래요!</button>
                                 </div>
                             </div>
-                            <div class="w-full h-1 bg-slate-200 my-3"></div>
+                            <div class="w-full h-[1px] bg-slate-200 my-3"></div>
                         </div>
                     <% }) %>
                 <% } %>

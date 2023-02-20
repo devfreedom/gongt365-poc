@@ -721,6 +721,10 @@ video {
   height: 72vh;
 }
 
+.h-\[1px\] {
+  height: 1px;
+}
+
 .w-screen {
   width: 100vw;
 }
@@ -995,6 +999,16 @@ video {
 .text-slate-300 {
   --tw-text-opacity: 1;
   color: rgb(203 213 225 / var(--tw-text-opacity));
+}
+
+.text-green-600 {
+  --tw-text-opacity: 1;
+  color: rgb(22 163 74 / var(--tw-text-opacity));
+}
+
+.text-green-700 {
+  --tw-text-opacity: 1;
+  color: rgb(21 128 61 / var(--tw-text-opacity));
 }
 
 .shadow {
