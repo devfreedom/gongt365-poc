@@ -771,6 +771,10 @@ video {
   min-width: 40vh;
 }
 
+.min-w-\[50vh\] {
+  min-width: 50vh;
+}
+
 .max-w-\[50vh\] {
   max-width: 50vh;
 }

@@ -35,7 +35,7 @@
 
   <!-- App container starts here -->
   <!-- Portrait orientation only, from 16:9 to 21:9 aspect ratio -->
-  <div id="app-container" class="flex flex-col min-w-[40vh] max-w-[50vh] w-full h-screen justify-between">
+  <div id="app-container" class="flex flex-col min-w-[50vh] w-full h-screen justify-between">
 
     <!-- Header starts here -->
     <header class="flex-none">
@@ -169,7 +169,7 @@
                         <div class="meetupItem w-full">
                             <div class="p-3">
                                 <h1 class="meetupUsername text-md font-bold"><%= meetup.username %></h3>
-                                <h1 class="meetupTitle text-lg"><%= meetup.title %></h1>
+                                <h1 class="meetupTitle text-lg">"<%= meetup.title %>"</h1>
                                 <p class="meetupAddress text-md"><%= meetup.city %>&nbsp;<%= meetup.district %>&nbsp;<%= meetup.poi %></p>
                                 <p class="text-md"><%= meetup.isodate.slice(0,4) %>년&nbsp;<%= meetup.isodate.slice(5,7) %>월&nbsp;<%= meetup.isodate.slice(8,10) %>일</p>
                                 <div class="flex flex-row justify-between">
