@@ -779,6 +779,10 @@ video {
   max-width: 50vh;
 }
 
+.max-w-\[60vh\] {
+  max-width: 60vh;
+}
+
 .flex-none {
   flex: none;
 }
@@ -793,6 +797,10 @@ video {
 
 .grow {
   flex-grow: 1;
+}
+
+.resize {
+  resize: both;
 }
 
 .grid-cols-3 {

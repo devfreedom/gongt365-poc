@@ -124,5 +124,5 @@ poiItemList.forEach (item => {
 });
 
 
-// freeform Leaflet.js map
-map.invalidateSize();
+// Refresh Leaflet.js map upon resize, in order to avoid partial map rendering (bound to the wrapper)
+addEventListener("resize", (event) => { map.invalidateSize(); });

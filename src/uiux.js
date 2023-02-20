@@ -39,6 +39,8 @@ function mapMenu() {
   workoutBtn.classList.remove('bg-slate-300');
   meetupBtn.classList.remove('bg-slate-300');
   profileBtn.classList.remove('bg-slate-300');
+
+  map.invalidateSize();
 }
 
 function workoutMenu() {
