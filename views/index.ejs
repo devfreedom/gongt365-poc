@@ -156,7 +156,11 @@
                             <h1 class="meetupUsername text-md font-bold"><%= meetup.username %></h3>
                             <h1 class="meetupTitle text-md"><%= meetup.title %></h1>
                             <p class="meetupAddress text-sm"><%= meetup.city %>&nbsp;<%= meetup.district %>&nbsp;<%= meetup.poi %></p>
-                            <p class="meetupDatetime text-sm"><%= meetup.date %>&nbsp;(<%= meetup.time %>)</p>
+                           
+                            <!-- [TODO] Convert ISO Date format to YYYY-MM-DD hh:ss -->
+                            <!-- <p class="meetupDatetime text-sm"><%= meetup.date %>&nbsp;(<%= meetup.time %>)</p> -->
+                            
+                            <p class="meetupDatetime text-sm"><%= meetup.isodate %></p>
                             <p class="meetupDuration"><%= meetup.duration_min %>분간 운동할 예정</p>
                             <p class="meetupRsvpCount"><%= meetup.rsvp_count %>명 참석 예정</p>
                             <div class="w-full h-1 bg-slate-200 my-3"></div>

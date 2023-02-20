@@ -99,8 +99,7 @@ const meetupSchema = {
   title: String,
   city: String,
   district: String,
-  date: String,
-  time: String,
+  isodate: String,
   poi: String,
   duration_min: Number,
   rsvp_count: String,
@@ -116,7 +115,7 @@ var equipment_details = mongoose.model("equipment_details", equipSchema);
 // Declare MongoDB Model by 'meetup' collection
 var meetup_events = mongoose.model("meetup_events", meetupSchema);
 
-// TODO: [Refactor] Find a better implementation
+// TODO: [Refactor] Find a better implementation of everything here
 
 // Declare variables as global
 let poiListVar = null;
@@ -156,7 +155,8 @@ app.get("/", function (req, res) {
   });
 
   // Retrieve meetup event data from MongoDB
-  meetup_events.find({}, function (err, result) {
+  // Find upcoming events only
+  meetup_events.find({isodate: {"$gte" : new Date().toISOString() }}, function (err, result) {
     if(err) {
       meetupListVar = null;
       meetupErrVar = "ERROR : Couldn't retrieve meetup information";

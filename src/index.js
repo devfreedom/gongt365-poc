@@ -6,6 +6,8 @@ import "./uiux.js";
 let currentPosLat = 0;    // The latitude of current position
 let currentPosLng = 0;    // The longitude of current position
 
+var currentTime = new Date();
+
 
 // Global timers
 // window.onload = setTimeout(   , 3000);
