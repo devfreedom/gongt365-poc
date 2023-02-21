@@ -127,9 +127,10 @@ const picker = datepicker("#meetup-date", {
   defaultView: 'calendar',
   customDays: ['일', '월', '화', '수', '목', '금', '토'],
   customMonths: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-  minDate: new Date(currentYear, currentMonth, currentDay),
+  minDate: new Date(currentYear, currentMonth, currentDay + 1),
   formatter: (input, date, instance) => {
-    const value = date.toISOString().slice(0, 10)
-    input.value = value
+    // WARNING: The database uses ISODate which is UTC+0, This Korea Standard Time (UTC+9) datetime needs to be converted into ISODate (UTC+0) later
+    const KstDateString = date.toLocaleDateString('lt', { timeZone: "Asia/Seoul" });      // Use Lithuanian date format (ISO-style) with Korean tz database timezone
+    input.value = KstDateString;
   },
 });

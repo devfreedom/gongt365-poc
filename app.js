@@ -2,6 +2,7 @@
 // const bodyParser = require("body-parser");      // body-parser is now built into Express since 4.16
 const request = require("request");
 const express = require("express");
+const bcrypt = require("bcrypt");
 const ejs = require("ejs");
 require('dotenv').config();
 
@@ -94,12 +95,13 @@ const equipSchema = {
 
 const meetupSchema = {
   index: Number,
-  username: String,
+  username: { type: String, minlength: 5, maxlength: 15, },
+  password: { type: String, minlength: 8, maxlength: 20, },
   title: String,
   city: String,
   district: String,
   isodate: String,
-  poi: String,
+  poi_place: String,
   duration_min: Number,
   rsvp_count: String,
 }
@@ -130,8 +132,8 @@ let meetupErrVar = null;
 let meetupPlaceListVar = null;
 
 app.get("/", function (req, res) {
-  // Retrieve fitness equipment POI data from MongoDB
-  poi_equipments.find({}, function (err, result) {
+  // Retrieve POI data from MongoDB
+  poi_equipments.find({}, function (err, result) {     
     if(err) {
       poiListVar = null;
       poiErrVar = "ERROR : Couldn't retrieve POI list";
@@ -140,10 +142,10 @@ app.get("/", function (req, res) {
       poiListVar = result;
       poiErrVar = false;
     }
-  });
+  }).sort({name:1});      // Sort by place name
 
   // Retrieve fitness equipment information from MongoDB
-  equipment_details.find({}, function (err, result) {
+  equipment_details.find({}, function (err, result) {     
     if(err) {
       equipListVar = null;
       equipErrVar = "ERROR : Couldn't retrieve equipment information";
@@ -152,11 +154,10 @@ app.get("/", function (req, res) {
       equipListVar = result;
       equipErrVar = false;
     }
-  });
+  }).sort({name:1});      // Sort by equipment name
 
   // Retrieve meetup event data from MongoDB
-  // Find upcoming events only
-  meetup_events.find({isodate: {"$gte" : new Date().toISOString() }}, function (err, result) {
+  meetup_events.find({isodate: {"$gte" : new Date().toISOString() }}, function (err, result) {     // Find upcoming events only
     if(err) {
       meetupListVar = null;
       meetupErrVar = "ERROR : Couldn't retrieve meetup information";
@@ -165,7 +166,7 @@ app.get("/", function (req, res) {
       meetupListVar = result;
       meetupErrVar = false;
     }
-  });
+  }).sort({isodate:1});      // Sort by event date;
 
   // Retrieve distinct POI place names for the meetup event modal
   poi_equipments.distinct('place', function (err, result) {
@@ -177,7 +178,7 @@ app.get("/", function (req, res) {
       meetupPlaceListVar = result;
       poiErrVar = false;
     }
-  });
+  });     // WARNING: [MongoDB] sort cannot be used with distinct
 
   // Fetch weather data from OpenWeatherMap API
   let district = req.body.district;

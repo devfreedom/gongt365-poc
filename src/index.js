@@ -124,5 +124,5 @@ poiItemList.forEach (item => {
 });
 
 
-// Refresh Leaflet.js map upon resize, in order to avoid partial map rendering (bound to the wrapper)
+// Refresh Leaflet.js map upon resize, in order to avoid partial map rendering issue (map rendering being bound to the container size)
 addEventListener("resize", (event) => { map.invalidateSize(); });
