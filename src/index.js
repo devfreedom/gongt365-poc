@@ -7,7 +7,7 @@ let currentPosLat = 0;    // The latitude of current position
 let currentPosLng = 0;    // The longitude of current position
 
 
-// Global timers
+// Define global timers
 // window.onload = setTimeout(   , 3000);
 
 // Initialize Leaflet.markercluster
@@ -23,7 +23,7 @@ var markers = L.markerClusterGroup({
 
 
 // Initialize Leaflet.js 
-var map = L.map('map', {
+var map = L.map('map-object', {
   center: [37.5663, 126.9779],
   zoom: 10,
 });
@@ -31,6 +31,12 @@ var map = L.map('map', {
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
+
+
+// Define freeform Leaflet.js trigger function
+function mapInvalidateSize(){
+  map.invalidateSize();
+}
 
 
 // Define fetchCurrentPos()
@@ -92,7 +98,7 @@ document.getElementById('currentPosBtn').addEventListener("click", function() {
 //      Solution 5: Instead of DOM-based client-side rendering, refactor the codebase to query datasets flexibly upon different zoom levels
 //      Solution 6: Use leaflet.js layer control function with pre-defined marker clusters
 
-// Current attempt: Use Leaflet.markercluster for responsive clustered rendering
+//      Current attempt: Use Leaflet.markercluster for responsive clustered rendering
 
 var poiIndex = null;
 var poiLat = null;
@@ -124,5 +130,5 @@ poiItemList.forEach (item => {
 });
 
 
-// Refresh Leaflet.js map upon resize, in order to avoid partial map rendering issue (map rendering being bound to the container size)
-addEventListener("resize", (event) => { map.invalidateSize(); });
+// Refresh freeform Leaflet.js map upon resize, in order to avoid partial map rendering issue (which limits map rendering being bound to the original container size)
+window.addEventListener("resize", mapInvalidateSize());

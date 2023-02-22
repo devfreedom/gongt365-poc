@@ -14,7 +14,6 @@ var workoutBtn = document.getElementById("workout-nav-btn");
 var meetupBtn = document.getElementById("meetup-nav-btn");
 var profileBtn = document.getElementById("profile-nav-btn");
 
-var mapWrapper = document.getElementById("map-wrapper");
 
 // Nabivation bar handler
 // Use unobstructive Javascript, don't use OnClick();
@@ -39,8 +38,6 @@ function mapMenu() {
   workoutBtn.classList.remove('bg-slate-300');
   meetupBtn.classList.remove('bg-slate-300');
   profileBtn.classList.remove('bg-slate-300');
-
-  map.invalidateSize();
 }
 
 function workoutMenu() {
@@ -103,6 +100,7 @@ document.querySelectorAll('.toggleBtn').forEach(item => {
   })
 })
 
+
 // Open 'create a new meetup' modal
 document.getElementById("new-meetup-btn").addEventListener('click', event => {
   document.getElementById("new-meetup-modal").classList.toggle("hidden");
@@ -110,12 +108,47 @@ document.getElementById("new-meetup-btn").addEventListener('click', event => {
   document.getElementById("meetup-list").classList.toggle("hidden");
 });
 
+
 // Close 'create a new meetup' modal
-document.getElementById("new-meetup-cancel-btn").addEventListener('click', event => {
+document.getElementById("new-meetup-back-btn").addEventListener('click', event => {
   document.getElementById("new-meetup-modal").classList.toggle("hidden");
   document.getElementById("meetup-toolbar").classList.toggle("hidden");
   document.getElementById("meetup-list").classList.toggle("hidden");
 });
+
+
+// Open 'cancel a meetup event' modal 
+document.querySelectorAll('.cancelMeetupBtn').forEach(item => {
+  item.addEventListener('click', event => {
+    document.getElementById("cancel-meetup-modal").classList.toggle("hidden");
+    document.getElementById("meetup-toolbar").classList.toggle("hidden");
+    document.getElementById("meetup-list").classList.toggle("hidden");
+
+    var siblings = [];
+    var sibling = item.parentNode.parentNode.firstChild;
+
+    while (sibling) {
+      if (sibling.nodeType === 1 && sibling !== item) {
+        siblings.push(sibling.innerText);
+      }
+      sibling = sibling.nextSibling
+    }
+    document.getElementById("cancelMeetupId").innerText = siblings[0];
+    document.getElementById("cancelMeetupUsername").innerText = siblings[1];
+    document.getElementById("cancelMeetupTitle").innerText = siblings[2];
+    document.getElementById("cancelMeetupPlace").innerText = siblings[3];
+    document.getElementById("cancelMeetupDatetime").innerText = siblings[4];
+  })
+});
+
+
+// close 'cancel a meetup event' modal
+document.getElementById("cancel-meetup-back-btn").addEventListener('click', event => {
+  document.getElementById("cancel-meetup-modal").classList.toggle("hidden");
+  document.getElementById("meetup-toolbar").classList.toggle("hidden");
+  document.getElementById("meetup-list").classList.toggle("hidden");
+});
+
 
 // Initialize js-datepicker
 const date = new Date();
@@ -123,7 +156,7 @@ let currentDay = date.getDate();
 let currentMonth = date.getMonth();
 let currentYear = date.getFullYear();
 
-const picker = datepicker("#meetup-date", { 
+const picker = datepicker("#new-meetup-date", { 
   defaultView: 'calendar',
   customDays: ['일', '월', '화', '수', '목', '금', '토'],
   customMonths: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],

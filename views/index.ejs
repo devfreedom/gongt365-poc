@@ -57,7 +57,7 @@
 
         <!-- Leaflet.js clashes with Tailwind CSS in terms of sizing, fallback to inline script -->
         <div id="map-wrapper" style="width: 100%; height: 40%; flex: none;">
-            <div id="map" style="width: 100%; height: 100%;"></div> 
+            <div id="map-object" style="width: 100%; height: 100%;"></div> 
         </div>
 
         <div id="poi-list" class="grow overflow-y-auto">
@@ -167,28 +167,27 @@
                     <% meetupList.forEach(meetup => { %>
                         <div class="meetupItem w-full">
                             <div class="p-3">
-                                <h1 class="meetupUsername text-md font-bold hidden"><%= meetup._id %></h3>
+
+                                <!-- TODO: [Security] Audit the malicious use case of client side-rendered MongoDB's automatically-generated ID (_id) -->
+                                <!-- Key points: ObjectID, machine identifier, timestamp, pubID -->
+                                <h1 class="meetupId text-md font-bold hidden"><%= meetup._id %></h3>
                                 <h1 class="meetupUsername text-md font-bold"><%= meetup.username %></h3>
-                                <h1 class="meetupTitle text-lg">"<%= meetup.title %>"</h1>
-                                <p class="meetupAddress text-md"><%= meetup.city %>&nbsp;<%= meetup.district %>&nbsp;<%= meetup.poi %></p>
+                                <h1 class="meetupTitle text-lg mb-5">"<%= meetup.title %>"</h1>
+                                <p class="meetupAddress text-md"><%= meetup.city %>&nbsp;<%= meetup.district %>&nbsp;<%= meetup.poi_place %></p>
 
                                 <!-- WARNING: The database uses ISODate which is UTC+0, needs to be converted into Korea Standard Time (UTC+9) -->
-
                                 <!-- Generate a custom KST date parser-->
                                 <% meetupIsoDate = new Date(meetup.isodate); %>
                                 <% meetupKstDate = meetupIsoDate.toLocaleDateString('lt', { timeZone: "Asia/Seoul" }); %>            <!-- Use Lithuanian date format (ISO-style) with Korean tz database timezone -->
                                 <% meetupKstTime = meetupIsoDate.toLocaleTimeString('ko-KR', { hour: "2-digit", minute: "2-digit" }); %>                 <!-- "2-digit" option forces hour to have a leading zero -->                                
 
-                                <div class="flex flex-row justify-between">
-                                    <div>
-                                        <p class="text-md"><%= meetupKstDate.slice(0,4) %>년&nbsp;<%= meetupKstDate.slice(5,7) %>월&nbsp;<%= meetupKstDate.slice(8,10) %>일</p>
-                                        <p class="text-md"><%= meetupKstTime.slice(0,2) %>&nbsp;<%= meetupKstTime.slice(-5).replace(/^0+/, "") %>&nbsp;(<%= meetup.duration_min %>분간 운동)</p>      <!-- Remove leading zeros using REGEX-->
-                                                
-                                        <!-- [TODO] Enable RSVP count after user account management codebase is implemented -->
-                                        <!-- <p class="meetupRsvpCount text-green-700 text-md"><%= meetup.rsvp_count %>명 참석 예정</p> -->
-                                    </div>
-                                    <button class="flex flex-row items-center px-3 py-1 rounded-lg bg-orange-200 text-sm">모임 취소</button>
+                                <!-- Remove leading zeros using REGEX-->
+                                <p class="meetupKstDateString text-md"><%= meetupKstDate.slice(0,4) %>년&nbsp;<%= meetupKstDate.slice(5,7) %>월&nbsp;<%= meetupKstDate.slice(8,10) %>일&nbsp;<%= meetupKstTime.slice(0,2) %>&nbsp;<%= meetupKstTime.slice(-5).replace(/^0+/, "") %></p>
+                                
+                                <div class="flex flex-row w-full justify-between items-center">
+                                    <p class="meetupKstTimeString text-md"><%= meetup.duration_min %>분간 운동 예정</p><button class="cancelMeetupBtn flex flex-row items-center px-3 py-1 rounded-lg bg-orange-200 h-10 text-sm">모임 취소</button>
                                 </div>
+                                
                             </div>
                             <div class="w-full h-[1px] bg-slate-200 my-3"></div>
                         </div>
@@ -204,23 +203,23 @@
                 <div class="flex-1 flex-col justify-between my-10">
                     
                     <div class="flex flex-row items-center w-full">
-                        <p class="shrink-0">이름:</p> <input id="meetup-username" class="w-full bg-white rounded-lg h-10 m-1 px-3 ml-5" type="text" name="meetupUsernameInput" required minlength="5" maxlength="15">
+                        <p class="shrink-0">이름:</p> <input id="new-meetup-username" class="w-full bg-white rounded-lg h-10 m-1 px-3 ml-5" type="text" name="meetupUsernameInput" required minlength="5" maxlength="15">
                     </div>
 
                     <div class="flex flex-row items-center justify-end w-full">
-                        <p class="text-sm">(5~15글자로 만드세요)</p>
+                        <p class="text-sm">(한글 또는 영문으로 5~15글자)</p>
                     </div>
 
                     <div class="flex flex-row items-center w-full">
-                        <p class="shrink-0">암호:</p> <input id="meetup-password" class="w-full bg-white rounded-lg h-10 m-1 px-3 ml-5" type="password" name="meetupUsernameInput" required minlength="8" maxlength="20">
+                        <p class="shrink-0">암호:</p> <input id="new-meetup-password" class="w-full bg-white rounded-lg h-10 m-1 px-3 ml-5" type="password" name="meetupUsernameInput" required minlength="8" maxlength="20">
                     </div>
 
                     <div class="flex flex-row items-center justify-end w-full mb-3">
-                        <p class="text-sm">(영문+숫자 조합으로 8~20글자로 만드세요)</p>
+                        <p class="text-sm">(영문+숫자 조합으로 8~20글자)</p>
                     </div>
                     
                     <div class="flex flex-row items-center w-full">
-                        <p class="shrink-0">모임 제목:</p> <input id="meetup-title" class="w-full bg-white rounded-lg h-10 m-1 px-3 ml-5" type="text" name="meetupTitleInput" required minlength="1" maxlength="20">
+                        <p class="shrink-0">모임 제목:</p> <input id="new-meetup-title" class="w-full bg-white rounded-lg h-10 m-1 px-3 ml-5" type="text" name="meetupTitleInput" required minlength="1" maxlength="20">
                     </div>
 
                     <div class="flex flex-row items-center w-full">
@@ -230,7 +229,7 @@
                         <% } else if (meetupPlaceList == undefined) { %>
                             <p class="h-10 m-1 px-3 ml-5">Error: meetupPlaceList is not defined</p>
                         <% } else { %>
-                            <select id="meetup-place" class="w-full bg-white rounded-lg h-10 m-1 px-3 ml-5" name="meetupPlaceInput">
+                            <select id="new-meetup-place" class="w-full bg-white rounded-lg h-10 m-1 px-3 ml-5" name="meetupPlaceInput">
                             <% meetupPlaceList.forEach(meetupPlace => { %>
                                 <option value="<%= meetupPlace %>"><%= meetupPlace %></option>
                             <% }) %>
@@ -239,13 +238,13 @@
                     </div>
 
                     <div class="flex flex-row items-center w-full">
-                        <p class="shrink-0">모임 날짜:</p> <input id="meetup-date" class="w-full bg-white rounded-lg h-10 m-1 px-3 ml-5" type="text" name="meetupDateInput" value="날짜를 선택하세요" readonly required minlength="1" maxlength="20">
+                        <p class="shrink-0">모임 날짜:</p> <input id="new-meetup-date" class="w-full bg-white rounded-lg h-10 m-1 px-3 ml-5" type="text" name="meetupDateInput" value="날짜를 선택하세요" readonly required minlength="1" maxlength="20">
                     </div>
 
                     <div class="flex flex-row items-center w-full">
                         <p class="shrink-0">모임 시간:</p> 
                         <div class="flex flex-row">
-                            <select id="meetup-hour" class="bg-white rounded-lg h-10 m-1 px-3 ml-5" name="meetupHourInput">
+                            <select id="new-meetup-hour" class="bg-white rounded-lg h-10 m-1 px-3 ml-5" name="meetupHourInput">
                                 <option value="12">오후 12시</option>
                                 <option value="13">오후 1시</option>
                                 <option value="14">오후 2시</option>
@@ -271,7 +270,7 @@
                                 <option value="10">오전 10시</option>
                                 <option value="11">오전 11시</option>
                             </select>
-                            <select id="meetup-minute" class="bg-white rounded-lg h-10 m-1 px-3 ml-5" name="meetupMinuteInput">
+                            <select id="new-meetup-minute" class="bg-white rounded-lg h-10 m-1 px-3 ml-5" name="meetupMinuteInput">
                                 <option value="00">00분</option>
                                 <option value="05">05분</option>
                                 <option value="10">10분</option>
@@ -292,7 +291,7 @@
                     <div class="flex flex-row items-center w-full">
                         <p class="shrink-0">예상 운동 시간:</p>
                         <div class="flex flex-row"> 
-                            <select id="meetup-duration" class="bg-white rounded-lg h-10 m-1 px-3 ml-5" name="meetupDurationInput">
+                            <select id="new-meetup-duration" class="bg-white rounded-lg h-10 m-1 px-3 ml-5" name="meetupDurationInput">
                                 <option value="10">10분</option>
                                 <option value="15">15분</option>
                                 <option value="20">20분</option>
@@ -309,8 +308,48 @@
                     </div>
                 </div>
                 <div class="flex flex-row justify-between items-center">
-                    <button id="new-meetup-cancel-btn" class="flex flex-row py-2 px-3 rounded-lg bg-green-500 items-center"><p class="text-white">취소</p></button>
-                    <button id="new-meetup-create-btn" class="flex flex-row py-2 px-3 rounded-lg bg-green-500 items-center"><p class="text-white">모임 만들기</p></button>
+                    <button id="new-meetup-back-btn" class="flex flex-row py-2 px-3 rounded-lg bg-green-500 items-center"><p class="text-white">이전으로</p></button>
+                    <button id="new-meetup-confirm-btn" class="flex flex-row py-2 px-3 rounded-lg bg-green-500 items-center"><p class="text-white">모임 만들기</p></button>
+                </div>
+            </div>
+        </div>
+
+        <div id="cancel-meetup-modal" class="grow bg-slate-100 mx-3 my-5 px-5 py-10 rounded-2xl hidden">
+            <div class="flex flex-col w-full h-full justify-between">
+                <h1 class="text-xl font-black">운동 모임을 취소하시겠어요?</h1>
+                
+                <div class="flex-1 flex-col justify-between my-10">
+
+                    <p id="cancelMeetupId" class="w-full rounded-lg my-5 ml-5 hidden">cancelMeetupId</p>
+                    
+                    <div class="flex flex-row items-center w-full">
+                        <p class="shrink-0">주최자 이름:</p> <p id="cancelMeetupUsername" class="w-full rounded-lg my-5 ml-5">cancelMeetupUsername</p>
+                    </div>
+                    
+                    <div class="flex flex-row items-center w-full">
+                        <p class="shrink-0">모임 제목:</p> <p id="cancelMeetupTitle" class="w-full rounded-lg my-5 ml-5">cancelMeetupTitle</p>
+                    </div>
+
+                    <div class="flex flex-row items-center w-full">
+                        <p class="shrink-0">모임 장소:</p> <p id="cancelMeetupPlace" class="w-full rounded-lg my-5 ml-5">cancelMeetupPlace</p>
+                    </div>
+
+                    <div class="flex flex-row items-center w-full">
+                        <p class="shrink-0">모임 날짜/시간:</p> <p id="cancelMeetupDatetime" class="w-full rounded-lg my-5 ml-5">cancelMeetupDate</p>
+                    </div>
+
+                    <p class="font-black mt-5 mb-3">이 모임을 취소하시려면 암호를 입력하세요.</p>
+
+                    <div class="flex flex-row items-center w-full">
+                        
+                        <p class="shrink-0">암호:</p> <input id="cancel-meetup-password" class="w-full bg-white rounded-lg h-10 m-1 px-3 ml-5" type="password" name="cancelPasswordInput" required minlength="8" maxlength="20">
+                    </div>
+
+                </div>
+
+                <div class="flex flex-row justify-between items-center">
+                    <button id="cancel-meetup-back-btn" class="flex flex-row py-2 px-3 rounded-lg bg-green-500 items-center"><p class="text-white">이전으로</p></button>
+                    <button id="cancel-meetup-confirm-btn" class="flex flex-row py-2 px-3 rounded-lg bg-green-500 items-center"><p class="text-white">모임 취소하기</p></button>
                 </div>
             </div>
         </div>
@@ -324,8 +363,10 @@
         <div id="profile-hero" class="flex-none">
             <div class="flex flex-col h-20 justify-center bg-[url('../img/profile-hero-bg.svg')] bg-right bg-cover px-5">
                 <h1 class="text-bold font-black text-lg">안녕하세요!</h1>
+
                 <!-- TODO: [Feature] Randomize welcome messages upon page view -->
                 <h1 class="text-bold text-sm">오늘도 활기차게 운동해볼까요!</h1>
+
             </div>
         </div>
 
@@ -400,7 +441,7 @@
         </div>
     </div>
 
-    <!-- Navbar starts here -->
+    <!-- Navigation bar starts here -->
     <div id="navbar" class="flex-none">
         <div class="flex flex-row w-full h-20 bg-slate-200 items-center justify-between">
             <div class="w-1"></div>
