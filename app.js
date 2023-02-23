@@ -1,9 +1,9 @@
 // Require app dependencies
 // const bodyParser = require("body-parser");      // body-parser is now built into Express since 4.16
-const request = require("request");
 const express = require("express");
-const bcrypt = require("bcrypt");
+const request = require("request");
 const ejs = require("ejs");
+const bcrypt = require("bcrypt");
 require('dotenv').config();
 
 const sanitize = require('mongo-sanitize');
@@ -15,6 +15,10 @@ const sanitize = require('mongo-sanitize');
 // Users.findOne({ name: clean }, function(err, doc) {
   // ...
 // });
+
+// Configure bcrypt for password hashing
+const saltRounds = 10;
+var newMeetupPassword = "default_password_NOT_HASHED";
 
 // Configure Express
 const app = express();
@@ -94,9 +98,8 @@ const equipSchema = {
 }
 
 const meetupSchema = {
-  index: Number,
   username: { type: String, minlength: 5, maxlength: 15, },
-  password: { type: String, minlength: 8, maxlength: 20, },
+  password: String,
   title: String,
   city: String,
   district: String,
@@ -107,14 +110,11 @@ const meetupSchema = {
 }
 
 
-// Declare MongoDB Model by 'poi_equipments' collection
+// Declare MongoDB Models
 var poi_equipments = mongoose.model("poi_equipments", poiSchema);
-
-// Declare MongoDB Model by 'equipment_info' collection
 var equipment_details = mongoose.model("equipment_details", equipSchema);
-
-// Declare MongoDB Model by 'meetup' collection
 var meetup_events = mongoose.model("meetup_events", meetupSchema);
+
 
 // TODO: [Refactor] Find a better implementation of everything here
 
@@ -130,6 +130,7 @@ let equipErrVar = null;
 let meetupListVar = null;
 let meetupErrVar = null;
 let meetupPlaceListVar = null;
+
 
 app.get("/", function (req, res) {
   // Retrieve POI data from MongoDB
@@ -212,6 +213,75 @@ app.get("/", function (req, res) {
     meetupPlaceList: meetupPlaceListVar,
   });
 });
+
+
+app.post('/new_meetup', function(req, res) {
+
+  // Receive "Create a new meetup event" form inputs
+  let newMeetupUsernameInputVar = req.body.newMeetupUsernameInput;
+  let newMeetupPasswordInputVar = req.body.newMeetupPasswordInput;
+  let newMeetupTitleInputVar = req.body.newMeetupTitleInput;
+  let newMeetupPlaceInputVar = req.body.newMeetupPlaceInput;
+  let newMeetupDateInputVar = req.body.newMeetupDateInput;
+  let newMeetupHourInputVar = req.body.newMeetupHourInput;
+  let newMeetupMinuteInputVar = req.body.newMeetupMinuteInput;
+  let newMeetupDurationInputVar = req.body.newMeetupDurationInput;
+
+  // Inspect the data
+  // NOTE: Template literals uses backticks, not double quotes
+  console.log("DATA ENTRY INSPECTION");
+  console.log(`User credential: ID = ${newMeetupUsernameInputVar}, PW = ${newMeetupPasswordInputVar}`);
+  console.log(`Meetup: ${newMeetupTitleInputVar} / ${newMeetupPlaceInputVar}`);
+  console.log(`Datetime(KST): ${newMeetupDateInputVar} ${newMeetupHourInputVar}:${newMeetupMinuteInputVar}`);
+
+  // Convert the local input datetime (UTC+9) into ISODate (UTC+0)
+  let newMeetupKstDatetime = new Date(newMeetupDateInputVar.slice(0,4), newMeetupDateInputVar.slice(5,7), newMeetupDateInputVar.slice(8,10), newMeetupHourInputVar, newMeetupMinuteInputVar, 00);
+  let newMeetupIsodate = newMeetupKstDatetime.toISOString();
+  console.log(`isodate(UTC): ${newMeetupIsodate}`);      // NOTE: Template literals uses backticks, not double quotes
+
+  // Salt and hash the password first, using `bcrypt.hash`
+  bcrypt.hash(newMeetupPasswordInputVar, saltRounds)
+    .then(hash => { 
+      newMeetupPassword = hash
+      console.log("Hashed password: " + newMeetupPassword); 
+      
+      // And then create/insert the document
+      meetup_events.create({
+      username: newMeetupUsernameInputVar,
+      password: newMeetupPassword,      // WARNING: User-input password needs to be salted and hashed before creating the document
+      title: newMeetupTitleInputVar,
+      city: "서울특별시",     // Hardcoded for now
+      district: "서대문구",      // Hardcoded for now
+      poi_place: newMeetupPlaceInputVar,
+      isodate: newMeetupIsodate,
+      duration_min: newMeetupDurationInputVar
+      }, function(err) {
+        if(err) {
+          // res.status(200).json({ "status": false, "result": "모임을 기록하는 도중 오류가 발생했습니다." });
+          console.log(err);
+          res.send("<script>alert(\"모임을 기록하는 도중 오류가 발생했습니다.\"); window.location.href = \"/\"; </script>");
+          return;      // Necessary to prevent sending another response
+        } else {
+          // res.status(200).json({ "status": true, "result": "모임을 성공적으로 만들었습니다!" });
+          res.send("<script>alert(\"모임을 성공적으로 만들었습니다!\"); window.location.href = \"/\"; </script>");
+          return;      // Necessary to prevent sending another response
+        }
+      });
+    }).catch(err => console.error(err.message));
+});
+
+
+// Compare the input password to the stored password, by using `bcrypt.compare`
+// Note: `bcrypt.hash` generates a unique hash based on special salt every time, to prevent rainbow table attacks
+function compareHash(hash) {
+  bcrypt
+    .compare(password, hash)
+    .then(res => {
+      console.log(res) // return true
+    })
+    .catch(err => console.error(err.message))
+}
+
 
 // run Express server
 app.listen(port, () => {

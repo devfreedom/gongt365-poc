@@ -124,6 +124,7 @@ document.querySelectorAll('.cancelMeetupBtn').forEach(item => {
     document.getElementById("meetup-toolbar").classList.toggle("hidden");
     document.getElementById("meetup-list").classList.toggle("hidden");
 
+    // Collect innerText from sibling DOMs via iterator
     var siblings = [];
     var sibling = item.parentNode.parentNode.firstChild;
 
