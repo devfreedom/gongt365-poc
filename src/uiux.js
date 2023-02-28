@@ -124,7 +124,7 @@ document.querySelectorAll('.cancelMeetupBtn').forEach(item => {
     document.getElementById("meetup-toolbar").classList.toggle("hidden");
     document.getElementById("meetup-list").classList.toggle("hidden");
 
-    // Collect innerText from sibling DOMs via iterator
+    // Collect innerText from upper-sibling DOMs via iterator
     var siblings = [];
     var sibling = item.parentNode.parentNode.firstChild;
 
@@ -134,6 +134,7 @@ document.querySelectorAll('.cancelMeetupBtn').forEach(item => {
       }
       sibling = sibling.nextSibling
     }
+    
     document.getElementById("cancelMeetupId").innerText = siblings[0];
     document.getElementById("cancelMeetupUsername").innerText = siblings[1];
     document.getElementById("cancelMeetupTitle").innerText = siblings[2];
@@ -143,7 +144,7 @@ document.querySelectorAll('.cancelMeetupBtn').forEach(item => {
 });
 
 
-// close 'cancel a meetup event' modal
+// Close 'cancel a meetup event' modal
 document.getElementById("cancel-meetup-back-btn").addEventListener('click', event => {
   document.getElementById("cancel-meetup-modal").classList.toggle("hidden");
   document.getElementById("meetup-toolbar").classList.toggle("hidden");
@@ -167,4 +168,8 @@ const picker = datepicker("#new-meetup-date", {
     const KstDateString = date.toLocaleDateString('lt', { timeZone: "Asia/Seoul" });      // Use Lithuanian date format (ISO-style) with Korean tz database timezone
     input.value = KstDateString;
   },
+
+  // `#new-meetup-date` input value is necessary but 'required' attribute doesn't work on js-datepicker
+  // Instead of requiring input from the user, set a default date instead, as a workaround
+  dateSelected: new Date(currentYear, currentMonth, currentDay + 1),
 });

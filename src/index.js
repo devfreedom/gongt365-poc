@@ -2,6 +2,16 @@
 import "./uiux.js";
 
 
+// Use Javascript code to detect actual innerHeight of inconsistent/flexible mobile viewport
+const documentHeight = () => {
+  const doc = document.documentElement;
+  doc.style.setProperty("--doc-height", `${window.innerHeight}px`);
+}
+
+window.addEventListener("resize", documentHeight);
+documentHeight();
+
+
 // Define global variables
 let currentPosLat = 0;    // The latitude of current position
 let currentPosLng = 0;    // The longitude of current position
@@ -9,6 +19,7 @@ let currentPosLng = 0;    // The longitude of current position
 
 // Define global timers
 // window.onload = setTimeout(   , 3000);
+
 
 // Initialize Leaflet.markercluster
 var markers = L.markerClusterGroup({
@@ -128,6 +139,9 @@ poiItemList.forEach (item => {
   markers.addLayer(L.marker([poiLat, poiLng], {title: poiTitle}).bindPopup(poiTitle));
   map.addLayer(markers);
 });
+
+
+
 
 
 // Refresh freeform Leaflet.js map upon resize, in order to avoid partial map rendering issue (which limits map rendering being bound to the original container size)

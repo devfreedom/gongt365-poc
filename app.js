@@ -1,10 +1,13 @@
 // Require app dependencies
-// const bodyParser = require("body-parser");      // body-parser is now built into Express since 4.16
+// const bodyParser = require("body-parser");      // `body-parser` is now built into Express since 4.16
 const express = require("express");
-const request = require("request");
+// const request = require("request");      // `request` is deprecated, using node-fetch instead
 const ejs = require("ejs");
 const bcrypt = require("bcrypt");
 require('dotenv').config();
+
+// import fetch from 'node-fetch';     // ATTENTION: node-fetch from v3 is an ESM-only module - you are not able to import it with require()
+const fetch = require('node-fetch');      // Using node-fetch@2 which remains compatible with CommonJS
 
 const sanitize = require('mongo-sanitize');
 // The sanitize function will strip out any keys that start with '$' in the input,
@@ -48,14 +51,6 @@ const owmApiKey = process.env.OWM_API_KEY;
 // Configure javascript template engine
 app.set("view engine", "ejs");
 app.set('views', 'views');
-
-
-// EJS view for index.ejs
-/*
-app.get('/', function(req, res) {
-  res.render('index');
-});
-*/
 
 
 // Initiate MongoDB via Mongoose
@@ -118,88 +113,174 @@ var meetup_events = mongoose.model("meetup_events", meetupSchema);
 
 // TODO: [Refactor] Find a better implementation of everything here
 
-// Declare variables as global
-let poiListVar = null;
-let poiErrVar = null;
-let currentWeatherVar = null;
-let currentTempVar = null;
-let weatherErrVar = null;
-let weatherIconVar = null;
-let equipListVar = null;
-let equipErrVar = null;
-let meetupListVar = null;
-let meetupErrVar = null;
-let meetupPlaceListVar = null;
+// Retrieve POI dataset from MongoDB
+function findPoiEquipments(){
+  return new Promise(function(resolve, reject){
+    poi_equipments.find({}, function(err, result){
+      if(err){
+        console.log(err);
+        reject(err);
+      }
+      else{
+        console.log("POI query has been finished");
+        resolve(result);
+      }
+    }).sort({name:1});      // Sort by place name
+  })
+}
 
+// Retrieve fitness equipment information from MongoDB
+function findEquipmentDetails(){
+  return new Promise(function(resolve, reject){
+    equipment_details.find({}, function(err, result){
+      if(err){
+        console.log(err);
+        reject(err);
+      }
+      else{
+        console.log("Equipment information query has been finished");
+        resolve(result);
+      }
+    }).sort({name:1});      // Sort by equipment name
+  })
+}
 
-app.get("/", function (req, res) {
-  // Retrieve POI data from MongoDB
-  poi_equipments.find({}, function (err, result) {     
-    if(err) {
-      poiListVar = null;
-      poiErrVar = "ERROR : Couldn't retrieve POI list";
-    }
-    else {
-      poiListVar = result;
-      poiErrVar = false;
-    }
-  }).sort({name:1});      // Sort by place name
+// Retrieve meetup event data from MongoDB
+function findMeetupEvents(){
+  return new Promise(function(resolve, reject){
+    meetup_events.find({isodate: {"$gte" : new Date().toISOString() }}, function(err, result){      // Ignore past events
+      if(err){
+        console.log(err);
+        reject(err);
+      }
+      else{
+        console.log("Meetup events list query has been finished")
+        resolve(result);
+      }
+    }).sort({isodate:1});      // Sort by event date
+  })
+}
 
-  // Retrieve fitness equipment information from MongoDB
-  equipment_details.find({}, function (err, result) {     
-    if(err) {
-      equipListVar = null;
-      equipErrVar = "ERROR : Couldn't retrieve equipment information";
-    }
-    else {
-      equipListVar = result;
-      equipErrVar = false;
-    }
-  }).sort({name:1});      // Sort by equipment name
+// Retrieve distinct POI place names for the meetup event modal
+function findPoiPlaceNames(){
+  return new Promise(function(resolve, reject){
+    poi_equipments.distinct('place', function(err ,result){
+      if(err){
+        console.log(err);
+        reject(err);
+      }
+      else{
+        console.log("Meetup place name list query has been finished")
+        resolve(result);
+      }
+    });      // NOTE: [MongoDB] `.sort()` cannot be used with `.distinct()`
+  })
+}
 
-  // Retrieve meetup event data from MongoDB
-  meetup_events.find({isodate: {"$gte" : new Date().toISOString() }}, function (err, result) {     // Find upcoming events only
-    if(err) {
-      meetupListVar = null;
-      meetupErrVar = "ERROR : Couldn't retrieve meetup information";
-    }
-    else {
-      meetupListVar = result;
-      meetupErrVar = false;
-    }
-  }).sort({isodate:1});      // Sort by event date;
+// Fetch weather data from OpenWeatherMap API
+async function fetchWeatherData(){
+    // let district = req.body.district;
+    // district is currently hardcoded for testing purpose
+    let url = "http://api.openweathermap.org/data/2.5/weather?q=" + "Seoul" + "&units=metric&lang=kr&appid=" + owmApiKey;
+   
+    const response = await fetch(url);
+    const weatherData = await response.json();
+    console.log("Weather information query has been finished");
+    return weatherData;
+}
 
-  // Retrieve distinct POI place names for the meetup event modal
-  poi_equipments.distinct('place', function (err, result) {
-    if(err) {
-      meetupPlaceListVar = null;
-      poiErrVar = "ERROR : Couldn't retrieve POI list";
-    }
-    else {
-      meetupPlaceListVar = result;
-      poiErrVar = false;
-    }
-  });     // WARNING: [MongoDB] sort cannot be used with distinct
+app.get("/", function (req, res) { 
 
-  // Fetch weather data from OpenWeatherMap API
-  let district = req.body.district;
-  // district is currently hardcoded for testing purpose
-  let url = "http://api.openweathermap.org/data/2.5/weather?q=" + "Seoul" + "&units=metric&lang=kr&appid=" + owmApiKey;
-  request(url, function(err, response, body) { 
-    let weatherData = JSON.parse(body);
-    if(err) {
-      currentWeatherVar = null;
-      weatherErrVar: 'ERROR : Could not retrieve weather information from OpenWeatherMap API';
-    }
-    else {
+  async function initialData() {
+    // Wait for DB query results
+    var poiListVar = await findPoiEquipments();
+    var equipListVar = await findEquipmentDetails();
+    var meetupListVar = await findMeetupEvents();
+    var meetupPlaceListVar = await findPoiPlaceNames();
+    var weatherDataVar = await fetchWeatherData();
+
+    var currentWeatherVar = weatherDataVar.weather[0].description;
+    var currentTempVar = weatherDataVar.main.temp;
+    var weatherIconVar = "http://openweathermap.org/img/wn/" + weatherDataVar.weather[0].icon + ".png";
+
+    // Render ejs view when datasets are ready
+    res.render('index', {
+      poiList: poiListVar,
+      equipList: equipListVar,
+      meetupList: meetupListVar,
+      meetupPlaceList: meetupPlaceListVar,
+      currentWeather: currentWeatherVar,
+      currentTemp: currentTempVar,
+      weatherIcon: weatherIconVar,
+    })
+  }
+  
+  initialData();
+
+  /*
+  findPoiEquipments()
+  .then((poiResult) => {
+      poiListVar = poiResult;
+      console.log("POI query has been finished");
+      return findEquipmentDetails();
+  })
+  .then((equipResult) => {
+      equipListVar = equipResult;
+      console.log("Equipments list query has been finished")
+      return findMeetupEvents();
+  })
+  .then((meetupResult) => {
+      meetupListVar = meetupResult;
+      return findPoiPlaceNames();
+      console.log("Meetup events list query has been finished")
+  })
+  .then((meetupPlaceListResult) => {
+      meetupPlaceListVar = meetupPlaceListResult;
+      console.log("Meetup place name list query has been finished")
+      return fetchWeatherData();
+  })
+  .then((weatherData) => {
       currentWeatherVar = weatherData.weather[0].description;
       currentTempVar = weatherData.main.temp;
       weatherIconVar = "http://openweathermap.org/img/wn/" + weatherData.weather[0].icon + ".png";
-      weatherErrVar = false;
-    }
+      console.log("Weather information query has been finished")
+      console.log("Now rendering an ejs view...")
+      res.render('index', {
+        poiList: poiListVar,
+        currentWeather: currentWeatherVar,
+        currentTemp: currentTempVar,
+        weatherIcon: weatherIconVar,
+        equipList: equipListVar,
+        meetupList: meetupListVar,
+        meetupPlaceList: meetupPlaceListVar,
+      });
+      return;
+  })
+  .catch(function(error){
+    console.log(error);
   });
+  */
 
-  res.render('index', { 
+
+  /*
+ 
+
+  var progress = 0;
+
+  
+  findPoiEquipments()
+  findEquipmentDetails()
+  findMeetupEvents()
+  findPoiPlaceNames()
+  fetchWeatherData()
+  if (progress==5) {
+    return success;
+  }
+  else
+    return;
+  
+
+  res.render("index", { 
     poiErr: poiErrVar,
     poiList: poiListVar,
     weatherErr: weatherErrVar,
@@ -212,6 +293,7 @@ app.get("/", function (req, res) {
     meetupList: meetupListVar,
     meetupPlaceList: meetupPlaceListVar,
   });
+  */
 });
 
 
@@ -235,7 +317,11 @@ app.post('/new_meetup', function(req, res) {
   console.log(`Datetime(KST): ${newMeetupDateInputVar} ${newMeetupHourInputVar}:${newMeetupMinuteInputVar}`);
 
   // Convert the local input datetime (UTC+9) into ISODate (UTC+0)
-  let newMeetupKstDatetime = new Date(newMeetupDateInputVar.slice(0,4), newMeetupDateInputVar.slice(5,7), newMeetupDateInputVar.slice(8,10), newMeetupHourInputVar, newMeetupMinuteInputVar, 00);
+  
+  // ATTENTION: [Javascript] `new Date` object constructor defines 'month' as 'monthIndex' (zero-based numbering), with a range of 0-11, NOT 1-12
+    // new Date (year, monthIndex, day, hours, minutes, seconds, milliseconds);
+    // Input month value needs to be converted into an index by subtracting '1'
+  let newMeetupKstDatetime = new Date(newMeetupDateInputVar.slice(0,4), newMeetupDateInputVar.slice(5,7) -1, newMeetupDateInputVar.slice(8,10), newMeetupHourInputVar, newMeetupMinuteInputVar, 00);
   let newMeetupIsodate = newMeetupKstDatetime.toISOString();
   console.log(`isodate(UTC): ${newMeetupIsodate}`);      // NOTE: Template literals uses backticks, not double quotes
 
@@ -264,10 +350,11 @@ app.post('/new_meetup', function(req, res) {
         } else {
           // res.status(200).json({ "status": true, "result": "모임을 성공적으로 만들었습니다!" });
           res.send("<script>alert(\"모임을 성공적으로 만들었습니다!\"); window.location.href = \"/\"; </script>");
-          return;      // Necessary to prevent sending another response
+          return;
         }
       });
     }).catch(err => console.error(err.message));
+
 });
 
 
