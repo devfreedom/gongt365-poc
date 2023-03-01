@@ -135,11 +135,11 @@ document.querySelectorAll('.cancelMeetupBtn').forEach(item => {
       sibling = sibling.nextSibling
     }
     
-    document.getElementById("cancelMeetupId").innerText = siblings[0];
-    document.getElementById("cancelMeetupUsername").innerText = siblings[1];
-    document.getElementById("cancelMeetupTitle").innerText = siblings[2];
-    document.getElementById("cancelMeetupPlace").innerText = siblings[3];
-    document.getElementById("cancelMeetupDatetime").innerText = siblings[4];
+    document.getElementById("cancel-meetup-id").setAttribute("value", siblings[0]);
+    document.getElementById("cancel-meetup-username").innerText = siblings[1];
+    document.getElementById("cancel-meetup-title").innerText = siblings[2];
+    document.getElementById("cancel-meetup-place").innerText = siblings[3];
+    document.getElementById("cancel-meetup-datetime").innerText = siblings[4];
   })
 });
 

@@ -3,40 +3,42 @@ A basic full-stack webapp for the proof-of-concept of 2022 NIA Open Database Hac
 
 2022 한국지능정보사회진흥원 공공데이터 아이디어 해커톤 본선 진출작 '공트365' 의 개념증명을 위해 만든 기초적인 풀스택 웹앱입니다.
 
+## Live Demo
+
+https://gongt365-poc.up.railway.app
+
 ## Features 
 - Display geolocation data of municipal outdoor fitness equipments available in public places(city parks, hills, etc.) as point-of-interest(POI) markers on the map
 - Bulletin board for users to organize workout meetups and events
 - Provide fitness equipment instruction videos, safety tips, and workout guides
-- Personalized POI filters
+- ~~Personalized POI filters~~ 
 
 ## Technology Stack 
 ### Frontend
 HTML + CSS + JavaScript
-- CSS framework: Tailwind CSS
-- Template engine: EJS (Embedded JavaScript templates)
-- Interactive map rendering library: Leaflet.js
+- CSS framework: [Tailwind CSS](https://tailwindcss.com/)
+- Template engine: [EJS (Embedded JavaScript templates)](https://ejs.co/)
+- Interactive map rendering library: [Leaflet.js](https://leafletjs.com/)
 
 ### Backend
-- Node.js
-- Express.js 
+- Javascript runtime environment: [Node.js](https://nodejs.org/en/)
+- Web application framework: [Express.js](https://expressjs.com/)
 
 ### Database
-MongoDB on MongoDB Atlas
+- Document-oriented database: [MongoDB](https://www.mongodb.com/)
+- Database hosting provider: [MongoDB Atlas](https://www.mongodb.com/atlas/database)
 
-## Database 
+## Database
 ### Data source
-대한민국 정부 공공데이터 포털 (https://www.data.go.kr/)
-> The official South Korean e-government database website
+[대한민국 정부 공공데이터 포털](https://www.data.go.kr/) (South Korean Public Data Portal)
+ - The official South Korean e-government database website
     
-### Datasets
+## Datasets
 - For pilot run
     - File: `서울특별시 서대문구_야외운동기구 설치 현황.csv`
 
 ## Deployment
-### Platform-as-a-Service
-Railway.app
-  - Builder: Nixpacks
-  - https://gongt365-poc.up.railway.app
+- Platform-as-a-Service: [Railway.app](https://railway.app/)
 
 ## UI/UX Information Architecture Blueprint
 - Map 
@@ -65,7 +67,7 @@ Railway.app
         - Workout Scheduler
             - Notification and interval settings
 
-## Development Roadmap
+## Development Roadmap Fulfillment
 ### Implementation 
 - Features
     - Scheduled daily/weekly/monthly workout sessions and notification
@@ -80,8 +82,9 @@ Railway.app
         - Barebone: Use Leaflet Routing Machine (https://www.liedman.net/leaflet-routing-machine)
         - Commercial-grade: Replace Leaflet.js with domestic Naver Map Directions API
 - Architecture
-    - User authentication
-    - User account database
+    - Establish user account database 
+    - Implement fully-fledged user authentication and management system
+        - ✅ Essential user authentication procedure for meetup events CRUD has been implemented
 - Security
     - Ensure CORS-compliance
     - Sanitize inputs and queries
@@ -95,11 +98,12 @@ Railway.app
     - Leaflet.js rendering
         - ~~Current: Low performance when there are too many POI markers~~
         - ~~Refactor: Use Leaflet.js plugin that supports WebGL~~
-            - Using Leaflet.markercluster as a straightforward workaround
+            - ✅ [Complete] Using Leaflet.markercluster as a straightforward workaround
 - Backend
-    - Design and query handlers
-        - Current: Inefficient, unconventional, hacky, and spartan
-        - Major refactoring is needed
+    - Design
+        - Current: Query handlers are inefficient, unconventional, and hacky
+            - Major refactoring is needed
+            - ✅ Refactoring is on the way
 
 ### Improvement
 - Expand service scope by utilizing more datasets available

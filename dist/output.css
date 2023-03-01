@@ -735,10 +735,6 @@ video {
   height: 72vh;
 }
 
-.h-\[--doc-height\] {
-  height: --doc-height;
-}
-
 .w-screen {
   width: 100vw;
 }

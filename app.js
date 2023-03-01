@@ -111,9 +111,9 @@ var equipment_details = mongoose.model("equipment_details", equipSchema);
 var meetup_events = mongoose.model("meetup_events", meetupSchema);
 
 
-// TODO: [Refactor] Find a better implementation of everything here
+// Define MongoDB query functions
 
-// Retrieve POI dataset from MongoDB
+// a. Retrieve POI dataset from MongoDB
 function findPoiEquipments(){
   return new Promise(function(resolve, reject){
     poi_equipments.find({}, function(err, result){
@@ -129,7 +129,7 @@ function findPoiEquipments(){
   })
 }
 
-// Retrieve fitness equipment information from MongoDB
+// b. Retrieve fitness equipment information from MongoDB
 function findEquipmentDetails(){
   return new Promise(function(resolve, reject){
     equipment_details.find({}, function(err, result){
@@ -145,7 +145,7 @@ function findEquipmentDetails(){
   })
 }
 
-// Retrieve meetup event data from MongoDB
+// c. Retrieve meetup event data from MongoDB
 function findMeetupEvents(){
   return new Promise(function(resolve, reject){
     meetup_events.find({isodate: {"$gte" : new Date().toISOString() }}, function(err, result){      // Ignore past events
@@ -161,7 +161,7 @@ function findMeetupEvents(){
   })
 }
 
-// Retrieve distinct POI place names for the meetup event modal
+// d. Retrieve distinct POI place names for the meetup event modal
 function findPoiPlaceNames(){
   return new Promise(function(resolve, reject){
     poi_equipments.distinct('place', function(err ,result){
@@ -177,7 +177,7 @@ function findPoiPlaceNames(){
   })
 }
 
-// Fetch weather data from OpenWeatherMap API
+// e. Fetch weather data from OpenWeatherMap API
 async function fetchWeatherData(){
     // let district = req.body.district;
     // district is currently hardcoded for testing purpose
@@ -189,10 +189,14 @@ async function fetchWeatherData(){
     return weatherData;
 }
 
+
+// Prepare datasets and initiate index.ejs
 app.get("/", function (req, res) { 
 
+  // NOTE: [Refactor] Consider parallel async (https://github.com/caolan/async#parallel)
+
   async function initialData() {
-    // Wait for DB query results
+    // [CRUD] Wait for DB query results
     var poiListVar = await findPoiEquipments();
     var equipListVar = await findEquipmentDetails();
     var meetupListVar = await findMeetupEvents();
@@ -217,91 +221,15 @@ app.get("/", function (req, res) {
   
   initialData();
 
-  /*
-  findPoiEquipments()
-  .then((poiResult) => {
-      poiListVar = poiResult;
-      console.log("POI query has been finished");
-      return findEquipmentDetails();
-  })
-  .then((equipResult) => {
-      equipListVar = equipResult;
-      console.log("Equipments list query has been finished")
-      return findMeetupEvents();
-  })
-  .then((meetupResult) => {
-      meetupListVar = meetupResult;
-      return findPoiPlaceNames();
-      console.log("Meetup events list query has been finished")
-  })
-  .then((meetupPlaceListResult) => {
-      meetupPlaceListVar = meetupPlaceListResult;
-      console.log("Meetup place name list query has been finished")
-      return fetchWeatherData();
-  })
-  .then((weatherData) => {
-      currentWeatherVar = weatherData.weather[0].description;
-      currentTempVar = weatherData.main.temp;
-      weatherIconVar = "http://openweathermap.org/img/wn/" + weatherData.weather[0].icon + ".png";
-      console.log("Weather information query has been finished")
-      console.log("Now rendering an ejs view...")
-      res.render('index', {
-        poiList: poiListVar,
-        currentWeather: currentWeatherVar,
-        currentTemp: currentTempVar,
-        weatherIcon: weatherIconVar,
-        equipList: equipListVar,
-        meetupList: meetupListVar,
-        meetupPlaceList: meetupPlaceListVar,
-      });
-      return;
-  })
-  .catch(function(error){
-    console.log(error);
-  });
-  */
-
-
-  /*
- 
-
-  var progress = 0;
-
-  
-  findPoiEquipments()
-  findEquipmentDetails()
-  findMeetupEvents()
-  findPoiPlaceNames()
-  fetchWeatherData()
-  if (progress==5) {
-    return success;
-  }
-  else
-    return;
-  
-
-  res.render("index", { 
-    poiErr: poiErrVar,
-    poiList: poiListVar,
-    weatherErr: weatherErrVar,
-    currentWeather: currentWeatherVar,
-    currentTemp: currentTempVar,
-    weatherIcon: weatherIconVar,
-    equipErr: equipErrVar,
-    equipList: equipListVar,
-    meetupErr: meetupErrVar,
-    meetupList: meetupListVar,
-    meetupPlaceList: meetupPlaceListVar,
-  });
-  */
 });
 
 
+// [CRUD] Create a new meetup event document
 app.post('/new_meetup', function(req, res) {
 
   // Receive "Create a new meetup event" form inputs
   let newMeetupUsernameInputVar = req.body.newMeetupUsernameInput;
-  let newMeetupPasswordInputVar = req.body.newMeetupPasswordInput;
+  let newMeetupPasswordInputVar = req.body.newMeetupPasswordInput;      // AUDIT: [Security] The use of closure and password integrity/exposure
   let newMeetupTitleInputVar = req.body.newMeetupTitleInput;
   let newMeetupPlaceInputVar = req.body.newMeetupPlaceInput;
   let newMeetupDateInputVar = req.body.newMeetupDateInput;
@@ -358,16 +286,78 @@ app.post('/new_meetup', function(req, res) {
 });
 
 
-// Compare the input password to the stored password, by using `bcrypt.compare`
-// Note: `bcrypt.hash` generates a unique hash based on special salt every time, to prevent rainbow table attacks
-function compareHash(hash) {
-  bcrypt
-    .compare(password, hash)
-    .then(res => {
-      console.log(res) // return true
+// [CRUD] Delete an existing meetup event document
+app.post('/cancel_meetup', function(req, res) {
+
+  // Receive "Cancel a meetup event" form inputs
+  let cancelMeetupId = req.body.cancelMeetupIdInput;
+  let cancelMeetupPasswordInput = req.body.cancelMeetupPasswordInput;      // AUDIT: [Security] The use of closure and password integrity/exposure
+
+  console.log("DATA ENTRY INSPECTION");
+  console.log(`Meetup event ID: ${cancelMeetupId}`);
+  console.log(`Meetup password: ${cancelMeetupPasswordInput}`);  
+
+  return new Promise(function(resolve, reject){
+    // Find the meetup event details from the database
+    meetup_events.find({_id: cancelMeetupId}, function(err, result){
+      if(err){
+        console.log(err);
+        reject(err);
+      }
+      else{
+        console.log("Meetup event detail query has been finished");
+        console.log(`Meetup title: ${result[0].title}`);
+        // Extract a stored password
+        let meetupPassword = result[0].password;
+        console.log(`Stored password: ${meetupPassword}`);
+        resolve(meetupPassword);
+      }
+    });
+  })
+  .then(function (meetupPassword) {
+    // Compare the input password to the stored password, by using `bcrypt.compare`
+    // Note: `bcrypt.hash` generates a unique hash based on special salt every time, to prevent rainbow table attacks
+    console.log(meetupPassword);
+    bcrypt
+    .compare(cancelMeetupPasswordInput, meetupPassword)      // `bcrypt.compare` takes a plaintext input and then compares it to the hash
+    .then(res => {      // returns boolean value
+      
+      let output = null;
+
+      if(res == true){
+        // Delete the document if the input value matches the stored password
+        meetup_events.deleteOne({_id: cancelMeetupId}, function(err, result){
+          if(err){
+            console.log(err);
+            output = err;
+          }
+          else{
+            console.log(`The meetup event document ${cancelMeetupId} has been deleted successfully.`);
+            output = result.deletedCount;
+            console.log(output);
+          }
+        });
+      output = `<script>alert(\"모임을 성공적으로 취소했습니다!\"); window.location.href = \"/\"; </script>`;
+      return output;
+      }
+      else{
+        console.log("ERROR: Password doesn't match.")
+        output = "<script>alert(\"비밀번호가 일치하지 않습니다.\"); window.location.href = \"/\"; </script>";
+        return output;
+      }
     })
-    .catch(err => console.error(err.message))
-}
+    .then(function (output) {
+      console.log(output);
+      res.send(output);
+    })
+    .catch(err => console.error(err.message))      // Prevent "unhandled promise rejection" error
+  })
+  .catch(err => console.error(err.message))      // Prevent "unhandled promise rejection" error
+
+});  
+
+
+
 
 
 // run Express server

@@ -153,7 +153,6 @@
                     <p class="ml-1">서울특별시 서대문구</p>
                 </div>
                 <div class="flex flex-row">
-                    <button id="refresh-meetup-list-btn" class="flex flex-row py-2 px-3 mx-3 rounded-lg bg-green-500 items-center"><p class="text-white">새로고침</p></button>
                     <button id="new-meetup-btn" class="flex flex-row py-2 px-3 rounded-lg bg-green-500 items-center"><p class="text-white">모임 만들기</p></button>
                 </div>
             </div>
@@ -328,39 +327,41 @@
                 <div class="flex flex-col w-full h-full justify-between">
                     <h1 class="text-xl font-black">운동 모임을 취소하시겠어요?</h1>
                     
-                    <div class="flex-1 flex-col justify-between my-10">
+                    <form action="/cancel_meetup" method="post">
+                        <div class="flex-1 flex-col justify-between my-10">
 
-                        <p id="cancelMeetupId" class="w-full rounded-lg my-5 ml-5 hidden">cancelMeetupId</p>
-                        
-                        <div class="flex flex-row items-center w-full">
-                            <p class="shrink-0">주최자 이름:</p> <p id="cancelMeetupUsername" class="w-full rounded-lg my-5 ml-3">cancelMeetupUsername</p>
-                        </div>
-                        
-                        <div class="flex flex-row items-center w-full">
-                            <p class="shrink-0">모임 제목:</p> <p id="cancelMeetupTitle" class="w-full rounded-lg my-5 ml-3">cancelMeetupTitle</p>
-                        </div>
-
-                        <div class="flex flex-row items-center w-full">
-                            <p class="shrink-0">모임 장소:</p> <p id="cancelMeetupPlace" class="w-full rounded-lg my-5 ml-3">cancelMeetupPlace</p>
-                        </div>
-
-                        <div class="flex flex-row items-center w-full">
-                            <p class="shrink-0">모임 날짜/시간:</p> <p id="cancelMeetupDatetime" class="w-full rounded-lg my-5 ml-3">cancelMeetupDate</p>
-                        </div>
-
-                        <p class="font-black mt-5 mb-3">이 모임을 취소하시려면 암호를 입력하세요.</p>
-
-                        <div class="flex flex-row items-center w-full">
+                            <input id="cancel-meetup-id" class="w-full rounded-lg my-5 ml-5" type="text" name="cancelMeetupIdInput" required readonly>
                             
-                            <p class="shrink-0">암호:</p> <input id="cancel-meetup-password" class="w-full bg-white rounded-lg h-10 m-1 px-3 ml-5" type="password" name="cancelPasswordInput" required minlength="8" maxlength="20">
+                            <div class="flex flex-row items-center w-full">
+                                <p class="shrink-0">주최자 이름:</p> <p id="cancel-meetup-username" class="w-full rounded-lg my-5 ml-3">cancelMeetupUsername</p>
+                            </div>
+                            
+                            <div class="flex flex-row items-center w-full">
+                                <p class="shrink-0">모임 제목:</p> <p id="cancel-meetup-title" class="w-full rounded-lg my-5 ml-3">cancelMeetupTitle</p>
+                            </div>
+
+                            <div class="flex flex-row items-center w-full">
+                                <p class="shrink-0">모임 장소:</p> <p id="cancel-meetup-place" class="w-full rounded-lg my-5 ml-3">cancelMeetupPlace</p>
+                            </div>
+
+                            <div class="flex flex-row items-center w-full">
+                                <p class="shrink-0">모임 날짜/시간:</p> <p id="cancel-meetup-datetime" class="w-full rounded-lg my-5 ml-3">cancelMeetupDate</p>
+                            </div>
+
+                            <p class="font-black mt-5 mb-3">이 모임을 취소하시려면 암호를 입력하세요.</p>
+
+                            <div class="flex flex-row items-center w-full">
+                                
+                                <p class="shrink-0">암호:</p> <input id="cancel-meetup-password" class="w-full bg-white rounded-lg h-10 m-1 px-3 ml-5" type="password" name="cancelMeetupPasswordInput" required minlength="8" maxlength="20">
+                            </div>
+
                         </div>
 
-                    </div>
-
-                    <div class="flex flex-row justify-between items-center">
-                        <button id="cancel-meetup-back-btn" class="flex flex-row py-2 px-3 rounded-lg bg-green-500 items-center"><p class="text-white">이전으로</p></button>
-                        <button id="cancel-meetup-confirm-btn" class="flex flex-row py-2 px-3 rounded-lg bg-green-500 items-center"><p class="text-white">모임 취소하기</p></button>
-                    </div>
+                        <div class="flex flex-row justify-between items-center">
+                            <button id="cancel-meetup-back-btn" class="flex flex-row py-2 px-3 rounded-lg bg-green-500 items-center"><p class="text-white">이전으로</p></button>
+                            <button id="cancel-meetup-confirm-btn" class="flex flex-row py-2 px-3 rounded-lg bg-green-500 items-center"><p class="text-white">모임 취소하기</p></button>
+                        </div>
+                    </form>
                 </div>
             </div>
 

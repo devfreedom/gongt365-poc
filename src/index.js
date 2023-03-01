@@ -13,6 +13,7 @@ documentHeight();
 
 
 // Define global variables
+// TODO: [Refactor] The use of global variables is an anti-pattern, find an alternative solution
 let currentPosLat = 0;    // The latitude of current position
 let currentPosLng = 0;    // The longitude of current position
 
@@ -139,9 +140,6 @@ poiItemList.forEach (item => {
   markers.addLayer(L.marker([poiLat, poiLng], {title: poiTitle}).bindPopup(poiTitle));
   map.addLayer(markers);
 });
-
-
-
 
 
 // Refresh freeform Leaflet.js map upon resize, in order to avoid partial map rendering issue (which limits map rendering being bound to the original container size)
