@@ -112,6 +112,9 @@ document.getElementById('currentPosBtn').addEventListener("click", function() {
 
 //      Current attempt: Use Leaflet.markercluster for responsive clustered rendering
 
+
+// TODO: [Refactor] The use of global variables is an anti-pattern, find an alternative solution
+
 var poiIndex = null;
 var poiLat = null;
 var poiLng = null;

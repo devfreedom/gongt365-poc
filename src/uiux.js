@@ -173,3 +173,31 @@ const picker = datepicker("#new-meetup-date", {
   // Instead of requiring input from the user, set a default date instead, as a workaround
   dateSelected: new Date(currentYear, currentMonth, currentDay + 1),
 });
+
+
+// Enforce client-side alphanumeric password validation
+document.getElementById("new-meetup-password").addEventListener('input', function(){
+  const regEx = /^\w$/;
+  const valid = regEx.text(this.value)
+  if (valid == false) {
+    alert("암호에는 영문과 숫자만 사용하실 수 있습니다!");
+    this.value = "";
+  }
+  else {
+    return;
+  }
+});
+
+
+// Enforce client-side alphanumeric password validation
+document.getElementById("cancel-meetup-password").addEventListener('input', function(){
+  const regEx = /^\w$/;
+  const valid = regEx.text(this.value)
+  if (valid == false) {
+    alert("암호에는 영문과 숫자만 사용하실 수 있습니다!");
+    this.value = "";
+  }
+  else {
+    return;
+  }
+});

@@ -759,14 +759,6 @@ video {
   width: 1.75rem;
 }
 
-.min-w-\[40vh\] {
-  min-width: 40vh;
-}
-
-.max-w-\[60vh\] {
-  max-width: 60vh;
-}
-
 .flex-none {
   flex: none;
 }

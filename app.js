@@ -93,9 +93,10 @@ const equipSchema = {
 }
 
 const meetupSchema = {
-  username: { type: String, minlength: 5, maxlength: 15, },
-  password: String,
-  title: String,
+  // Initial server-side input validation
+  username: { type: String, minlength: 3, maxlength: 12, },
+  password: String,      // WARNING: [Security] This is a hashed password, enforce server-side password validation seperately
+  title: { type: String, minlength: 5, maxlength: 20, },
   city: String,
   district: String,
   isodate: String,
@@ -228,14 +229,15 @@ app.get("/", function (req, res) {
 app.post('/new_meetup', function(req, res) {
 
   // Receive "Create a new meetup event" form inputs
-  let newMeetupUsernameInputVar = req.body.newMeetupUsernameInput;
-  let newMeetupPasswordInputVar = req.body.newMeetupPasswordInput;      // AUDIT: [Security] The use of closure and password integrity/exposure
-  let newMeetupTitleInputVar = req.body.newMeetupTitleInput;
-  let newMeetupPlaceInputVar = req.body.newMeetupPlaceInput;
-  let newMeetupDateInputVar = req.body.newMeetupDateInput;
-  let newMeetupHourInputVar = req.body.newMeetupHourInput;
-  let newMeetupMinuteInputVar = req.body.newMeetupMinuteInput;
-  let newMeetupDurationInputVar = req.body.newMeetupDurationInput;
+  // Sanitize user input values using "mongo-sanitize"
+  let newMeetupUsernameInputVar = sanitize(req.body.newMeetupUsernameInput);
+  let newMeetupPasswordInputVar = sanitize(req.body.newMeetupPasswordInput);      // AUDIT: [Security] The use of closure and password integrity/exposure
+  let newMeetupTitleInputVar = sanitize(req.body.newMeetupTitleInput);
+  let newMeetupPlaceInputVar = sanitize(req.body.newMeetupPlaceInput);
+  let newMeetupDateInputVar = sanitize(req.body.newMeetupDateInput);
+  let newMeetupHourInputVar = sanitize(req.body.newMeetupHourInput);
+  let newMeetupMinuteInputVar = sanitize(req.body.newMeetupMinuteInput);
+  let newMeetupDurationInputVar = sanitize(req.body.newMeetupDurationInput);
 
   // Inspect the data
   // NOTE: Template literals uses backticks, not double quotes
@@ -261,25 +263,25 @@ app.post('/new_meetup', function(req, res) {
       
       // And then create/insert the document
       meetup_events.create({
-      username: newMeetupUsernameInputVar,
-      password: newMeetupPassword,      // WARNING: User-input password needs to be salted and hashed before creating the document
-      title: newMeetupTitleInputVar,
-      city: "서울특별시",     // Hardcoded for now
-      district: "서대문구",      // Hardcoded for now
-      poi_place: newMeetupPlaceInputVar,
-      isodate: newMeetupIsodate,
-      duration_min: newMeetupDurationInputVar
-      }, function(err) {
-        if(err) {
-          // res.status(200).json({ "status": false, "result": "모임을 기록하는 도중 오류가 발생했습니다." });
-          console.log(err);
-          res.send("<script>alert(\"모임을 기록하는 도중 오류가 발생했습니다.\"); window.location.href = \"/\"; </script>");
-          return;      // Necessary to prevent sending another response
-        } else {
-          // res.status(200).json({ "status": true, "result": "모임을 성공적으로 만들었습니다!" });
-          res.send("<script>alert(\"모임을 성공적으로 만들었습니다!\"); window.location.href = \"/\"; </script>");
-          return;
-        }
+        username: newMeetupUsernameInputVar,
+        password: newMeetupPassword,      // WARNING: User-input password needs to be salted and hashed before creating the document
+        title: newMeetupTitleInputVar,
+        city: "서울특별시",     // Hardcoded for now
+        district: "서대문구",      // Hardcoded for now
+        poi_place: newMeetupPlaceInputVar,
+        isodate: newMeetupIsodate,
+        duration_min: newMeetupDurationInputVar
+        }, function(err) {
+          if(err) {
+            // res.status(200).json({ "status": false, "result": "모임을 기록하는 도중 오류가 발생했습니다." });
+            console.log(err);
+            res.send("<script>alert(\"모임을 기록하는 도중 오류가 발생했습니다.\"); window.location.href = \"/\"; </script>");
+            return;      // Necessary to prevent sending another response
+          } else {
+            // res.status(200).json({ "status": true, "result": "모임을 성공적으로 만들었습니다!" });
+            res.send("<script>alert(\"모임을 성공적으로 만들었습니다!\"); window.location.href = \"/\"; </script>");
+            return;
+          }
       });
     }).catch(err => console.error(err.message));
 
@@ -290,8 +292,9 @@ app.post('/new_meetup', function(req, res) {
 app.post('/cancel_meetup', function(req, res) {
 
   // Receive "Cancel a meetup event" form inputs
-  let cancelMeetupId = req.body.cancelMeetupIdInput;
-  let cancelMeetupPasswordInput = req.body.cancelMeetupPasswordInput;      // AUDIT: [Security] The use of closure and password integrity/exposure
+  // Sanitize user input values using "mongo-sanitize"
+  let cancelMeetupId = sanitize(req.body.cancelMeetupIdInput);
+  let cancelMeetupPasswordInput = sanitize(req.body.cancelMeetupPasswordInput);      // AUDIT: [Security] The use of closure and password integrity/exposure
 
   console.log("DATA ENTRY INSPECTION");
   console.log(`Meetup event ID: ${cancelMeetupId}`);
