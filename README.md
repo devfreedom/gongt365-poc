@@ -1,46 +1,66 @@
-# Gongt365 (공트365) 🏋️ Proof-of-concept
-A basic full-stack webapp for the proof-of-concept of 2022 NIA Open Database Hackathon qualifier, Gongt365
+# Gongt365 (공트365) 🏋️ Prototype
 
-2022 한국지능정보사회진흥원 공공데이터 아이디어 해커톤 본선 진출작 '공트365' 의 개념증명을 위해 만든 기초적인 풀스택 웹앱입니다.
+A proof-of-concept webapp based on the 2022 NIA Open Database Hackathon qualifier, Gongt365
+
+2022 한국지능정보사회진흥원 공공데이터 아이디어 해커톤 본선 진출작 '공트365'의 개념증명을 위해 만든 기초적인 풀스택 웹앱입니다.
+
 
 ## Live Demo
 
 https://gongt365-poc.up.railway.app
 
+
 ## Features 
+
 - Display geolocation data of municipal outdoor fitness equipments available in public places(city parks, hills, etc.) as point-of-interest(POI) markers on the map
 - Bulletin board for users to organize workout meetups and events
 - Provide fitness equipment instruction videos, safety tips, and workout guides
 - ~~Personalized POI filters~~ 
 
+
 ## Technology Stack 
+
 ### Frontend
+
 HTML + CSS + JavaScript
 - CSS framework: [Tailwind CSS](https://tailwindcss.com/)
 - Template engine: [EJS (Embedded JavaScript templates)](https://ejs.co/)
 - Interactive map rendering library: [Leaflet.js](https://leafletjs.com/)
 
+
 ### Backend
+
 - Javascript runtime environment: [Node.js](https://nodejs.org/en/)
 - Web application framework: [Express.js](https://expressjs.com/)
 
+
 ### Database
+
 - Document-oriented database: [MongoDB](https://www.mongodb.com/)
 - Database hosting provider: [MongoDB Atlas](https://www.mongodb.com/atlas/database)
 
+
 ## Database
+
 ### Data source
+
 [대한민국 정부 공공데이터 포털](https://www.data.go.kr/) (South Korean Public Data Portal)
  - The official South Korean e-government database website
     
+
 ## Datasets
+
 - For pilot run
     - File: `서울특별시 서대문구_야외운동기구 설치 현황.csv`
 
+
 ## Deployment
+
 - Platform-as-a-Service: [Railway.app](https://railway.app/)
 
+
 ## UI/UX Information Architecture Blueprint
+
 - Map 
     - Leaflet.js map with POI markers
     - POI list with information
@@ -67,8 +87,11 @@ HTML + CSS + JavaScript
         - Workout Scheduler
             - Notification and interval settings
 
+
 ## Development Roadmap Fulfillment
+
 ### Implementation 
+
 - Features
     - Scheduled daily/weekly/monthly workout sessions and notification
         - Needs access to native notification and background service
@@ -89,7 +112,9 @@ HTML + CSS + JavaScript
     - Ensure CORS-compliance
     - Sanitize inputs and queries
 
+
 ### Refactoring
+
 - Frontend
     - UI handlers
         - Current: If statement-based switches
@@ -105,11 +130,12 @@ HTML + CSS + JavaScript
             - Major refactoring is needed
             - ✅ Refactoring is on the way
 
+
 ### Improvement
+
 - Expand service scope by utilizing more datasets available
     - Current: Seodaemun district, Seoul, South Korea (pilot run)
     - Phase 1: Seoul
     - Phase 2: + Seoul-Gyeonggi-Incheon Metropolitan Area
     - Phase 3: + Gangwon province + Chungcheong province
-    - Phase 4: Nationwide; Utilize all municipal datasets available        
-
+    - Phase 4: Nationwide; Utilize all municipal datasets available
