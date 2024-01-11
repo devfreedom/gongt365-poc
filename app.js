@@ -66,7 +66,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 // Check connection to MongoDB Atlas
 mongoose.connect(uri).then(
   () => { console.log("Successfully connected to MongoDB") },
-  err => { console.log("An error has occured while connecting to MongoDB") }
+  err => { console.log(`An error has occured while connecting to MongoDB\n${err}`) }
 );
 
 
@@ -358,9 +358,6 @@ app.post('/cancel_meetup', function(req, res) {
   .catch(err => console.error(err.message))      // Prevent "unhandled promise rejection" error
 
 });  
-
-
-
 
 
 // run Express server

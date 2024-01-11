@@ -1,0 +1,7 @@
+index,username,password,title,city,district,poi_place,isodate,duration_min,rsvp_count
+,셀러리맨,PLAIN_TEXT_PERMANENT_SAMPLE,퇴근길에 잠깐 운동하고 들어갑니다!,서울특별시,서대문구,서대문독립공원,2033-03-14T10:00:00.000Z,30,1
+,sunmi,PLAIN_TEXT_PERMANENT_SAMPLE,★ 안산공원에서 주말에 운동하실분?,서울특별시,서대문구,안산공원,2033-02-25T05:00:00.000Z,60,5
+,운동남,PLAIN_TEXT_PERMANENT_SAMPLE,날씨랑 공기 좋으면 같이 공트해요,서울특별시,서대문구,홍제근린공원,2033-03-01T04:30:00.000Z,45,2
+,서준맘,PLAIN_TEXT_PERMANENT_SAMPLE,아이들 데리고 같이 운동하실 이웃분들 환영!,서울특별시,서대문구,북한산공원,2033-03-05T06:00:00.000Z,50,3
+,musclemore,PLAIN_TEXT_PERMANENT_SAMPLE,(오전 공강 기념) 점심먹기 전에 공트한판 ㅎ,서울특별시,서대문구,창천근린공원,2033-03-31T02:00:00.000Z,35,0
+,test,PLAIN_TEXT_PERMANENT_SAMPLE,이 모임은 이미 만료되었습니다,서울특별시,서대문구,홍제근린공원,2022-01-01T12:00:00.000Z,60,5

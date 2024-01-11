@@ -1,141 +1,76 @@
-# Gongt365 (공트365) 🏋️ Prototype
+# 공트365 🏋️
 
-A proof-of-concept webapp based on the 2022 NIA Open Database Hackathon qualifier, Gongt365
+2022년 한국지능정보사회진흥원(NIA)에서 주최한 공공데이터 아이디어 해커톤에 제출해 본선에 진출했던 '공트365' 기획안의 기술적 개념증명을 위해 만든 기초적인 풀스택 웹앱입니다.
 
-2022 한국지능정보사회진흥원 공공데이터 아이디어 해커톤 본선 진출작 '공트365'의 개념증명을 위해 만든 기초적인 풀스택 웹앱입니다.
-
-
-## Live Demo
-
-https://gongt365-poc.up.railway.app
+웹 개발을 본격적으로 배우기 전에 독학으로 만든 습작입니다. 부족함이 많지만 성장의 과정으로 간직하고 있습니다.
 
 
-## Features 
+## 주요 기능
 
-- Display geolocation data of municipal outdoor fitness equipments available in public places(city parks, hills, etc.) as point-of-interest(POI) markers on the map
-- Bulletin board for users to organize workout meetups and events
-- Provide fitness equipment instruction videos, safety tips, and workout guides
-- ~~Personalized POI filters~~ 
+- 지방자치단체에서 관리하는 공공장소 운동기구들의 위치를 지도상에 관심지점(Point-of-interest; POI) 마커로 표시하고 관련 정보를 목록으로 표시합니다.
+- 사용자들이 함께 모여 운동을 할 수 있도록 모임 행사(meetup)를 게시판에 만들고 삭제할 수 있습니다.
+- 공공장소에 마련되어있는 운동기구의 종류별 정보 및 사용법을 안내합니다.
+- ~~사용자 계정 및 개인 프로필 관리 기능~~
+- ~~운동 타이머 기능~~
 
+## 기술 스택
 
-## Technology Stack 
+### 프론트엔드
+- HTML + CSS + JavaScript
+    - CSS 프레임워크: [Tailwind CSS](https://tailwindcss.com/)
+    - 지도 라이브러리: [Leaflet.js](https://leafletjs.com/)
 
-### Frontend
+### 백엔드
 
-HTML + CSS + JavaScript
-- CSS framework: [Tailwind CSS](https://tailwindcss.com/)
-- Template engine: [EJS (Embedded JavaScript templates)](https://ejs.co/)
-- Interactive map rendering library: [Leaflet.js](https://leafletjs.com/)
+- 자바스크립트 런타임: [Node.js](https://nodejs.org/en/)
+- 백엔드 웹앱 프레임워크: [Express.js](https://expressjs.com/)
+- 템플릿 엔진: [EJS (Embedded JavaScript templates)](https://ejs.co/)
 
+### 데이터베이스
 
-### Backend
+- 문서형 DBMS: [MongoDB](https://www.mongodb.com/)
+    - DB 호스팅: [MongoDB Atlas](https://www.mongodb.com/atlas/database)
+- 데이터 소스: [대한민국 정부 공공데이터 포털](https://www.data.go.kr/)
+    - 데이터셋
+        - 시범 운영 지역: 서울특별시 서대문구
+        - [서울특별시 서대문구_야외운동기구 설치 현황.csv](https://www.data.go.kr/data/15085619/fileData.do)
 
-- Javascript runtime environment: [Node.js](https://nodejs.org/en/)
-- Web application framework: [Express.js](https://expressjs.com/)
+## 정보 구조도
+- 지도
+    - POI 마커를 지도에 표시 
+    - POI 정보를 목록으로 표시
+- 운동 
+    - 운동기구 관련 정보를 종류별로 표시
+        - 운동기구 
+        - 운동기구 사용법 동영상 시청 (유튜브 외부 링크)
+- 모임 
+    - 모임 행사 목록을 표시하고 모임 행사를 생성 및 삭제
+        - ~~사용자 계정에 기반한 참가 희망(RSVP) 기능~~
+- 프로필 
+    - ~~사용자 계정 정보 및 관리~~
+    - ~~행정구역 선택~~
+        - ~~행정구역 목록을 담은 드롭다운 리스트에서 사용자가 수동으로 선택하거나, 현재 위치 좌표를 주소 및 행정구역으로 자동 변환해주는 별도의 제3자 위치정보 API 서비스 활용~~
+        - 선택된 행정구역의 기상정보 표시
+    - ~~'집중 운동' 기능~~
+        - ~~집중적으로 단련하고자 하는 신체 부위(복부, 종아리, 어깨 등)를 선택하면 이에 도움이 되는 운동기구들이 있는 POI들만 선별해서 표시~~
+    - ~~운동 타이머~~
+        - ~~운동 반복 횟수와 시간을 설정하면 각 세트의 시작과 종료를 알림~~
 
-
-### Database
-
-- Document-oriented database: [MongoDB](https://www.mongodb.com/)
-- Database hosting provider: [MongoDB Atlas](https://www.mongodb.com/atlas/database)
-
-
-## Database
-
-### Data source
-
-[대한민국 정부 공공데이터 포털](https://www.data.go.kr/) (South Korean Public Data Portal)
- - The official South Korean e-government database website
-    
-
-## Datasets
-
-- For pilot run
-    - File: `서울특별시 서대문구_야외운동기구 설치 현황.csv`
-
-
-## Deployment
-
-- Platform-as-a-Service: [Railway.app](https://railway.app/)
-
-
-## UI/UX Information Architecture Blueprint
-
-- Map 
-    - Leaflet.js map with POI markers
-    - POI list with information
-- Workout 
-    - List that shows different types of public fitness equipments and relevant information
-        - Equipment description
-        - Instruction video as Youtube link (open externally)
-        - Expected calorie burn per set/session/hour
-- Meetup 
-    - Bulletin board
-        - List of meetup events
-        - Modal: Write a post to organize a meetup event
-        - Modal: Read meetup event description and RSVP
-- Profile 
-    - User account
-    - Personalization
-        - My Neighborhood
-            - Select a service district, either manually or by GNSS/network-based geolocation from the browser
-            - Show the current district's weather information
-        - Fitness Focus
-            - POI filters that shows fitness equipments corresponds to preferred body parts only (e.g. abs, chest, arms)
-        - Workout Diary
-            - Calendar-based personal workout journal
-        - Workout Scheduler
-            - Notification and interval settings
-
-
-## Development Roadmap Fulfillment
-
-### Implementation 
-
-- Features
-    - Scheduled daily/weekly/monthly workout sessions and notification
-        - Needs access to native notification and background service
-            - Progressive Web App
-            - Hybrid webapp (e.g. Webview wrapper)
-    - Timer-based fitness assistance (repetition/set counter and beeper)
-        - Use Notifications API
-    - Workout diary
-        - Calendar-based CRUD
-    - Provide routing from current location to POIs
-        - Barebone: Use Leaflet Routing Machine (https://www.liedman.net/leaflet-routing-machine)
-        - Commercial-grade: Replace Leaflet.js with domestic Naver Map Directions API
-- Architecture
-    - Establish user account database 
-    - Implement fully-fledged user authentication and management system
-        - ✅ Essential user authentication procedure for meetup events CRUD has been implemented
-- Security
-    - Ensure CORS-compliance
-    - Sanitize inputs and queries
-
-
-### Refactoring
-
-- Frontend
-    - UI handlers
-        - Current: If statement-based switches
-        - Refactor: Array and iterator-based switches
-            - Migrate to frontend frameworks such as React or Vue in the future
-    - Leaflet.js rendering
-        - ~~Current: Low performance when there are too many POI markers~~
-        - ~~Refactor: Use Leaflet.js plugin that supports WebGL~~
-            - ✅ [Complete] Using Leaflet.markercluster as a straightforward workaround
-- Backend
-    - Design
-        - Current: Query handlers are inefficient, unconventional, and hacky
-            - Major refactoring is needed
-            - ✅ Refactoring is on the way
-
-
-### Improvement
-
-- Expand service scope by utilizing more datasets available
-    - Current: Seodaemun district, Seoul, South Korea (pilot run)
-    - Phase 1: Seoul
-    - Phase 2: + Seoul-Gyeonggi-Incheon Metropolitan Area
-    - Phase 3: + Gangwon province + Chungcheong province
-    - Phase 4: Nationwide; Utilize all municipal datasets available
+### 추가적으로 진행할 사항
+- 기획했던 기본 기능들 모두 구현하기
+    - 운동 타이머 기능
+        - 표준 Notifications API를 사용하는 방법을 고려 중
+    - 사용자 계정 및 프로필 기능
+        - 추가 DB 및 CRUD 구현 필요
+- 부가 기능
+    - 일간/주간/월간 운동 스케줄 관리 및 알림 기능
+        - 백그라운드 서비스 및 네이티브 노티피케이션이 필요할 것으로 예상됨
+            - Progressive Web App(PWA)으로 만들어 푸시 서비스 및 알림을 구현하는 방법
+            - 하이브리드 웹앱으로 만들어 직접 네이티브 알림 기능에 접근하는 방법
+    - 현재 위치에서 선택된 특정 POI로 가는 길을 표시해주는 길찾기 기능 
+        - Leaflet Routing Machine (https://www.liedman.net/leaflet-routing-machine)을 사용하는 방법
+        - Leaflet.js를 네이버 또는 카카오 지도 API로 교체하는 방법
+- 보안
+    - CORS-compliance 확인
+    - 입력값 검증을 철저하게 구현
+    - HTTPS로 서비스 구동 (일부 브라우저는 HTTP에서 Geolocation API 차단)
